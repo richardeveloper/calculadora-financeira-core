@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: calculadora-financeira
+  datasource:
+    url: jdbc:postgresql://localhost:5432/calculadora_financeira
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
