@@ -6,8 +6,6 @@ import br.com.calculadorafinanceira.enums.FaixaSalarialINSS;
 import br.com.calculadorafinanceira.enums.FaixaSalarialIRRF;
 import br.com.calculadorafinanceira.repositories.ParametroINSSRepository;
 import br.com.calculadorafinanceira.repositories.ParametroIRRFRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -16,15 +14,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Configuration
-public class TestConfig implements CommandLineRunner {
+public class SetupConfig implements CommandLineRunner {
 
   @Autowired
   private ParametroINSSRepository parametroINSSRepository;
 
   @Autowired
   private ParametroIRRFRepository parametroIRRFRepository;
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(TestConfig.class);
 
   @Override
   public void run(String... args) throws Exception {

@@ -6,8 +6,6 @@ import br.com.calculadorafinanceira.exceptions.ServiceException;
 import br.com.calculadorafinanceira.exceptions.ValidationException;
 import br.com.calculadorafinanceira.repositories.ParametroINSSRepository;
 import br.com.calculadorafinanceira.views.INSSView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,28 +15,30 @@ import java.math.RoundingMode;
 @Service
 public class CalculadoraINSS {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CalculadoraINSS.class);
-
   @Autowired
   private ParametroINSSRepository parametroINSSRepository;
 
   public INSSView calcularINSS(BigDecimal salarioBruto) {
     validarParametros(salarioBruto);
 
-    BigDecimal INSS = BigDecimal.ZERO;
+    BigDecimal inss = BigDecimal.ZERO;
 
     ParametroINSS primeiraFaixa = parametroINSSRepository
       .findByFaixaSalarial(FaixaSalarialINSS.PRIMEIRA_FAIXA_SALARIAL)
       .orElseThrow(() -> new ServiceException("Não foi possível recuperar informações da primeira faixa salarial."));
 
     if (isFaixaSalarialCorrespondente(salarioBruto, primeiraFaixa.getValorMaximo())) {
+      BigDecimal baseParaCalculo = calcularValorFaixaSalarial(salarioBruto, primeiraFaixa.getAliquota());
+
       return INSSView.builder()
-        .inss(INSS.add(calcularValorFaixaSalarial(salarioBruto, primeiraFaixa.getAliquota())))
+        .inss(inss.add(baseParaCalculo))
         .aliquota(primeiraFaixa.getAliquota())
         .build();
-    } else {
-      INSS = INSS.add(calcularValorFaixaSalarial(primeiraFaixa.getValorMaximo(), primeiraFaixa.getAliquota()));
     }
+
+    inss = inss.add(
+      calcularValorFaixaSalarial(primeiraFaixa.getValorMaximo(), primeiraFaixa.getAliquota())
+    );
 
     ParametroINSS segundaFaixa = parametroINSSRepository
       .findByFaixaSalarial(FaixaSalarialINSS.SEGUNDA_FAIXA_SALARIAL)
@@ -48,12 +48,12 @@ public class CalculadoraINSS {
       BigDecimal baseParaCalculo = salarioBruto.subtract(primeiraFaixa.getValorMaximo());
 
       return INSSView.builder()
-        .inss(INSS.add(calcularValorFaixaSalarial(baseParaCalculo, segundaFaixa.getAliquota())))
+        .inss(inss.add(calcularValorFaixaSalarial(baseParaCalculo, segundaFaixa.getAliquota())))
         .aliquota(segundaFaixa.getAliquota())
         .build();
     }
 
-    INSS = INSS.add(
+    inss = inss.add(
       calcularValorFaixaSalarial(segundaFaixa.getValorMaximo().subtract(primeiraFaixa.getValorMaximo()), segundaFaixa.getAliquota())
     );
 
@@ -65,12 +65,12 @@ public class CalculadoraINSS {
       BigDecimal baseParaCalculo = salarioBruto.subtract(segundaFaixa.getValorMaximo());
 
       return INSSView.builder()
-        .inss(INSS.add(calcularValorFaixaSalarial(baseParaCalculo, terceiraFaixa.getAliquota())))
+        .inss(inss.add(calcularValorFaixaSalarial(baseParaCalculo, terceiraFaixa.getAliquota())))
         .aliquota(terceiraFaixa.getAliquota())
         .build();
     }
 
-    INSS = INSS.add(
+    inss = inss.add(
       calcularValorFaixaSalarial(terceiraFaixa.getValorMaximo().subtract(segundaFaixa.getValorMaximo()), terceiraFaixa.getAliquota())
     );
 
@@ -86,10 +86,10 @@ public class CalculadoraINSS {
       baseParaCalculo = quartaFaixa.getValorMaximo().subtract(quartaFaixa.getValorMinimo());
     }
 
-    INSS = INSS.add(calcularValorFaixaSalarial(baseParaCalculo, quartaFaixa.getAliquota()));
+    inss = inss.add(calcularValorFaixaSalarial(baseParaCalculo, quartaFaixa.getAliquota()));
 
     return INSSView.builder()
-      .inss(INSS.setScale(2, RoundingMode.HALF_UP))
+      .inss(inss.setScale(2, RoundingMode.HALF_UP))
       .aliquota(quartaFaixa.getAliquota())
       .build();
   }

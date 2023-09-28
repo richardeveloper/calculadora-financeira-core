@@ -34,19 +34,19 @@ public class CalculadoraIRRF {
       descontoDependentes = VALOR_DEDUCAO_DEPENDENTE.multiply(BigDecimal.valueOf(numeroDependentes));
     }
 
-    BigDecimal INSS = calculadoraINSS.calcularINSS(salarioBruto).getInss();
+    BigDecimal inss = calculadoraINSS.calcularINSS(salarioBruto).getInss();
 
     BigDecimal baseParaCalculo = salarioBruto
       .subtract(descontoDependentes)
-      .subtract(INSS);
+      .subtract(inss);
 
-    BigDecimal IRRF = baseParaCalculo
+    BigDecimal irrf = baseParaCalculo
       .multiply(BigDecimal.valueOf(parametroIRRF.getAliquota() / 100))
       .subtract(parametroIRRF.getParcelaDedutivel())
       .setScale(2, RoundingMode.HALF_UP);
 
     return IRRFView.builder()
-      .irrf(IRRF.compareTo(BigDecimal.ZERO) > 0 ? IRRF.setScale(2, RoundingMode.HALF_UP) : BigDecimal.ZERO)
+      .irrf(irrf.compareTo(BigDecimal.ZERO) > 0 ? irrf.setScale(2, RoundingMode.HALF_UP) : BigDecimal.ZERO)
       .aliquota(parametroIRRF.getAliquota())
       .build();
   }
@@ -65,11 +65,11 @@ public class CalculadoraIRRF {
     }
 
     if (numeroDependentes < 0) {
-      throw new ValidationException("O campo numeroDependentes deve ser positivo.");
+      throw new ValidationException("O campo numeroDependentes deve maior ou igual a 0.");
     }
 
     if (numeroDependentes > 10) {
-      throw new ValidationException("O campo numeroDependentes não pode ser superior a 10.");
+      throw new ValidationException("O campo numeroDependentes deve ser inferior a 10.");
     }
   }
 }

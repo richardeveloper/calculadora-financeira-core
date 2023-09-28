@@ -33,6 +33,7 @@ public class CalculadoraFinanceiraController {
   public ResponseEntity<INSSView> calcularINSS(
     @RequestParam("salarioBruto") BigDecimal salarioBruto
   ) throws ServiceException {
+
     return ResponseEntity.ok(calculadoraINSS.calcularINSS(salarioBruto));
   }
 
@@ -41,6 +42,7 @@ public class CalculadoraFinanceiraController {
     @RequestParam(value = "salarioBruto") BigDecimal salarioBruto,
     @RequestParam(value = "numeroDependentes", defaultValue = "0") Integer numeroDependentes
   ) throws ServiceException {
+
     return ResponseEntity.ok(calculadoraIRRF.calcularIRRF(salarioBruto, numeroDependentes));
   }
 
@@ -48,9 +50,10 @@ public class CalculadoraFinanceiraController {
   public ResponseEntity<FeriasView> calcularFerias(
     @RequestParam(value = "salarioBruto") BigDecimal salarioBruto,
     @RequestParam(value = "numeroDependentes", defaultValue = "0") Integer numeroDependentes,
-    @RequestParam(value = "abonoPecuniario") Boolean abonoPecuniario,
-    @RequestParam(value = "diasFerias", defaultValue = "30") Integer diasFerias
+    @RequestParam(value = "abonoPecuniario", defaultValue = "false") boolean abonoPecuniario,
+    @RequestParam(value = "diasFerias") Integer diasFerias
     ) throws ServiceException {
+
     return ResponseEntity.ok(calculadoraFerias.calcularFerias(salarioBruto, numeroDependentes,
       abonoPecuniario, diasFerias));
   }

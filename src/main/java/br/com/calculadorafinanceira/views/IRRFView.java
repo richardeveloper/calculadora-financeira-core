@@ -11,7 +11,10 @@ import java.math.BigDecimal;
 @Builder
 public class IRRFView {
 
-  private BigDecimal irrf;
-  private Double aliquota;
+  @Builder.Default
+  private BigDecimal irrf = BigDecimal.ZERO;
+
+  @Builder.Default
+  private Double aliquota = 0.0;
 
 }

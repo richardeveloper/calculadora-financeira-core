@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface ParametroIRRFRepository extends JpaRepository<ParametroIRRF, Long> {
 
   @Query(value = "SELECT irrf FROM ParametroIRRF irrf " +
-                 "WHERE :salarioBruto >= irrf.valorMinimo AND :salarioBruto <= irrf.valorMaximo")
+                 "WHERE :salarioBruto >= irrf.valorMinimo " +
+                 "AND :salarioBruto <= irrf.valorMaximo")
   Optional<ParametroIRRF> findBySalarioBruto(BigDecimal salarioBruto);
 }

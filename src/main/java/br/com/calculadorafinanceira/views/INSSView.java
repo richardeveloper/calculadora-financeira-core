@@ -11,7 +11,10 @@ import java.math.BigDecimal;
 @Builder
 public class INSSView {
 
-  private BigDecimal inss;
-  private Double aliquota;
+  @Builder.Default
+  private BigDecimal inss = BigDecimal.ZERO;
+
+  @Builder.Default
+  private Double aliquota = 0.0;
 
 }

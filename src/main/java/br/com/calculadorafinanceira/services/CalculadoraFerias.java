@@ -18,15 +18,15 @@ public class CalculadoraFerias {
   private CalculadoraINSS calculadoraINSS;
 
   private static final Integer DAYS_OF_MONTH = 30;
-  private static final Integer ESCALA_PRECISAO_CALCULOS = 10;
+  private static final Integer PRECISION_SCALE = 10;
 
   public FeriasView calcularFerias(BigDecimal salarioBruto, Integer numeroDependentes,
-    Boolean abonoPecuniario, Integer diasFerias) {
+    boolean abonoPecuniario, Integer diasFerias) {
 
     validarParametros(salarioBruto, numeroDependentes, abonoPecuniario, diasFerias);
 
     BigDecimal saldoFerias = salarioBruto
-      .divide(BigDecimal.valueOf(DAYS_OF_MONTH), ESCALA_PRECISAO_CALCULOS, RoundingMode.HALF_UP)
+      .divide(BigDecimal.valueOf(DAYS_OF_MONTH), PRECISION_SCALE, RoundingMode.HALF_UP)
       .multiply(BigDecimal.valueOf(diasFerias)).setScale(2, RoundingMode.HALF_UP);
 
     BigDecimal tercoFerias = saldoFerias
@@ -38,20 +38,20 @@ public class CalculadoraFerias {
     BigDecimal tercoAbonoPecuniario = BigDecimal.ZERO;
 
     if (abonoPecuniario) {
-      BigDecimal diasVendidos = BigDecimal.valueOf(DAYS_OF_MONTH - diasFerias);
+      BigDecimal diasVendidos = BigDecimal.valueOf(DAYS_OF_MONTH).subtract(BigDecimal.valueOf(diasFerias));
 
       valorAbonoPecuniario = salarioBruto
-        .divide(BigDecimal.valueOf(DAYS_OF_MONTH), ESCALA_PRECISAO_CALCULOS, RoundingMode.HALF_UP)
+        .divide(BigDecimal.valueOf(DAYS_OF_MONTH), PRECISION_SCALE, RoundingMode.HALF_UP)
         .multiply(diasVendidos).setScale(2, RoundingMode.HALF_UP);
 
       tercoAbonoPecuniario = valorAbonoPecuniario.divide(BigDecimal.valueOf(3), 2, RoundingMode.HALF_UP);
     }
 
-    BigDecimal INSS = calculadoraINSS
+    BigDecimal inss = calculadoraINSS
       .calcularINSS(baseParaCalculoImpostos)
       .getInss();
 
-    BigDecimal IRRF = calculadoraIRRF
+    BigDecimal irrf = calculadoraIRRF
       .calcularIRRF(baseParaCalculoImpostos, numeroDependentes)
       .getIrrf();
 
@@ -59,22 +59,22 @@ public class CalculadoraFerias {
       .add(tercoFerias)
       .add(valorAbonoPecuniario)
       .add(tercoAbonoPecuniario)
-      .subtract(INSS)
-      .subtract(IRRF);
+      .subtract(inss)
+      .subtract(irrf);
 
     return FeriasView.builder()
       .saldoFerias(saldoFerias)
       .tercoFerias(tercoFerias)
       .abonoPecuniario(valorAbonoPecuniario)
       .tercoAbonoPecuniario(tercoAbonoPecuniario)
-      .descontoInss(INSS)
-      .descontoIrrf(IRRF)
+      .descontoInss(inss)
+      .descontoIrrf(irrf)
       .totalFerias(totalFerias)
       .build();
   }
 
   private void validarParametros(BigDecimal salarioBruto, Integer numeroDependentes,
-    Boolean abonoPecuniario, Integer diasFerias) {
+    boolean abonoPecuniario, Integer diasFerias) {
 
     if (salarioBruto == null) {
       throw new ValidationException("O campo salarioBruto é obrigatório.");
@@ -104,8 +104,8 @@ public class CalculadoraFerias {
       throw new ValidationException("O campo diasFerias deve ser menor ou igual o total de dias do mês.");
     }
 
-//    if (abonoPecuniario && diasFerias > 20) {
-//      throw new ValidationException("Ao solicitar abono pecuniário, o tempo máximo permitido para ser solicitado é de 20 dias.");
-//    }
+    if (abonoPecuniario && diasFerias > 20) {
+      throw new ValidationException("Ao solicitar o abono pecuniário, a quantidade máxima permitida é de 20 dias de férias.");
+    }
   }
 }

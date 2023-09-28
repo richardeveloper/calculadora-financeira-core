@@ -11,11 +11,24 @@ import java.math.BigDecimal;
 @Builder
 public class FeriasView {
 
-  private BigDecimal saldoFerias;
-  private BigDecimal tercoFerias;
-  private BigDecimal abonoPecuniario;
-  private BigDecimal tercoAbonoPecuniario;
-  private BigDecimal descontoInss;
-  private BigDecimal descontoIrrf;
-  private BigDecimal totalFerias;
+  @Builder.Default
+  private BigDecimal saldoFerias = BigDecimal.ZERO;
+
+  @Builder.Default
+  private BigDecimal tercoFerias = BigDecimal.ZERO;
+
+  @Builder.Default
+  private BigDecimal abonoPecuniario = BigDecimal.ZERO;
+
+  @Builder.Default
+  private BigDecimal tercoAbonoPecuniario = BigDecimal.ZERO;
+
+  @Builder.Default
+  private BigDecimal descontoInss = BigDecimal.ZERO;
+
+  @Builder.Default
+  private BigDecimal descontoIrrf = BigDecimal.ZERO;
+
+  @Builder.Default
+  private BigDecimal totalFerias = BigDecimal.ZERO;
 }
