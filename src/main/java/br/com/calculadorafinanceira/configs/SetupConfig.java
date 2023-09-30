@@ -9,11 +9,14 @@ import br.com.calculadorafinanceira.repositories.ParametroIRRFRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Configuration
+@Profile(value = "!prod")
 public class SetupConfig implements CommandLineRunner {
 
   @Autowired
@@ -25,66 +28,93 @@ public class SetupConfig implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
 
-    ParametroINSS primeiraFaixaINSS = new ParametroINSS();
-    primeiraFaixaINSS.setFaixaSalarial(FaixaSalarialINSS.PRIMEIRA_FAIXA_SALARIAL);
-    primeiraFaixaINSS.setValorMinimo(BigDecimal.ZERO);
-    primeiraFaixaINSS.setValorMaximo(new BigDecimal("1320.00"));
-    primeiraFaixaINSS.setAliquota(7.5);
+    ParametroINSS primeiraFaixaINSS = ParametroINSS.builder()
+      .faixaSalarial(FaixaSalarialINSS.PRIMEIRA_FAIXA_SALARIAL)
+      .valorMinimo(BigDecimal.ZERO)
+      .valorMaximo(new BigDecimal("1320.00"))
+      .aliquota(7.5)
+      .dataCadastro(LocalDateTime.now())
+      .ultimaAtualizacao(LocalDateTime.now())
+      .build();
 
-    ParametroINSS segundaFaixaINSS = new ParametroINSS();
-    segundaFaixaINSS.setFaixaSalarial(FaixaSalarialINSS.SEGUNDA_FAIXA_SALARIAL);
-    segundaFaixaINSS.setValorMinimo(new BigDecimal("1320.01"));
-    segundaFaixaINSS.setValorMaximo(new BigDecimal("2571.29"));
-    segundaFaixaINSS.setAliquota(9.0);
+    ParametroINSS segundaFaixaINSS = ParametroINSS.builder()
+      .faixaSalarial(FaixaSalarialINSS.SEGUNDA_FAIXA_SALARIAL)
+      .valorMinimo(new BigDecimal("1320.01"))
+      .valorMaximo(new BigDecimal("2571.29"))
+      .aliquota(9.0)
+      .dataCadastro(LocalDateTime.now())
+      .ultimaAtualizacao(LocalDateTime.now())
+      .build();
 
-    ParametroINSS terceiraFaixaINSS = new ParametroINSS();
-    terceiraFaixaINSS.setFaixaSalarial(FaixaSalarialINSS.TERCEIRA_FAIXA_SALARIAL);
-    terceiraFaixaINSS.setValorMinimo(new BigDecimal("2571.30"));
-    terceiraFaixaINSS.setValorMaximo(new BigDecimal("3856.94"));
-    terceiraFaixaINSS.setAliquota(12.0);
+    ParametroINSS terceiraFaixaINSS = ParametroINSS.builder()
+      .faixaSalarial(FaixaSalarialINSS.TERCEIRA_FAIXA_SALARIAL)
+      .valorMinimo(new BigDecimal("2571.30"))
+      .valorMaximo(new BigDecimal("3856.94"))
+      .aliquota(12.0)
+      .dataCadastro(LocalDateTime.now())
+      .ultimaAtualizacao(LocalDateTime.now())
+      .build();
 
-    ParametroINSS quartaFaixaINSS = new ParametroINSS();
-    quartaFaixaINSS.setFaixaSalarial(FaixaSalarialINSS.QUARTA_FAIXA_SALARIAL);
-    quartaFaixaINSS.setValorMinimo(new BigDecimal("3856.95"));
-    quartaFaixaINSS.setValorMaximo(new BigDecimal("7507.49"));
-    quartaFaixaINSS.setAliquota(14.0);
+    ParametroINSS quartaFaixaINSS = ParametroINSS.builder()
+      .faixaSalarial(FaixaSalarialINSS.QUARTA_FAIXA_SALARIAL)
+      .valorMinimo(new BigDecimal("3856.95"))
+      .valorMaximo(new BigDecimal("7507.49"))
+      .aliquota(14.0)
+      .dataCadastro(LocalDateTime.now())
+      .ultimaAtualizacao(LocalDateTime.now())
+      .build();
 
     parametroINSSRepository.saveAll(List.of(primeiraFaixaINSS, segundaFaixaINSS, terceiraFaixaINSS, quartaFaixaINSS));
 
-    ParametroIRRF faixaIsenta = new ParametroIRRF();
-    faixaIsenta.setFaixaSalarial(FaixaSalarialIRRF.FAIXA_ISENTA);
-    faixaIsenta.setValorMinimo(BigDecimal.ZERO);
-    faixaIsenta.setValorMaximo(new BigDecimal("2112.00"));
-    faixaIsenta.setParcelaDedutivel(BigDecimal.ZERO);
-    faixaIsenta.setAliquota(0.0);
+    ParametroIRRF faixaIsenta = ParametroIRRF.builder()
+      .faixaSalarial(FaixaSalarialIRRF.FAIXA_ISENTA)
+      .valorMinimo(BigDecimal.ZERO)
+      .valorMaximo(new BigDecimal("2112.00"))
+      .parcelaDedutivel(BigDecimal.ZERO)
+      .aliquota(0.0)
+      .dataCadastro(LocalDateTime.now())
+      .ultimaAtualizacao(LocalDateTime.now())
+      .build();
 
-    ParametroIRRF primeiraFaixaIRRF = new ParametroIRRF();
-    primeiraFaixaIRRF.setFaixaSalarial(FaixaSalarialIRRF.PRIMEIRA_FAIXA_SALARIAL);
-    primeiraFaixaIRRF.setValorMinimo(new BigDecimal("2112.01"));
-    primeiraFaixaIRRF.setValorMaximo(new BigDecimal("2826.65"));
-    primeiraFaixaIRRF.setParcelaDedutivel(new BigDecimal("158.40"));
-    primeiraFaixaIRRF.setAliquota(7.5);
+    ParametroIRRF primeiraFaixaIRRF = ParametroIRRF.builder()
+      .faixaSalarial(FaixaSalarialIRRF.PRIMEIRA_FAIXA_SALARIAL)
+      .valorMinimo(new BigDecimal("2112.01"))
+      .valorMaximo(new BigDecimal("2826.65"))
+      .parcelaDedutivel(new BigDecimal("158.40"))
+      .aliquota(7.5)
+      .dataCadastro(LocalDateTime.now())
+      .ultimaAtualizacao(LocalDateTime.now())
+      .build();
 
-    ParametroIRRF segundaFaixaIRRF = new ParametroIRRF();
-    segundaFaixaIRRF.setFaixaSalarial(FaixaSalarialIRRF.SEGUNDA_FAIXA_SALARIAL);
-    segundaFaixaIRRF.setValorMinimo(new BigDecimal("2826.66"));
-    segundaFaixaIRRF.setValorMaximo(new BigDecimal("3751.05"));
-    segundaFaixaIRRF.setParcelaDedutivel(new BigDecimal("370.40"));
-    segundaFaixaIRRF.setAliquota(15.0);
+    ParametroIRRF segundaFaixaIRRF = ParametroIRRF.builder()
+      .faixaSalarial(FaixaSalarialIRRF.SEGUNDA_FAIXA_SALARIAL)
+      .valorMinimo(new BigDecimal("2826.66"))
+      .valorMaximo(new BigDecimal("3751.05"))
+      .parcelaDedutivel(new BigDecimal("370.40"))
+      .aliquota(15.0)
+      .dataCadastro(LocalDateTime.now())
+      .ultimaAtualizacao(LocalDateTime.now())
+      .build();
 
-    ParametroIRRF terceiraFaixaIRRF = new ParametroIRRF();
-    terceiraFaixaIRRF.setFaixaSalarial(FaixaSalarialIRRF.TERCEIRA_FAIXA_SALARIAL);
-    terceiraFaixaIRRF.setValorMinimo(new BigDecimal("3751.06"));
-    terceiraFaixaIRRF.setValorMaximo(new BigDecimal("4664.68"));
-    terceiraFaixaIRRF.setParcelaDedutivel(new BigDecimal("651.73"));
-    terceiraFaixaIRRF.setAliquota(22.5);
+    ParametroIRRF terceiraFaixaIRRF = ParametroIRRF.builder()
+      .faixaSalarial(FaixaSalarialIRRF.TERCEIRA_FAIXA_SALARIAL)
+      .valorMinimo(new BigDecimal("3751.06"))
+      .valorMaximo(new BigDecimal("4664.68"))
+      .parcelaDedutivel(new BigDecimal("651.73"))
+      .aliquota(22.5)
+      .dataCadastro(LocalDateTime.now())
+      .ultimaAtualizacao(LocalDateTime.now())
+      .build();
 
-    ParametroIRRF quartaFaixaIRRF = new ParametroIRRF();
-    quartaFaixaIRRF.setFaixaSalarial(FaixaSalarialIRRF.QUARTA_FAIXA_SALARIAL);
-    quartaFaixaIRRF.setValorMinimo(new BigDecimal("4664.69"));
-    quartaFaixaIRRF.setValorMaximo(new BigDecimal(Integer.MAX_VALUE));
-    quartaFaixaIRRF.setParcelaDedutivel(new BigDecimal("884.96"));
-    quartaFaixaIRRF.setAliquota(27.5);
+    ParametroIRRF quartaFaixaIRRF = ParametroIRRF.builder()
+      .faixaSalarial(FaixaSalarialIRRF.QUARTA_FAIXA_SALARIAL)
+      .valorMinimo(new BigDecimal("4664.69"))
+      .valorMaximo(new BigDecimal(Integer.MAX_VALUE))
+      .parcelaDedutivel(new BigDecimal("884.96"))
+      .aliquota(27.5)
+      .dataCadastro(LocalDateTime.now())
+      .ultimaAtualizacao(LocalDateTime.now())
+      .build();
 
     parametroIRRFRepository.saveAll(List.of(faixaIsenta, primeiraFaixaIRRF, segundaFaixaIRRF, terceiraFaixaIRRF, quartaFaixaIRRF));
   }

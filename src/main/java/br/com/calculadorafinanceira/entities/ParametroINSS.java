@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -42,5 +43,11 @@ public class ParametroINSS {
 
   @Column(name = "ALIQUOTA")
   private Double aliquota;
+
+  @Column(name = "DATA_CADASTRO")
+  private LocalDateTime dataCadastro;
+
+  @Column(name = "ULTIMA_ATUALIZACAO")
+  private LocalDateTime ultimaAtualizacao;
 
 }

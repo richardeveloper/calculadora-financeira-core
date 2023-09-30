@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: ${H2_URL}
+    username: ${CONSOLE_H2_USERNAME}
+    password: ${CONSOLE_H2_PASSWORD}
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
