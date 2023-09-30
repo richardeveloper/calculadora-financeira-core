@@ -3,9 +3,9 @@ package br.com.calculadorafinanceira.services;
 import br.com.calculadorafinanceira.entities.ParametroINSS;
 import br.com.calculadorafinanceira.enums.FaixaSalarialINSS;
 import br.com.calculadorafinanceira.exceptions.ServiceException;
-import br.com.calculadorafinanceira.exceptions.ValidationException;
 import br.com.calculadorafinanceira.repositories.ParametroINSSRepository;
-import br.com.calculadorafinanceira.views.INSSView;
+import br.com.calculadorafinanceira.requests.INSSRequest;
+import br.com.calculadorafinanceira.responses.INSSResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +18,13 @@ public class CalculadoraINSS {
   @Autowired
   private ParametroINSSRepository parametroINSSRepository;
 
-  public INSSView calcularINSS(BigDecimal salarioBruto) {
-    validarParametros(salarioBruto);
+  public INSSResponse calcularINSS(INSSRequest request) {
+
+    BigDecimal salarioBruto = request.getSalarioBruto();
+
+    if (salarioBruto.compareTo(BigDecimal.ZERO) == 0) {
+      return new INSSResponse(BigDecimal.ZERO, 0.0);
+    }
 
     BigDecimal inss = BigDecimal.ZERO;
 
@@ -30,7 +35,7 @@ public class CalculadoraINSS {
     if (isFaixaSalarialCorrespondente(salarioBruto, primeiraFaixa.getValorMaximo())) {
       BigDecimal baseParaCalculo = calcularValorFaixaSalarial(salarioBruto, primeiraFaixa.getAliquota());
 
-      return INSSView.builder()
+      return INSSResponse.builder()
         .inss(inss.add(baseParaCalculo))
         .aliquota(primeiraFaixa.getAliquota())
         .build();
@@ -47,7 +52,7 @@ public class CalculadoraINSS {
     if (isFaixaSalarialCorrespondente(salarioBruto, segundaFaixa.getValorMaximo())) {
       BigDecimal baseParaCalculo = salarioBruto.subtract(primeiraFaixa.getValorMaximo());
 
-      return INSSView.builder()
+      return INSSResponse.builder()
         .inss(inss.add(calcularValorFaixaSalarial(baseParaCalculo, segundaFaixa.getAliquota())))
         .aliquota(segundaFaixa.getAliquota())
         .build();
@@ -64,7 +69,7 @@ public class CalculadoraINSS {
     if (isFaixaSalarialCorrespondente(salarioBruto, terceiraFaixa.getValorMaximo())) {
       BigDecimal baseParaCalculo = salarioBruto.subtract(segundaFaixa.getValorMaximo());
 
-      return INSSView.builder()
+      return INSSResponse.builder()
         .inss(inss.add(calcularValorFaixaSalarial(baseParaCalculo, terceiraFaixa.getAliquota())))
         .aliquota(terceiraFaixa.getAliquota())
         .build();
@@ -88,20 +93,10 @@ public class CalculadoraINSS {
 
     inss = inss.add(calcularValorFaixaSalarial(baseParaCalculo, quartaFaixa.getAliquota()));
 
-    return INSSView.builder()
+    return INSSResponse.builder()
       .inss(inss.setScale(2, RoundingMode.HALF_UP))
       .aliquota(quartaFaixa.getAliquota())
       .build();
-  }
-
-  private void validarParametros(BigDecimal salarioBruto) throws ValidationException {
-    if (salarioBruto == null) {
-      throw new ValidationException("O campo salarioBruto é obrigatório.");
-    }
-
-    if (salarioBruto.compareTo(BigDecimal.ZERO) < 0) {
-      throw new ValidationException("O campo salarioBruto deve ser positivo.");
-    }
   }
 
   private BigDecimal calcularValorFaixaSalarial(BigDecimal salarioBruto, Double aliquota) {

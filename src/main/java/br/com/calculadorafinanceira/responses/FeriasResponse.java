@@ -1,7 +1,9 @@
-package br.com.calculadorafinanceira.views;
+package br.com.calculadorafinanceira.responses;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -9,7 +11,9 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Builder
-public class FeriasView {
+@NoArgsConstructor
+@AllArgsConstructor
+public class FeriasResponse {
 
   @Builder.Default
   private BigDecimal saldoFerias = BigDecimal.ZERO;

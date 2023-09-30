@@ -1,7 +1,10 @@
 package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.exceptions.ValidationException;
-import br.com.calculadorafinanceira.views.FeriasView;
+import br.com.calculadorafinanceira.requests.FeriasRequest;
+import br.com.calculadorafinanceira.requests.INSSRequest;
+import br.com.calculadorafinanceira.requests.IRRFRequest;
+import br.com.calculadorafinanceira.responses.FeriasResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +23,16 @@ public class CalculadoraFerias {
   private static final Integer DAYS_OF_MONTH = 30;
   private static final Integer PRECISION_SCALE = 10;
 
-  public FeriasView calcularFerias(BigDecimal salarioBruto, Integer numeroDependentes,
-    boolean abonoPecuniario, Integer diasFerias) {
+  public FeriasResponse calcularFerias(FeriasRequest request) {
 
-    validarParametros(salarioBruto, numeroDependentes, abonoPecuniario, diasFerias);
+    boolean abonoPecuniario = request.isAbonoPecuniario();
+    int diasFerias = request.getDiasFerias();
+
+    if (abonoPecuniario && diasFerias > 20) {
+      throw new ValidationException("Ao solicitar o abono pecuniário, a quantidade máxima permitida para solicitar é de 20 dias de férias.");
+    }
+
+    BigDecimal salarioBruto = request.getSalarioBruto();
 
     BigDecimal saldoFerias = salarioBruto
       .divide(BigDecimal.valueOf(DAYS_OF_MONTH), PRECISION_SCALE, RoundingMode.HALF_UP)
@@ -37,7 +46,7 @@ public class CalculadoraFerias {
     BigDecimal valorAbonoPecuniario = BigDecimal.ZERO;
     BigDecimal tercoAbonoPecuniario = BigDecimal.ZERO;
 
-    if (abonoPecuniario) {
+    if (request.isAbonoPecuniario()) {
       BigDecimal diasVendidos = BigDecimal.valueOf(DAYS_OF_MONTH).subtract(BigDecimal.valueOf(diasFerias));
 
       valorAbonoPecuniario = salarioBruto
@@ -47,13 +56,18 @@ public class CalculadoraFerias {
       tercoAbonoPecuniario = valorAbonoPecuniario.divide(BigDecimal.valueOf(3), 2, RoundingMode.HALF_UP);
     }
 
-    BigDecimal inss = calculadoraINSS
-      .calcularINSS(baseParaCalculoImpostos)
-      .getInss();
+    INSSRequest inssRequest = INSSRequest.builder()
+      .salarioBruto(baseParaCalculoImpostos)
+      .build();
 
-    BigDecimal irrf = calculadoraIRRF
-      .calcularIRRF(baseParaCalculoImpostos, numeroDependentes)
-      .getIrrf();
+    BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
+
+    IRRFRequest irrfRequest = IRRFRequest.builder()
+      .salarioBruto(salarioBruto)
+      .dependentes(request.getDependentes())
+      .build();
+
+    BigDecimal irrf = calculadoraIRRF.calcularIRRF(irrfRequest).getIrrf();
 
     BigDecimal totalFerias = saldoFerias
       .add(tercoFerias)
@@ -62,7 +76,7 @@ public class CalculadoraFerias {
       .subtract(inss)
       .subtract(irrf);
 
-    return FeriasView.builder()
+    return FeriasResponse.builder()
       .saldoFerias(saldoFerias)
       .tercoFerias(tercoFerias)
       .abonoPecuniario(valorAbonoPecuniario)
@@ -71,41 +85,5 @@ public class CalculadoraFerias {
       .descontoIrrf(irrf)
       .totalFerias(totalFerias)
       .build();
-  }
-
-  private void validarParametros(BigDecimal salarioBruto, Integer numeroDependentes,
-    boolean abonoPecuniario, Integer diasFerias) {
-
-    if (salarioBruto == null) {
-      throw new ValidationException("O campo salarioBruto é obrigatório.");
-    }
-
-    if (salarioBruto.compareTo(BigDecimal.ZERO) <= 0) {
-      throw new ValidationException("O campo salarioBruto deve ser positivo.");
-    }
-
-    if (numeroDependentes == null) {
-      throw new ValidationException("O campo numeroDependentes é obrigatório.");
-    }
-
-    if (numeroDependentes < 0) {
-      throw new ValidationException("O campo numeroDependentes deve ser positivo.");
-    }
-
-    if (numeroDependentes > 10) {
-      throw new ValidationException("O campo numeroDependentes não pode ser superior a 10.");
-    }
-
-    if (diasFerias <= 0) {
-      throw new ValidationException("O campo diasFerias deve maior que zero.");
-    }
-
-    if (diasFerias > DAYS_OF_MONTH) {
-      throw new ValidationException("O campo diasFerias deve ser menor ou igual o total de dias do mês.");
-    }
-
-    if (abonoPecuniario && diasFerias > 20) {
-      throw new ValidationException("Ao solicitar o abono pecuniário, a quantidade máxima permitida é de 20 dias de férias.");
-    }
   }
 }

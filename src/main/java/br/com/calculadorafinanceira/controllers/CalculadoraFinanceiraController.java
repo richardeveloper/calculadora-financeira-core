@@ -1,23 +1,25 @@
 package br.com.calculadorafinanceira.controllers;
 
 import br.com.calculadorafinanceira.exceptions.ServiceException;
+import br.com.calculadorafinanceira.requests.FeriasRequest;
+import br.com.calculadorafinanceira.requests.INSSRequest;
+import br.com.calculadorafinanceira.requests.IRRFRequest;
+import br.com.calculadorafinanceira.responses.FeriasResponse;
+import br.com.calculadorafinanceira.responses.INSSResponse;
+import br.com.calculadorafinanceira.responses.IRRFResponse;
 import br.com.calculadorafinanceira.services.CalculadoraFerias;
 import br.com.calculadorafinanceira.services.CalculadoraINSS;
 import br.com.calculadorafinanceira.services.CalculadoraIRRF;
-import br.com.calculadorafinanceira.views.FeriasView;
-import br.com.calculadorafinanceira.views.INSSView;
-import br.com.calculadorafinanceira.views.IRRFView;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-
 @RestController
-@RequestMapping(value = "/services")
+@RequestMapping(value = "/services/calculadora")
 public class CalculadoraFinanceiraController {
 
   @Autowired
@@ -29,32 +31,19 @@ public class CalculadoraFinanceiraController {
   @Autowired
   private CalculadoraFerias calculadoraFerias;
 
-  @GetMapping(value = "/inss")
-  public ResponseEntity<INSSView> calcularINSS(
-    @RequestParam("salarioBruto") BigDecimal salarioBruto
-  ) throws ServiceException {
-
-    return ResponseEntity.ok(calculadoraINSS.calcularINSS(salarioBruto));
+  @PostMapping(value = "/inss")
+  public ResponseEntity<INSSResponse> calcularINSS(@Valid @RequestBody INSSRequest request) throws ServiceException {
+    return ResponseEntity.ok(calculadoraINSS.calcularINSS(request));
   }
 
-  @GetMapping(value = "/irrf")
-  public ResponseEntity<IRRFView> calcularIRRF(
-    @RequestParam(value = "salarioBruto") BigDecimal salarioBruto,
-    @RequestParam(value = "numeroDependentes", defaultValue = "0") Integer numeroDependentes
-  ) throws ServiceException {
-
-    return ResponseEntity.ok(calculadoraIRRF.calcularIRRF(salarioBruto, numeroDependentes));
+  @PostMapping(value = "/irrf")
+  public ResponseEntity<IRRFResponse> calcularIRRF(@Valid @RequestBody IRRFRequest request) throws ServiceException {
+    return ResponseEntity.ok(calculadoraIRRF.calcularIRRF(request));
   }
 
-  @GetMapping(value = "/ferias")
-  public ResponseEntity<FeriasView> calcularFerias(
-    @RequestParam(value = "salarioBruto") BigDecimal salarioBruto,
-    @RequestParam(value = "numeroDependentes", defaultValue = "0") Integer numeroDependentes,
-    @RequestParam(value = "abonoPecuniario", defaultValue = "false") boolean abonoPecuniario,
-    @RequestParam(value = "diasFerias") Integer diasFerias
-    ) throws ServiceException {
-
-    return ResponseEntity.ok(calculadoraFerias.calcularFerias(salarioBruto, numeroDependentes,
-      abonoPecuniario, diasFerias));
+  @PostMapping(value = "/ferias")
+  public ResponseEntity<FeriasResponse> calcularFerias(@Valid @RequestBody FeriasRequest request) throws ServiceException {
+    return ResponseEntity.ok(calculadoraFerias.calcularFerias(request));
   }
+
 }

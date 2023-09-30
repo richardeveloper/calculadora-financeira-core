@@ -2,9 +2,10 @@ package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.entities.ParametroIRRF;
 import br.com.calculadorafinanceira.exceptions.ServiceException;
-import br.com.calculadorafinanceira.exceptions.ValidationException;
 import br.com.calculadorafinanceira.repositories.ParametroIRRFRepository;
-import br.com.calculadorafinanceira.views.IRRFView;
+import br.com.calculadorafinanceira.requests.INSSRequest;
+import br.com.calculadorafinanceira.requests.IRRFRequest;
+import br.com.calculadorafinanceira.responses.IRRFResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +22,27 @@ public class CalculadoraIRRF {
   @Autowired
   private ParametroIRRFRepository parametroIRRFRepository;
 
-  public IRRFView calcularIRRF(BigDecimal salarioBruto, Integer numeroDependentes) throws ServiceException {
-    validarParametros(salarioBruto, numeroDependentes);
+  public IRRFResponse calcularIRRF(IRRFRequest request) throws ServiceException {
+
+    BigDecimal salarioBruto = request.getSalarioBruto();
 
     ParametroIRRF parametroIRRF = parametroIRRFRepository
-      .findBySalarioBruto(salarioBruto)
+      .findBySalarioBruto(request.getSalarioBruto())
       .orElseThrow(() -> new ServiceException("Não foi possível identificar a faixa salarial para o valor informado."));
 
     BigDecimal descontoDependentes = BigDecimal.ZERO;
 
-    if (numeroDependentes > 0) {
-      descontoDependentes = VALOR_DEDUCAO_DEPENDENTE.multiply(BigDecimal.valueOf(numeroDependentes));
+    int dependentes = request.getDependentes();
+
+    if (dependentes > 0) {
+      descontoDependentes = VALOR_DEDUCAO_DEPENDENTE.multiply(BigDecimal.valueOf(dependentes));
     }
 
-    BigDecimal inss = calculadoraINSS.calcularINSS(salarioBruto).getInss();
+    INSSRequest inssRequest = INSSRequest.builder()
+      .salarioBruto(salarioBruto)
+      .build();
+
+    BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
 
     BigDecimal baseParaCalculo = salarioBruto
       .subtract(descontoDependentes)
@@ -45,31 +53,9 @@ public class CalculadoraIRRF {
       .subtract(parametroIRRF.getParcelaDedutivel())
       .setScale(2, RoundingMode.HALF_UP);
 
-    return IRRFView.builder()
+    return IRRFResponse.builder()
       .irrf(irrf.compareTo(BigDecimal.ZERO) > 0 ? irrf.setScale(2, RoundingMode.HALF_UP) : BigDecimal.ZERO)
       .aliquota(parametroIRRF.getAliquota())
       .build();
-  }
-
-  private void validarParametros(BigDecimal salarioBruto, Integer numeroDependentes) throws ValidationException {
-    if (salarioBruto == null) {
-      throw new ValidationException("O campo salarioBruto é obrigatório.");
-    }
-
-    if (salarioBruto.compareTo(BigDecimal.ZERO) <= 0) {
-      throw new ValidationException("O campo salarioBruto deve ser positivo.");
-    }
-
-    if (numeroDependentes == null) {
-      throw new ValidationException("O campo numeroDependentes é obrigatório.");
-    }
-
-    if (numeroDependentes < 0) {
-      throw new ValidationException("O campo numeroDependentes deve maior ou igual a 0.");
-    }
-
-    if (numeroDependentes > 10) {
-      throw new ValidationException("O campo numeroDependentes deve ser inferior a 10.");
-    }
   }
 }
