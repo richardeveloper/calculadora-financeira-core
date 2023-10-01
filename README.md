@@ -1,25 +1,30 @@
 <h2 align="center">
   CALCULADORA FINANCEIRA
-</h2>
+</h2> 
 
-<br>
+<p align="center">
+    <img src="https://img.shields.io/static/v1?label=status&message=development&color=green&style=flat&logo=release" alt="status">
+    <img src="https://img.shields.io/static/v1?label=release&message=0.0.1&color=blue&style=flat&logo=release" alt="release">
+</p>
+
+### Tecnologias
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)
 
-### :speech_balloon:   Description
-
+### Descrição
 <p align="justify">
-  Essa aplicação possui como responsabilidade, possibilitar cálculos financeiros de operações como impostos descontados em folha de pagamento, rendimento de capital e juros, com precisão. Buscando seguir as regras matemáticas, alíquotas e valores dedutíveis estipuladas pelo Poder Legislativo Brasileiro, que disponibiliza os valores e fórmulas.
+  Essa aplicação possui como responsabilidade, realizar cálculos financeiros de operações como <b>impostos descontados em folha de pagamento</b>, <b>rendimento de capital</b> e <b>juros</b>, com precisão. Buscando seguir as regras matemáticas, alíquotas e valores dedutíveis estipuladas pelo Poder Legislativo Brasileiro, que disponibiliza os valores e fórmulas.
 </p>
 
-### :abacus:   Features
-- [x] Calculadora de Imposto da Previdência Social (INSS)<br>
-- [x] Calculadora de Imposto de Renda Retido na Fonte (IRRF)<br>
-- [x] Calculadora de Férias <br>
-- [x] Calculadora de Décimo Terceiro Salário<br>
-- [ ] Calculadora de Salário Líquido<br>
-- [ ] Calculadora Fundo de Garantia do Trabalhador (FGTS)<br>
-- [ ] Calculadora Rendimento CDI<br>
+### Funcionalidades
+
+- [x] Calculadora de <b>Imposto da Previdência Social (INSS)</b><br>
+- [x] Calculadora de <b>Imposto de Renda Retido na Fonte (IRRF)</b><br>
+- [x] Calculadora de <b>Férias</b> <br>
+- [x] Calculadora de <b>Décimo Terceiro Salário</b><br>
+- [ ] Calculadora de <b>Salário Líquido</b><br>
+- [ ] Calculadora de <b>Fundo de Garantia do Trabalhador (FGTS)</b><br>
+- [ ] Calculadora de <b>Rendimento CDI</b><br>

@@ -39,8 +39,7 @@ public class CalculadoraFerias {
         .divide(BigDecimal.valueOf(DAYS_OF_MONTH), PRECISION_SCALE, RoundingMode.HALF_UP)
         .multiply(diasFerias).setScale(2, RoundingMode.HALF_UP);
 
-      BigDecimal tercoFerias = saldoFerias
-        .divide(BigDecimal.valueOf(3), 2, RoundingMode.HALF_UP);
+      BigDecimal tercoFerias = saldoFerias.divide(BigDecimal.valueOf(3), 2, RoundingMode.HALF_UP);
 
       BigDecimal baseParaCalculoImpostos = saldoFerias.add(tercoFerias);
 
