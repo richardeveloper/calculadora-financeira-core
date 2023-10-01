@@ -7,12 +7,13 @@
     <img src="https://img.shields.io/static/v1?label=release&message=0.0.1&color=blue&style=flat&logo=release" alt="release">
 </p>
 
-### Tecnologias
-
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
-![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
-![Heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)
+<p align="center">
+    <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white" alt="java">
+    <img src="https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white" alt="spring">
+    <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" alt="postgres">
+    <img src="https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka" alt="kafka">
+    <img src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white" alt="heroku">
+</p>
 
 ### Descrição
 <p align="justify">
@@ -28,3 +29,5 @@
 - [ ] Calculadora de <b>Salário Líquido</b><br>
 - [ ] Calculadora de <b>Fundo de Garantia do Trabalhador (FGTS)</b><br>
 - [ ] Calculadora de <b>Rendimento CDI</b><br>
+
+### Referências
