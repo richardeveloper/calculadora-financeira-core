@@ -2,10 +2,7 @@ package br.com.calculadorafinanceira.exceptions.responses;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -13,9 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiError {
 
   @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "GMT")
@@ -23,14 +18,27 @@ public class ApiError {
 
   private String error;
 
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String message;
 
   private Integer status;
 
   private String path;
 
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   private List<ApiValidationError> errors;
 
+  public ApiError(String error, String message, Integer status, String path, LocalDateTime timestamp) {
+    this.timestamp = timestamp;
+    this.error = error;
+    this.message = message;
+    this.status = status;
+    this.path = path;
+  }
+
+  public ApiError(String error, Integer status, String path, LocalDateTime timestamp, List<ApiValidationError> errors) {
+    this.timestamp = timestamp;
+    this.error = error;
+    this.status = status;
+    this.path = path;
+    this.errors = errors;
+  }
 }

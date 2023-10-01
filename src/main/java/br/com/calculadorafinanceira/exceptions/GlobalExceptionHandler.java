@@ -21,10 +21,6 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ApiError> handlerMethodArgumentNotValidException(HttpServletRequest request,
     MethodArgumentNotValidException exception) {
 
-
-
-
-
     String error = "Foram encontrados dados incorretos na solicitação.";
 
     List<ApiValidationError> errors = exception
@@ -36,14 +32,9 @@ public class GlobalExceptionHandler {
 
     HttpStatus status = HttpStatus.BAD_REQUEST;
     String path = request.getRequestURI();
+    LocalDateTime timestamp = LocalDateTime.now();
 
-    ApiError apiError = ApiError.builder()
-      .error(error)
-      .status(status.value())
-      .path(path)
-      .timestamp(LocalDateTime.now())
-      .errors(errors)
-      .build();
+    ApiError apiError = new ApiError(error, status.value(), path, timestamp, errors);
 
     return new ResponseEntity<>(apiError, status);
   }
@@ -57,14 +48,9 @@ public class GlobalExceptionHandler {
     String errorMessage = exception.getMessage();
     HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
     String path = request.getRequestURI();
+    LocalDateTime timestamp = LocalDateTime.now();
 
-    ApiError apiError = ApiError.builder()
-      .error(error)
-      .message(errorMessage)
-      .status(status.value())
-      .path(path)
-      .timestamp(LocalDateTime.now())
-      .build();
+    ApiError apiError = new ApiError(error, errorMessage, status.value(), path, timestamp);
 
     return new ResponseEntity<>(apiError, status);
   }
@@ -78,14 +64,9 @@ public class GlobalExceptionHandler {
     String errorMessage = exception.getMessage();
     HttpStatus status = HttpStatus.BAD_REQUEST;
     String path = request.getRequestURI();
+    LocalDateTime timestamp = LocalDateTime.now();
 
-    ApiError apiError = ApiError.builder()
-      .error(error)
-      .message(errorMessage)
-      .status(status.value())
-      .path(path)
-      .timestamp(LocalDateTime.now())
-      .build();
+    ApiError apiError = new ApiError(error, errorMessage, status.value(), path, timestamp);
 
     return new ResponseEntity<>(apiError, status);
   }

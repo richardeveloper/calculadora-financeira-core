@@ -19,7 +19,7 @@
 - [x] Calculadora de Imposto da Previdência Social (INSS)<br>
 - [x] Calculadora de Imposto de Renda Retido na Fonte (IRRF)<br>
 - [x] Calculadora de Férias <br>
-- [ ] Calculadora de Décimo Terceiro Salário<br>
+- [x] Calculadora de Décimo Terceiro Salário<br>
 - [ ] Calculadora de Salário Líquido<br>
 - [ ] Calculadora Fundo de Garantia do Trabalhador (FGTS)<br>
 - [ ] Calculadora Rendimento CDI<br>
