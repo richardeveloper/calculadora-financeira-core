@@ -16,7 +16,7 @@
 ### Description
 
 <p align="justify">
-  Este aplicativo vem sendo desenvolvido com a finalidade de nos auxiliar com alguns cálculos financeiros com qual somos forçados a fazer de vez em quando para tentar compreender o que que gastamos, seja com impostos pagos para o governo ou os juros de cartão, cheque especial, etc. Quando surge essa necessidade, sem precisar de muito esforço, encontramos algum software que nos poupa o trabalho duro porém na maioria das vezes o processo utilizado para chegar ao resultado final é omitido ou não é claro o suficiente para compreensão. Buscando seguir o caminho oposto, #NOME_DO_PROJETO vem para poupar seu esforço com cálculos de uma forma diferente.
+  Essa aplicação possui como responsabilidade, possibilitar cálculos financeiros de operações como impostos descontados em folha de pagamento, rendimento de capital e juros, com precisão. Buscando seguir as regras matemáticas, alíquotas e valores dedutíveis estipuladas pelo Poder Legislativo Brasileiro, que disponibiliza os valores e fórmulas.
 </p>
 
 ### Features
