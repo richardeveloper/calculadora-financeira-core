@@ -1,7 +1,7 @@
 package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.entities.ParametroIRRF;
-import br.com.calculadorafinanceira.exceptions.ServiceException;
+import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.repositories.ParametroIRRFRepository;
 import br.com.calculadorafinanceira.requests.INSSRequest;
 import br.com.calculadorafinanceira.requests.IRRFRequest;
@@ -14,6 +14,7 @@ import java.math.RoundingMode;
 
 @Service
 public class CalculadoraIRRF {
+
   private static final BigDecimal VALOR_DEDUCAO_DEPENDENTE = new BigDecimal("189.59");
 
   @Autowired

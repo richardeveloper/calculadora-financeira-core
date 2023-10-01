@@ -1,6 +1,6 @@
 package br.com.calculadorafinanceira.controllers;
 
-import br.com.calculadorafinanceira.exceptions.ServiceException;
+import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.requests.FeriasRequest;
 import br.com.calculadorafinanceira.requests.INSSRequest;
 import br.com.calculadorafinanceira.requests.IRRFRequest;

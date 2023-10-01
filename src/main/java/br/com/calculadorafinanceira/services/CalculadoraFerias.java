@@ -1,6 +1,6 @@
 package br.com.calculadorafinanceira.services;
 
-import br.com.calculadorafinanceira.exceptions.ValidationException;
+import br.com.calculadorafinanceira.exceptions.models.ValidationException;
 import br.com.calculadorafinanceira.requests.FeriasRequest;
 import br.com.calculadorafinanceira.requests.INSSRequest;
 import br.com.calculadorafinanceira.requests.IRRFRequest;

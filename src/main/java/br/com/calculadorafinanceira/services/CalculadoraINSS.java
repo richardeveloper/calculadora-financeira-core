@@ -2,7 +2,7 @@ package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.entities.ParametroINSS;
 import br.com.calculadorafinanceira.enums.FaixaSalarialINSS;
-import br.com.calculadorafinanceira.exceptions.ServiceException;
+import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.repositories.ParametroINSSRepository;
 import br.com.calculadorafinanceira.requests.INSSRequest;
 import br.com.calculadorafinanceira.responses.INSSResponse;
