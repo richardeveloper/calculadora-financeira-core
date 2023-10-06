@@ -63,7 +63,7 @@ public class CalculadoraFerias {
       BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
 
       IRRFRequest irrfRequest = IRRFRequest.builder()
-        .salarioBruto(request.getSalarioBruto())
+        .salarioBruto(baseParaCalculoImpostos)
         .dependentes(request.getDependentes())
         .build();
 

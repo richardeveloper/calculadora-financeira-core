@@ -109,7 +109,7 @@ public class SetupConfig implements CommandLineRunner {
     ParametroIRRF quartaFaixaIRRF = ParametroIRRF.builder()
       .faixaSalarial(FaixaSalarialIRRF.QUARTA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("4664.69"))
-      .valorMaximo(new BigDecimal(Integer.MAX_VALUE))
+      .valorMaximo(new BigDecimal("999999999999.99"))
       .parcelaDedutivel(new BigDecimal("884.96"))
       .aliquota(27.5)
       .dataCadastro(LocalDateTime.now())
