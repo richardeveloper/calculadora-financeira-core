@@ -1,18 +1,11 @@
 package br.com.calculadorafinanceira.controllers;
 
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
-import br.com.calculadorafinanceira.requests.DecimoTerceiroRequest;
-import br.com.calculadorafinanceira.requests.FeriasRequest;
-import br.com.calculadorafinanceira.requests.INSSRequest;
-import br.com.calculadorafinanceira.requests.IRRFRequest;
-import br.com.calculadorafinanceira.responses.DecimoTerceiroResponse;
-import br.com.calculadorafinanceira.responses.FeriasResponse;
-import br.com.calculadorafinanceira.responses.INSSResponse;
-import br.com.calculadorafinanceira.responses.IRRFResponse;
-import br.com.calculadorafinanceira.services.CalculadoraDecimoTerceiro;
-import br.com.calculadorafinanceira.services.CalculadoraFerias;
-import br.com.calculadorafinanceira.services.CalculadoraINSS;
-import br.com.calculadorafinanceira.services.CalculadoraIRRF;
+import br.com.calculadorafinanceira.requests.JurosCompostosRequest;
+import br.com.calculadorafinanceira.requests.JurosSimplesRequest;
+import br.com.calculadorafinanceira.responses.JurosCompostosResponse;
+import br.com.calculadorafinanceira.responses.JurosSimplesResponse;
+import br.com.calculadorafinanceira.services.CalculadoraJuros;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,37 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class CalculadoraFinanceiraController {
 
   @Autowired
-  private CalculadoraINSS calculadoraINSS;
+  private CalculadoraJuros calculadoraJuros;
 
-  @Autowired
-  private CalculadoraIRRF calculadoraIRRF;
-
-  @Autowired
-  private CalculadoraFerias calculadoraFerias;
-
-  @Autowired
-  private CalculadoraDecimoTerceiro calculadoraDecimoTerceiro;
-
-  @PostMapping(value = "/inss")
-  public ResponseEntity<INSSResponse> calcularINSS(@Valid @RequestBody INSSRequest request) throws ServiceException {
-    return ResponseEntity.ok(calculadoraINSS.calcularINSS(request));
-  }
-
-  @PostMapping(value = "/irrf")
-  public ResponseEntity<IRRFResponse> calcularIRRF(@Valid @RequestBody IRRFRequest request) throws ServiceException {
-    return ResponseEntity.ok(calculadoraIRRF.calcularIRRF(request));
-  }
-
-  @PostMapping(value = "/ferias")
-  public ResponseEntity<FeriasResponse> calcularFerias(@Valid @RequestBody FeriasRequest request) throws ServiceException {
-    return ResponseEntity.ok(calculadoraFerias.calcularFerias(request));
-  }
-
-  @PostMapping(value = "/decimo-terceiro")
-  public ResponseEntity<DecimoTerceiroResponse> calcularDecimoTerceiro(@Valid @RequestBody DecimoTerceiroRequest request)
+  @PostMapping(value = "/juros-simples")
+  public ResponseEntity<JurosSimplesResponse> calcularJurosSimples(@Valid @RequestBody JurosSimplesRequest request)
     throws ServiceException {
 
-    return ResponseEntity.ok(calculadoraDecimoTerceiro.calcularDecimoTerceiro(request));
+    return ResponseEntity.ok(calculadoraJuros.calcularJurosSimples(request));
+  }
+
+  @PostMapping(value = "/juros-compostos")
+  public ResponseEntity<JurosCompostosResponse> calcularJurosCompostos(@Valid @RequestBody JurosCompostosRequest request)
+    throws ServiceException {
+
+    return ResponseEntity.ok(calculadoraJuros.calcularJurosCompostos(request));
   }
 
 }

@@ -20,7 +20,7 @@ public enum FaixaSalarialINSS {
     if (string == null) {
       return null;
     }
-    for (FaixaSalarialINSS faixaSalarial: FaixaSalarialINSS.values()) {
+    for (FaixaSalarialINSS faixaSalarial : FaixaSalarialINSS.values()) {
       if (string.equalsIgnoreCase(faixaSalarial.getDescricao())) {
         return faixaSalarial;
       }

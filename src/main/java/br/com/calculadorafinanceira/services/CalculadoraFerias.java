@@ -24,14 +24,15 @@ public class CalculadoraFerias {
 
   private static final Integer DAYS_OF_MONTH = 30;
   private static final Integer PRECISION_SCALE = 10;
+  private static final BigDecimal ONE_THIRD = new BigDecimal("3");
 
   public FeriasResponse calcularFerias(FeriasRequest request) {
 
-    try {
+    if (request.isAbonoPecuniario() && request.getDiasFerias() > 20) {
+      throw new ValidationException("Ao solicitar o abono pecuniário, a quantidade máxima permitida para solicitar é de 20 dias de férias.");
+    }
 
-      if (request.isAbonoPecuniario() && request.getDiasFerias() > 20) {
-        throw new ValidationException("Ao solicitar o abono pecuniário, a quantidade máxima permitida para solicitar é de 20 dias de férias.");
-      }
+    try {
 
       BigDecimal diasFerias = BigDecimal.valueOf(request.getDiasFerias());
 
@@ -39,7 +40,7 @@ public class CalculadoraFerias {
         .divide(BigDecimal.valueOf(DAYS_OF_MONTH), PRECISION_SCALE, RoundingMode.HALF_UP)
         .multiply(diasFerias).setScale(2, RoundingMode.HALF_UP);
 
-      BigDecimal tercoFerias = saldoFerias.divide(BigDecimal.valueOf(3), 2, RoundingMode.HALF_UP);
+      BigDecimal tercoFerias = saldoFerias.divide(ONE_THIRD, 2, RoundingMode.HALF_UP);
 
       BigDecimal baseParaCalculoImpostos = saldoFerias.add(tercoFerias);
 
@@ -53,7 +54,7 @@ public class CalculadoraFerias {
           .divide(BigDecimal.valueOf(DAYS_OF_MONTH), PRECISION_SCALE, RoundingMode.HALF_UP)
           .multiply(diasVendidos).setScale(2, RoundingMode.HALF_UP);
 
-        tercoAbonoPecuniario = valorAbonoPecuniario.divide(BigDecimal.valueOf(3), 2, RoundingMode.HALF_UP);
+        tercoAbonoPecuniario = valorAbonoPecuniario.divide(ONE_THIRD, 2, RoundingMode.HALF_UP);
       }
 
       INSSRequest inssRequest = INSSRequest.builder()

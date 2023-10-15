@@ -7,11 +7,7 @@ import br.com.calculadorafinanceira.repositories.ParametroINSSRepository;
 import br.com.calculadorafinanceira.requests.INSSRequest;
 import br.com.calculadorafinanceira.responses.INSSResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

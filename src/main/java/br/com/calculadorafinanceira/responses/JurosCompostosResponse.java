@@ -13,11 +13,15 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DecimoTerceiroResponse {
+public class JurosCompostosResponse {
 
-  private BigDecimal parcelaUnica;
+  @Builder.Default
+  private BigDecimal valorInvestido = BigDecimal.ZERO;
 
-  private BigDecimal primeiraParcela;
+  @Builder.Default
+  private BigDecimal totalJuros = BigDecimal.ZERO;
 
-  private BigDecimal segundaParcela;
+  @Builder.Default
+  private BigDecimal valorCorrigido = BigDecimal.ZERO;
+
 }

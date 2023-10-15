@@ -16,7 +16,7 @@ import java.math.RoundingMode;
 @Slf4j
 @Service
 public class CalculadoraIRRF {
-
+  private static final Double PERCENTAGE_DIVISOR = 100.00;
   private static final BigDecimal VALOR_DEDUCAO_DEPENDENTE = new BigDecimal("189.59");
 
   @Autowired
@@ -52,7 +52,7 @@ public class CalculadoraIRRF {
         .subtract(inss);
 
       BigDecimal irrf = baseParaCalculo
-        .multiply(BigDecimal.valueOf(parametroIRRF.getAliquota() / 100))
+        .multiply(BigDecimal.valueOf(parametroIRRF.getAliquota() / PERCENTAGE_DIVISOR))
         .subtract(parametroIRRF.getParcelaDedutivel())
         .setScale(2, RoundingMode.HALF_UP);
 

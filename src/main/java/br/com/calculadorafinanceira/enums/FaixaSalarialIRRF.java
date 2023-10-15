@@ -21,7 +21,7 @@ public enum FaixaSalarialIRRF {
     if (string == null) {
       return null;
     }
-    for (FaixaSalarialIRRF faixaSalarial: FaixaSalarialIRRF.values()) {
+    for (FaixaSalarialIRRF faixaSalarial : FaixaSalarialIRRF.values()) {
       if (string.equalsIgnoreCase(faixaSalarial.getDescricao())) {
         return faixaSalarial;
       }

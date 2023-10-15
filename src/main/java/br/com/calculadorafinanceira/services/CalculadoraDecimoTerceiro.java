@@ -52,10 +52,10 @@ public class CalculadoraDecimoTerceiro {
         .subtract(inss)
         .subtract(irrf);
 
-      BigDecimal feriasIntegral = primeiraParcela.add(segundaParcela);
+      BigDecimal parcelaUnica = primeiraParcela.add(segundaParcela);
 
       return DecimoTerceiroResponse.builder()
-        .valorIntegral(feriasIntegral)
+        .parcelaUnica(parcelaUnica)
         .primeiraParcela(primeiraParcela)
         .segundaParcela(segundaParcela)
         .build();
