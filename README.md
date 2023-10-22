@@ -21,12 +21,20 @@
 
 ### Funcionalidades
 
+##### Cálculos Trabalhistas
+
 - [x] Calculadora de <b>Imposto da Previdência Social (INSS)</b><br>
 - [x] Calculadora de <b>Imposto de Renda Retido na Fonte (IRRF)</b><br>
 - [x] Calculadora de <b>Férias</b> <br>
 - [x] Calculadora de <b>Décimo Terceiro Salário</b><br>
-- [ ] Calculadora de <b>Salário Líquido</b><br>
-- [ ] Calculadora de <b>Fundo de Garantia do Trabalhador (FGTS)</b><br>
+- [x] Calculadora de <b>Salário Líquido</b><br>
+- [x] Calculadora de <b>Fundo de Garantia do Trabalhador (FGTS)</b><br>
+- [ ] Calculadora de <b>Rescisão Contratual</b><br>
+
+##### Cálculos Financeiros
+
+- [x] Calculadora de <b>Juros Simples</b><br>
+- [x] Calculadora de <b>Juros Compostos</b><br>
 - [ ] Calculadora de <b>Rendimento CDI</b><br>
 
 ### Referências
