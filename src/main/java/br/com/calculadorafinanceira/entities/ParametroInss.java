@@ -1,6 +1,6 @@
 package br.com.calculadorafinanceira.entities;
 
-import br.com.calculadorafinanceira.enums.FaixaSalarialIRRF;
+import br.com.calculadorafinanceira.enums.FaixaSalarialInss;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,8 +24,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "PARAMETRO_IRRF")
-public class ParametroIRRF {
+@Table(name = "PARAMETRO_INSS")
+public class ParametroInss {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,16 +33,13 @@ public class ParametroIRRF {
 
   @Column(name = "FAIXA_SALARIAL")
   @Enumerated(value = EnumType.STRING)
-  private FaixaSalarialIRRF faixaSalarial;
+  private FaixaSalarialInss faixaSalarial;
 
   @Column(name = "VALOR_MINIMO")
   private BigDecimal valorMinimo;
 
   @Column(name = "VALOR_MAXIMO")
   private BigDecimal valorMaximo;
-
-  @Column(name = "PARCELA_DEDUTIVEL")
-  private BigDecimal parcelaDedutivel;
 
   @Column(name = "ALIQUOTA")
   private Double aliquota;

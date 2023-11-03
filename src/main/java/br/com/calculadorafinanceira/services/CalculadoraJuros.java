@@ -17,41 +17,34 @@ public class CalculadoraJuros {
   public JurosSimplesResponse calcularJurosSimples(JurosSimplesRequest request) {
 
     try {
+
+      BigDecimal taxaJuros = BigDecimal.ZERO;
+      BigDecimal periodo = BigDecimal.ZERO;
+
       switch (request.getJuros().getTipo()) {
-        case MENSAL -> {
-
-          BigDecimal totalJuros = request.getValorInicial()
-            .multiply(request.getJuros().getValorMensal())
-            .multiply(BigDecimal.valueOf(request.getPeriodo().getPeriodoMensal()))
-            .setScale(2, RoundingMode.HALF_UP);
-
-          BigDecimal valorCorrigido = request.getValorInicial().add(totalJuros);
-
-          return JurosSimplesResponse.builder()
-            .valorInvestido(request.getValorInicial())
-            .totalJuros(totalJuros)
-            .valorCorrigido(valorCorrigido)
-            .build();
-        }
         case ANUAL -> {
-
-          BigDecimal totalJuros = request.getValorInicial()
-            .multiply(request.getJuros().getValorAnual())
-            .multiply(BigDecimal.valueOf(request.getPeriodo().getPeriodoAnual()))
-            .setScale(2, RoundingMode.HALF_UP);
-
-          BigDecimal valorCorrigido = request.getValorInicial().add(totalJuros);
-
-          return JurosSimplesResponse.builder()
-            .valorInvestido(request.getValorInicial())
-            .totalJuros(totalJuros)
-            .valorCorrigido(valorCorrigido)
-            .build();
+          taxaJuros = request.getJuros().getValorAnual();
+          periodo = BigDecimal.valueOf(request.getPeriodo().getPeriodoAnual());
         }
-        default -> {
-          return JurosSimplesResponse.builder().build();
+        case MENSAL -> {
+          taxaJuros = request.getJuros().getValorMensal();
+          periodo = BigDecimal.valueOf(request.getPeriodo().getPeriodoMensal());
         }
       }
+
+      BigDecimal totalJuros = request.getValorInicial()
+        .multiply(taxaJuros)
+        .multiply(periodo)
+        .setScale(2, RoundingMode.HALF_UP);
+
+      BigDecimal valorCorrigido = request.getValorInicial().add(totalJuros);
+
+      return JurosSimplesResponse.builder()
+        .valorInvestido(request.getValorInicial())
+        .totalJuros(totalJuros)
+        .valorCorrigido(valorCorrigido)
+        .build();
+
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw e;
@@ -61,35 +54,22 @@ public class CalculadoraJuros {
   public JurosCompostosResponse calcularJurosCompostos(JurosCompostosRequest request) {
 
     try {
+
       BigDecimal valorInvestido = request.getValorInicial();
       BigDecimal totalJuros = BigDecimal.ZERO;
 
-      Integer periodo;
-      BigDecimal taxaJuros;
-
-      switch (request.getPeriodo().getTipo()) {
-        case MENSAL -> {
-          periodo = request.getPeriodo().getPeriodoMensal();
-          taxaJuros = request.getJuros().getValorMensal();
-        }
-        case ANUAL -> {
-          periodo = request.getPeriodo().getPeriodoAnual();
-          taxaJuros = request.getJuros().getValorAnual();
-        }
-        default -> {
-          return JurosCompostosResponse.builder().build();
-        }
-      }
+      Double periodo = request.getPeriodo().getPeriodoMensal();
+      BigDecimal taxaJuros = request.getJuros().getValorMensal();
 
       for (int i = 0; i < periodo; i++) {
-
-        valorInvestido = valorInvestido.add(request.getValorMensal());
-
         BigDecimal rendimento = valorInvestido
           .multiply(taxaJuros)
           .setScale(2, RoundingMode.HALF_UP);
 
-        valorInvestido = valorInvestido.add(rendimento);
+        valorInvestido = valorInvestido
+          .add(request.getValorMensal())
+          .add(rendimento);
+
         totalJuros = totalJuros.add(rendimento);
       }
 
@@ -98,10 +78,10 @@ public class CalculadoraJuros {
         .totalJuros(totalJuros)
         .valorCorrigido(valorInvestido)
         .build();
+
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw e;
     }
   }
-
 }

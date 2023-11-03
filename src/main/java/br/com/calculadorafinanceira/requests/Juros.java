@@ -24,19 +24,19 @@ public class Juros {
   @NotNull(message = "O campo taxaJuros é obrigatório.")
   private BigDecimal valor;
 
+
   public BigDecimal getValorMensal() {
     BigDecimal taxaJuros = this.valor
       .divide(PERCENTAGE_DIVISOR, SCALE_PRECISION, RoundingMode.HALF_UP);
 
-    switch (tipo) {
+    switch (this.tipo) {
       case ANUAL -> {
-        taxaJuros = converterJurosAnualParaMensal(taxaJuros);
-        return taxaJuros;
+        return converterJurosAnualParaMensal(taxaJuros);
       }
       case MENSAL -> {
         return taxaJuros;
       }
-      default -> throw new ValidationException("Desculpe, não foi possível identificar o período dos juros.");
+      default -> throw new ValidationException("Não foi possível identificar o período dos juros.");
     }
   }
 
@@ -51,7 +51,7 @@ public class Juros {
       case ANUAL -> {
         return taxaJuros;
       }
-      default -> throw new ValidationException("Desculpe, não foi possível identificar o período dos juros.");
+      default -> throw new ValidationException("Não foi possível identificar o período dos juros.");
     }
   }
 

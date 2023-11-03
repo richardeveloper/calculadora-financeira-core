@@ -2,11 +2,11 @@ package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.enums.TipoPeriodo;
 import br.com.calculadorafinanceira.exceptions.models.ValidationException;
-import br.com.calculadorafinanceira.requests.FGTSRequest;
+import br.com.calculadorafinanceira.requests.FgtsRequest;
 import br.com.calculadorafinanceira.requests.Juros;
 import br.com.calculadorafinanceira.requests.JurosCompostosRequest;
 import br.com.calculadorafinanceira.requests.Periodo;
-import br.com.calculadorafinanceira.responses.FGTSResponse;
+import br.com.calculadorafinanceira.responses.FgtsResponse;
 import br.com.calculadorafinanceira.responses.JurosCompostosResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit;
 
 @Slf4j
 @Service
-public class CalculadoraFGTS {
+public class CalculadoraFgts {
 
   private static final BigDecimal BASE_PARCELA_FGTS = new BigDecimal("8");
   private static final BigDecimal JUROS_CORRECAO_FGTS = new BigDecimal("3");
@@ -26,7 +26,7 @@ public class CalculadoraFGTS {
   @Autowired
   private CalculadoraJuros calculadoraJuros;
 
-  public FGTSResponse calcularFGTS(FGTSRequest request) {
+  public FgtsResponse calcularFGTS(FgtsRequest request) {
 
     if (request.getDataSaida().isBefore(request.getDataEntrada())) {
       throw new ValidationException("A data de saída do colaborador na empresa deve ser superior a data de entrada.");
@@ -50,13 +50,14 @@ public class CalculadoraFGTS {
 
       JurosCompostosResponse jurosResponse = calculadoraJuros.calcularJurosCompostos(jurosCompostosRequest);
 
-      return FGTSResponse.builder()
+      return FgtsResponse.builder()
         .mesesTrabalhados((int) mesesTrabalhados)
         .depositoMensal(depositoMensal)
         .totalJuros(jurosResponse.getTotalJuros())
         .totalDepositado(totalDepositado)
         .valorCorrigido(jurosResponse.getValorCorrigido())
         .build();
+
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw e;

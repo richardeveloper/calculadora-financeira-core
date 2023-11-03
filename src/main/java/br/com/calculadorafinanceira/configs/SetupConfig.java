@@ -1,11 +1,11 @@
 package br.com.calculadorafinanceira.configs;
 
-import br.com.calculadorafinanceira.entities.ParametroINSS;
-import br.com.calculadorafinanceira.entities.ParametroIRRF;
-import br.com.calculadorafinanceira.enums.FaixaSalarialINSS;
-import br.com.calculadorafinanceira.enums.FaixaSalarialIRRF;
-import br.com.calculadorafinanceira.repositories.ParametroINSSRepository;
-import br.com.calculadorafinanceira.repositories.ParametroIRRFRepository;
+import br.com.calculadorafinanceira.entities.ParametroInss;
+import br.com.calculadorafinanceira.entities.ParametroIrrf;
+import br.com.calculadorafinanceira.enums.FaixaSalarialInss;
+import br.com.calculadorafinanceira.enums.FaixaSalarialIrrf;
+import br.com.calculadorafinanceira.repositories.ParametroInssRepository;
+import br.com.calculadorafinanceira.repositories.ParametroIrrfRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -20,16 +20,16 @@ import java.util.List;
 public class SetupConfig implements CommandLineRunner {
 
   @Autowired
-  private ParametroINSSRepository parametroINSSRepository;
+  private ParametroInssRepository parametroINSSRepository;
 
   @Autowired
-  private ParametroIRRFRepository parametroIRRFRepository;
+  private ParametroIrrfRepository parametroIRRFRepository;
 
   @Override
   public void run(String... args) throws Exception {
 
-    ParametroINSS primeiraFaixaINSS = ParametroINSS.builder()
-      .faixaSalarial(FaixaSalarialINSS.PRIMEIRA_FAIXA_SALARIAL)
+    ParametroInss primeiraFaixaINSS = ParametroInss.builder()
+      .faixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL)
       .valorMinimo(BigDecimal.ZERO)
       .valorMaximo(new BigDecimal("1320.00"))
       .aliquota(7.5)
@@ -37,8 +37,8 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroINSS segundaFaixaINSS = ParametroINSS.builder()
-      .faixaSalarial(FaixaSalarialINSS.SEGUNDA_FAIXA_SALARIAL)
+    ParametroInss segundaFaixaINSS = ParametroInss.builder()
+      .faixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("1320.01"))
       .valorMaximo(new BigDecimal("2571.29"))
       .aliquota(9.0)
@@ -46,8 +46,8 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroINSS terceiraFaixaINSS = ParametroINSS.builder()
-      .faixaSalarial(FaixaSalarialINSS.TERCEIRA_FAIXA_SALARIAL)
+    ParametroInss terceiraFaixaINSS = ParametroInss.builder()
+      .faixaSalarial(FaixaSalarialInss.TERCEIRA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("2571.30"))
       .valorMaximo(new BigDecimal("3856.94"))
       .aliquota(12.0)
@@ -55,8 +55,8 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroINSS quartaFaixaINSS = ParametroINSS.builder()
-      .faixaSalarial(FaixaSalarialINSS.QUARTA_FAIXA_SALARIAL)
+    ParametroInss quartaFaixaINSS = ParametroInss.builder()
+      .faixaSalarial(FaixaSalarialInss.QUARTA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("3856.95"))
       .valorMaximo(new BigDecimal("7507.49"))
       .aliquota(14.0)
@@ -66,8 +66,8 @@ public class SetupConfig implements CommandLineRunner {
 
     parametroINSSRepository.saveAll(List.of(primeiraFaixaINSS, segundaFaixaINSS, terceiraFaixaINSS, quartaFaixaINSS));
 
-    ParametroIRRF faixaIsenta = ParametroIRRF.builder()
-      .faixaSalarial(FaixaSalarialIRRF.FAIXA_ISENTA)
+    ParametroIrrf faixaIsenta = ParametroIrrf.builder()
+      .faixaSalarial(FaixaSalarialIrrf.FAIXA_ISENTA)
       .valorMinimo(BigDecimal.ZERO)
       .valorMaximo(new BigDecimal("2112.00"))
       .parcelaDedutivel(BigDecimal.ZERO)
@@ -76,8 +76,8 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroIRRF primeiraFaixaIRRF = ParametroIRRF.builder()
-      .faixaSalarial(FaixaSalarialIRRF.PRIMEIRA_FAIXA_SALARIAL)
+    ParametroIrrf primeiraFaixaIRRF = ParametroIrrf.builder()
+      .faixaSalarial(FaixaSalarialIrrf.PRIMEIRA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("2112.01"))
       .valorMaximo(new BigDecimal("2826.65"))
       .parcelaDedutivel(new BigDecimal("158.40"))
@@ -86,8 +86,8 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroIRRF segundaFaixaIRRF = ParametroIRRF.builder()
-      .faixaSalarial(FaixaSalarialIRRF.SEGUNDA_FAIXA_SALARIAL)
+    ParametroIrrf segundaFaixaIRRF = ParametroIrrf.builder()
+      .faixaSalarial(FaixaSalarialIrrf.SEGUNDA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("2826.66"))
       .valorMaximo(new BigDecimal("3751.05"))
       .parcelaDedutivel(new BigDecimal("370.40"))
@@ -96,8 +96,8 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroIRRF terceiraFaixaIRRF = ParametroIRRF.builder()
-      .faixaSalarial(FaixaSalarialIRRF.TERCEIRA_FAIXA_SALARIAL)
+    ParametroIrrf terceiraFaixaIRRF = ParametroIrrf.builder()
+      .faixaSalarial(FaixaSalarialIrrf.TERCEIRA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("3751.06"))
       .valorMaximo(new BigDecimal("4664.68"))
       .parcelaDedutivel(new BigDecimal("651.73"))
@@ -106,8 +106,8 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroIRRF quartaFaixaIRRF = ParametroIRRF.builder()
-      .faixaSalarial(FaixaSalarialIRRF.QUARTA_FAIXA_SALARIAL)
+    ParametroIrrf quartaFaixaIRRF = ParametroIrrf.builder()
+      .faixaSalarial(FaixaSalarialIrrf.QUARTA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("4664.69"))
       .valorMaximo(new BigDecimal("999999999999.99"))
       .parcelaDedutivel(new BigDecimal("884.96"))

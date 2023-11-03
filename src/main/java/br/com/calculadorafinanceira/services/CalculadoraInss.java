@@ -1,11 +1,11 @@
 package br.com.calculadorafinanceira.services;
 
-import br.com.calculadorafinanceira.entities.ParametroINSS;
-import br.com.calculadorafinanceira.enums.FaixaSalarialINSS;
+import br.com.calculadorafinanceira.entities.ParametroInss;
+import br.com.calculadorafinanceira.enums.FaixaSalarialInss;
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
-import br.com.calculadorafinanceira.repositories.ParametroINSSRepository;
-import br.com.calculadorafinanceira.requests.INSSRequest;
-import br.com.calculadorafinanceira.responses.INSSResponse;
+import br.com.calculadorafinanceira.repositories.ParametroInssRepository;
+import br.com.calculadorafinanceira.requests.InssRequest;
+import br.com.calculadorafinanceira.responses.InssResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,31 +15,31 @@ import java.math.RoundingMode;
 
 @Slf4j
 @Service
-public class CalculadoraINSS {
+public class CalculadoraInss {
 
   @Autowired
-  private ParametroINSSRepository parametroINSSRepository;
+  private ParametroInssRepository parametroINSSRepository;
 
-  public INSSResponse calcularINSS(INSSRequest request) {
+  public InssResponse calcularINSS(InssRequest request) {
 
     try {
 
       BigDecimal salarioBruto = request.getSalarioBruto();
 
       if (salarioBruto.compareTo(BigDecimal.ZERO) == 0) {
-        return new INSSResponse(BigDecimal.ZERO, 0.0);
+        return new InssResponse(BigDecimal.ZERO, 0.0);
       }
 
       BigDecimal inss = BigDecimal.ZERO;
 
-      ParametroINSS primeiraFaixa = parametroINSSRepository
-        .findByFaixaSalarial(FaixaSalarialINSS.PRIMEIRA_FAIXA_SALARIAL)
+      ParametroInss primeiraFaixa = parametroINSSRepository
+        .findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL)
         .orElseThrow(() -> new ServiceException("Não foi possível recuperar informações da primeira faixa salarial."));
 
       if (isFaixaSalarialCorrespondente(salarioBruto, primeiraFaixa.getValorMaximo())) {
         BigDecimal baseParaCalculo = calcularValorFaixaSalarial(salarioBruto, primeiraFaixa.getAliquota());
 
-        return INSSResponse.builder()
+        return InssResponse.builder()
           .inss(inss.add(baseParaCalculo))
           .aliquota(primeiraFaixa.getAliquota())
           .build();
@@ -49,14 +49,14 @@ public class CalculadoraINSS {
         calcularValorFaixaSalarial(primeiraFaixa.getValorMaximo(), primeiraFaixa.getAliquota())
       );
 
-      ParametroINSS segundaFaixa = parametroINSSRepository
-        .findByFaixaSalarial(FaixaSalarialINSS.SEGUNDA_FAIXA_SALARIAL)
+      ParametroInss segundaFaixa = parametroINSSRepository
+        .findByFaixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL)
         .orElseThrow(() -> new ServiceException("Não foi possível recuperar informações da segunda faixa salarial."));
 
       if (isFaixaSalarialCorrespondente(salarioBruto, segundaFaixa.getValorMaximo())) {
         BigDecimal baseParaCalculo = salarioBruto.subtract(primeiraFaixa.getValorMaximo());
 
-        return INSSResponse.builder()
+        return InssResponse.builder()
           .inss(inss.add(calcularValorFaixaSalarial(baseParaCalculo, segundaFaixa.getAliquota())))
           .aliquota(segundaFaixa.getAliquota())
           .build();
@@ -66,14 +66,14 @@ public class CalculadoraINSS {
         calcularValorFaixaSalarial(segundaFaixa.getValorMaximo().subtract(primeiraFaixa.getValorMaximo()), segundaFaixa.getAliquota())
       );
 
-      ParametroINSS terceiraFaixa = parametroINSSRepository
-        .findByFaixaSalarial(FaixaSalarialINSS.TERCEIRA_FAIXA_SALARIAL)
+      ParametroInss terceiraFaixa = parametroINSSRepository
+        .findByFaixaSalarial(FaixaSalarialInss.TERCEIRA_FAIXA_SALARIAL)
         .orElseThrow(() -> new ServiceException("Não foi possível recuperar informações da terceira faixa salarial."));
 
       if (isFaixaSalarialCorrespondente(salarioBruto, terceiraFaixa.getValorMaximo())) {
         BigDecimal baseParaCalculo = salarioBruto.subtract(segundaFaixa.getValorMaximo());
 
-        return INSSResponse.builder()
+        return InssResponse.builder()
           .inss(inss.add(calcularValorFaixaSalarial(baseParaCalculo, terceiraFaixa.getAliquota())))
           .aliquota(terceiraFaixa.getAliquota())
           .build();
@@ -83,8 +83,8 @@ public class CalculadoraINSS {
         calcularValorFaixaSalarial(terceiraFaixa.getValorMaximo().subtract(segundaFaixa.getValorMaximo()), terceiraFaixa.getAliquota())
       );
 
-      ParametroINSS quartaFaixa = parametroINSSRepository
-        .findByFaixaSalarial(FaixaSalarialINSS.QUARTA_FAIXA_SALARIAL)
+      ParametroInss quartaFaixa = parametroINSSRepository
+        .findByFaixaSalarial(FaixaSalarialInss.QUARTA_FAIXA_SALARIAL)
         .orElseThrow(() -> new ServiceException("Não foi possível recuperar informações da quarta faixa salarial."));
 
       BigDecimal baseParaCalculo;
@@ -97,7 +97,7 @@ public class CalculadoraINSS {
 
       inss = inss.add(calcularValorFaixaSalarial(baseParaCalculo, quartaFaixa.getAliquota()));
 
-      return INSSResponse.builder()
+      return InssResponse.builder()
         .inss(inss.setScale(2, RoundingMode.HALF_UP))
         .aliquota(quartaFaixa.getAliquota())
         .build();

@@ -1,8 +1,8 @@
 package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.requests.DecimoTerceiroRequest;
-import br.com.calculadorafinanceira.requests.INSSRequest;
-import br.com.calculadorafinanceira.requests.IRRFRequest;
+import br.com.calculadorafinanceira.requests.InssRequest;
+import br.com.calculadorafinanceira.requests.IrrfRequest;
 import br.com.calculadorafinanceira.responses.DecimoTerceiroResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ public class CalculadoraDecimoTerceiro {
   private static final Integer SCALE_PRECISION = 10;
 
   @Autowired
-  private CalculadoraIRRF calculadoraIRRF;
+  private CalculadoraIrrf calculadoraIRRF;
 
   @Autowired
-  private CalculadoraINSS calculadoraINSS;
+  private CalculadoraInss calculadoraINSS;
 
   public DecimoTerceiroResponse calcularDecimoTerceiro(DecimoTerceiroRequest request) {
 
@@ -35,13 +35,13 @@ public class CalculadoraDecimoTerceiro {
 
       BigDecimal primeiraParcela = decimoTerceiro.divide(BigDecimal.valueOf(2), 2, RoundingMode.HALF_UP);
 
-      INSSRequest inssRequest = INSSRequest.builder()
+      InssRequest inssRequest = InssRequest.builder()
         .salarioBruto(decimoTerceiro.subtract(primeiraParcela))
         .build();
 
       BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
 
-      IRRFRequest irrfRequest = IRRFRequest.builder()
+      IrrfRequest irrfRequest = IrrfRequest.builder()
         .salarioBruto(decimoTerceiro.subtract(primeiraParcela))
         .dependentes(request.getDependentes())
         .build();

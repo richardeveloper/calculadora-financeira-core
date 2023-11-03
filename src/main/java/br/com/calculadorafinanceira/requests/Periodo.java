@@ -20,27 +20,27 @@ public class Periodo {
   @NotNull(message = "O campo periodo é obrigatório.")
   private Integer valor;
 
-  public Integer getPeriodoMensal() {
+  public Double getPeriodoMensal() {
     switch (tipo) {
       case ANUAL -> {
-        return this.valor * MONTHS_OF_YEAR;
+        return this.valor * MONTHS_OF_YEAR.doubleValue();
       }
       case MENSAL -> {
-        return this.valor;
+        return Double.valueOf(this.valor);
       }
-      default -> throw new ValidationException("Desculpe, não foi possível identificar o período do tempo.");
+      default -> throw new ValidationException("Não foi possível identificar o período do tempo.");
     }
   }
 
-  public Integer getPeriodoAnual() {
+  public Double getPeriodoAnual() {
     switch (tipo) {
       case ANUAL -> {
-        return this.valor;
+        return Double.valueOf(this.valor);
       }
       case MENSAL -> {
-        return this.valor / MONTHS_OF_YEAR;
+        return this.valor / MONTHS_OF_YEAR.doubleValue();
       }
-      default -> throw new ValidationException("Desculpe, não foi possível identificar o período do tempo.");
+      default -> throw new ValidationException("Não foi possível identificar o período do tempo.");
     }
   }
 

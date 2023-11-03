@@ -1,10 +1,6 @@
 package br.com.calculadorafinanceira.responses;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -13,7 +9,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FGTSResponse {
+public class FgtsResponse {
 
   @Builder.Default
   private Integer mesesTrabalhados = 0;

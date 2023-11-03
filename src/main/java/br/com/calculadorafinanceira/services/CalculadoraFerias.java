@@ -2,8 +2,8 @@ package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.exceptions.models.ValidationException;
 import br.com.calculadorafinanceira.requests.FeriasRequest;
-import br.com.calculadorafinanceira.requests.INSSRequest;
-import br.com.calculadorafinanceira.requests.IRRFRequest;
+import br.com.calculadorafinanceira.requests.InssRequest;
+import br.com.calculadorafinanceira.requests.IrrfRequest;
 import br.com.calculadorafinanceira.responses.FeriasResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,10 @@ import java.math.RoundingMode;
 public class CalculadoraFerias {
 
   @Autowired
-  private CalculadoraIRRF calculadoraIRRF;
+  private CalculadoraIrrf calculadoraIRRF;
 
   @Autowired
-  private CalculadoraINSS calculadoraINSS;
+  private CalculadoraInss calculadoraINSS;
 
   private static final Integer DAYS_OF_MONTH = 30;
   private static final Integer PRECISION_SCALE = 10;
@@ -57,13 +57,13 @@ public class CalculadoraFerias {
         tercoAbonoPecuniario = valorAbonoPecuniario.divide(ONE_THIRD, 2, RoundingMode.HALF_UP);
       }
 
-      INSSRequest inssRequest = INSSRequest.builder()
+      InssRequest inssRequest = InssRequest.builder()
         .salarioBruto(baseParaCalculoImpostos)
         .build();
 
       BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
 
-      IRRFRequest irrfRequest = IRRFRequest.builder()
+      IrrfRequest irrfRequest = IrrfRequest.builder()
         .salarioBruto(baseParaCalculoImpostos)
         .dependentes(request.getDependentes())
         .build();

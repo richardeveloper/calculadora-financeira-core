@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,7 +17,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FGTSRequest {
+public class FgtsRequest {
 
   @Min(value = 0, message = "O campo salarioBruto deve ser maior ou igual a zero[0].")
   @NotNull(message = "O campo salarioBruto é obrigatório.")

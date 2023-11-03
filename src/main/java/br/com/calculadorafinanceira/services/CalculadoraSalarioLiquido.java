@@ -1,8 +1,8 @@
 package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.exceptions.models.ValidationException;
-import br.com.calculadorafinanceira.requests.INSSRequest;
-import br.com.calculadorafinanceira.requests.IRRFRequest;
+import br.com.calculadorafinanceira.requests.InssRequest;
+import br.com.calculadorafinanceira.requests.IrrfRequest;
 import br.com.calculadorafinanceira.requests.SalarioLiquidoRequest;
 import br.com.calculadorafinanceira.responses.SalarioLiquidoResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +16,10 @@ import java.math.BigDecimal;
 public class CalculadoraSalarioLiquido {
 
   @Autowired
-  private CalculadoraINSS calculadoraINSS;
+  private CalculadoraInss calculadoraINSS;
 
   @Autowired
-  private CalculadoraIRRF calculadoraIRRF;
+  private CalculadoraIrrf calculadoraIRRF;
 
   public SalarioLiquidoResponse calcularSalarioLiquido(SalarioLiquidoRequest request) {
 
@@ -29,13 +29,13 @@ public class CalculadoraSalarioLiquido {
 
     try {
 
-      INSSRequest inssRequest = INSSRequest.builder()
+      InssRequest inssRequest = InssRequest.builder()
         .salarioBruto(request.getSalarioBruto())
         .build();
 
       BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
 
-      IRRFRequest irrfRequest = IRRFRequest.builder()
+      IrrfRequest irrfRequest = IrrfRequest.builder()
         .salarioBruto(request.getSalarioBruto())
         .dependentes(request.getDependentes())
         .build();

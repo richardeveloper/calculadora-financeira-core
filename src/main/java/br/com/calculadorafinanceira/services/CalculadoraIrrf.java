@@ -1,11 +1,11 @@
 package br.com.calculadorafinanceira.services;
 
-import br.com.calculadorafinanceira.entities.ParametroIRRF;
+import br.com.calculadorafinanceira.entities.ParametroIrrf;
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
-import br.com.calculadorafinanceira.repositories.ParametroIRRFRepository;
-import br.com.calculadorafinanceira.requests.INSSRequest;
-import br.com.calculadorafinanceira.requests.IRRFRequest;
-import br.com.calculadorafinanceira.responses.IRRFResponse;
+import br.com.calculadorafinanceira.repositories.ParametroIrrfRepository;
+import br.com.calculadorafinanceira.requests.InssRequest;
+import br.com.calculadorafinanceira.requests.IrrfRequest;
+import br.com.calculadorafinanceira.responses.IrrfResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,21 +15,21 @@ import java.math.RoundingMode;
 
 @Slf4j
 @Service
-public class CalculadoraIRRF {
+public class CalculadoraIrrf {
   private static final Double PERCENTAGE_DIVISOR = 100.00;
   private static final BigDecimal VALOR_DEDUCAO_DEPENDENTE = new BigDecimal("189.59");
 
   @Autowired
-  private CalculadoraINSS calculadoraINSS;
+  private CalculadoraInss calculadoraINSS;
 
   @Autowired
-  private ParametroIRRFRepository parametroIRRFRepository;
+  private ParametroIrrfRepository parametroIRRFRepository;
 
-  public IRRFResponse calcularIRRF(IRRFRequest request) throws ServiceException {
+  public IrrfResponse calcularIRRF(IrrfRequest request) throws ServiceException {
 
     try {
 
-      ParametroIRRF parametroIRRF = parametroIRRFRepository
+      ParametroIrrf parametroIRRF = parametroIRRFRepository
         .findBySalarioBruto(request.getSalarioBruto())
         .orElseThrow(() -> new ServiceException("Não foi possível identificar a faixa salarial para o valor informado."));
 
@@ -41,7 +41,7 @@ public class CalculadoraIRRF {
         descontoDependentes = VALOR_DEDUCAO_DEPENDENTE.multiply(BigDecimal.valueOf(dependentes));
       }
 
-      INSSRequest inssRequest = INSSRequest.builder()
+      InssRequest inssRequest = InssRequest.builder()
         .salarioBruto(request.getSalarioBruto())
         .build();
 
@@ -56,7 +56,7 @@ public class CalculadoraIRRF {
         .subtract(parametroIRRF.getParcelaDedutivel())
         .setScale(2, RoundingMode.HALF_UP);
 
-      return IRRFResponse.builder()
+      return IrrfResponse.builder()
         .irrf(irrf.compareTo(BigDecimal.ZERO) > 0 ? irrf.setScale(2, RoundingMode.HALF_UP) : BigDecimal.ZERO)
         .aliquota(parametroIRRF.getAliquota())
         .build();

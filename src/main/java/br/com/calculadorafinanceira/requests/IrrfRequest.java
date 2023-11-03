@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IRRFRequest {
+public class IrrfRequest {
 
   @Min(value = 0, message = "O campo salarioBruto deve ser maior ou igual a zero[0].")
   @NotNull(message = "O campo salarioBruto é obrigatório.")

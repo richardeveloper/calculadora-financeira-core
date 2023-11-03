@@ -13,10 +13,10 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IRRFResponse {
+public class InssResponse {
 
   @Builder.Default
-  private BigDecimal irrf = BigDecimal.ZERO;
+  private BigDecimal inss = BigDecimal.ZERO;
 
   @Builder.Default
   private Double aliquota = 0.0;
