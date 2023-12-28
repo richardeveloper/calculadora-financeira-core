@@ -36,13 +36,13 @@ public class CalculadoraDecimoTerceiro {
       BigDecimal primeiraParcela = decimoTerceiro.divide(BigDecimal.valueOf(2), 2, RoundingMode.HALF_UP);
 
       InssRequest inssRequest = InssRequest.builder()
-        .salarioBruto(decimoTerceiro.subtract(primeiraParcela))
+        .salarioBruto(decimoTerceiro)
         .build();
 
       BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
 
       IrrfRequest irrfRequest = IrrfRequest.builder()
-        .salarioBruto(decimoTerceiro.subtract(primeiraParcela))
+        .salarioBruto(decimoTerceiro)
         .dependentes(request.getDependentes())
         .build();
 
@@ -58,6 +58,8 @@ public class CalculadoraDecimoTerceiro {
         .parcelaUnica(parcelaUnica)
         .primeiraParcela(primeiraParcela)
         .segundaParcela(segundaParcela)
+        .descontoInss(inss)
+        .descontoIrrf(irrf)
         .build();
 
     } catch (Exception e) {

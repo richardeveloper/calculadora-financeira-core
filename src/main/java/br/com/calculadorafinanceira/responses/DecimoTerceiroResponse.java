@@ -15,9 +15,18 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class DecimoTerceiroResponse {
 
-  private BigDecimal parcelaUnica;
+  @Builder.Default
+  private BigDecimal parcelaUnica = BigDecimal.ZERO;
 
-  private BigDecimal primeiraParcela;
+  @Builder.Default
+  private BigDecimal primeiraParcela = BigDecimal.ZERO;
 
-  private BigDecimal segundaParcela;
+  @Builder.Default
+  private BigDecimal segundaParcela = BigDecimal.ZERO;
+
+  @Builder.Default
+  private BigDecimal descontoInss = BigDecimal.ZERO;
+
+  @Builder.Default
+  private BigDecimal descontoIrrf = BigDecimal.ZERO;
 }

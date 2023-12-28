@@ -22,14 +22,15 @@ public class DecimoTerceiroRequest {
   @NotNull(message = "O campo salarioBruto é obrigatório.")
   private BigDecimal salarioBruto;
 
+  @Min(value = 0, message = "O campo dependentes deve ser maior ou igual a zero[0].")
+  @Max(value = 10, message = "O campo dependentes deve ser inferior a dez[10].")
+  @NotNull(message = "O campo dependentes é obrigatório.")
+  private Integer dependentes;
+
   @Min(value = 1, message = "O campo mesesTrabalhados deve ser maior que zero[0].")
   @Max(value = 12, message = "O campo mesesTrabalhados deve ser menor ou igual a doze[12].")
   @NotNull(message = "O campo mesesTrabalhados é obrigatório.")
   private Integer mesesTrabalhados;
 
-  @Min(value = 0, message = "O campo dependentes deve ser maior ou igual a zero[0].")
-  @Max(value = 10, message = "O campo dependentes deve ser inferior a dez[10].")
-  @NotNull(message = "O campo dependentes é obrigatório.")
-  private Integer dependentes;
 
 }
