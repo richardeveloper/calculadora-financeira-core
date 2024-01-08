@@ -1,5 +1,6 @@
 package br.com.calculadorafinanceira.responses;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +27,9 @@ public class FeriasResponse {
 
   @Builder.Default
   private BigDecimal tercoAbonoPecuniario = BigDecimal.ZERO;
+
+  @Builder.Default
+  private BigDecimal adiantamentoDecimoTerceiro = BigDecimal.ZERO;
 
   @Builder.Default
   private BigDecimal descontoInss = BigDecimal.ZERO;

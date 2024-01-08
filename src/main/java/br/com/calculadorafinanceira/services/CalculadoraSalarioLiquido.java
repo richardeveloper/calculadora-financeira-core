@@ -28,7 +28,6 @@ public class CalculadoraSalarioLiquido {
     }
 
     try {
-
       InssRequest inssRequest = InssRequest.builder()
         .salarioBruto(request.getSalarioBruto())
         .build();

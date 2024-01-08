@@ -17,7 +17,6 @@ public class CalculadoraJuros {
   public JurosSimplesResponse calcularJurosSimples(JurosSimplesRequest request) {
 
     try {
-
       BigDecimal taxaJuros = BigDecimal.ZERO;
       BigDecimal periodo = BigDecimal.ZERO;
 

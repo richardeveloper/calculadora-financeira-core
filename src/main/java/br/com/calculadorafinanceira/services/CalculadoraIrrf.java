@@ -28,7 +28,6 @@ public class CalculadoraIrrf {
   public IrrfResponse calcularIRRF(IrrfRequest request) throws ServiceException {
 
     try {
-
       ParametroIrrf parametroIRRF = parametroIRRFRepository
         .findBySalarioBruto(request.getSalarioBruto())
         .orElseThrow(() -> new ServiceException("Não foi possível identificar a faixa salarial para o valor informado."));

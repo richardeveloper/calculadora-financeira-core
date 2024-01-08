@@ -23,7 +23,6 @@ public class CalculadoraInss {
   public InssResponse calcularINSS(InssRequest request) {
 
     try {
-
       BigDecimal salarioBruto = request.getSalarioBruto();
 
       if (salarioBruto.compareTo(BigDecimal.ZERO) == 0) {

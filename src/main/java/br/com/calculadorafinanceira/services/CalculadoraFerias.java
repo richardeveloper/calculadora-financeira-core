@@ -1,9 +1,12 @@
 package br.com.calculadorafinanceira.services;
 
+import br.com.calculadorafinanceira.enums.TipoPagamento;
 import br.com.calculadorafinanceira.exceptions.models.ValidationException;
+import br.com.calculadorafinanceira.requests.DecimoTerceiroRequest;
 import br.com.calculadorafinanceira.requests.FeriasRequest;
 import br.com.calculadorafinanceira.requests.InssRequest;
 import br.com.calculadorafinanceira.requests.IrrfRequest;
+import br.com.calculadorafinanceira.responses.DecimoTerceiroResponse;
 import br.com.calculadorafinanceira.responses.FeriasResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class CalculadoraFerias {
   @Autowired
   private CalculadoraInss calculadoraINSS;
 
+  @Autowired
+  private CalculadoraDecimoTerceiro calculadoraDecimoTerceiro;
+
   private static final Integer DAYS_OF_MONTH = 30;
   private static final Integer PRECISION_SCALE = 10;
   private static final BigDecimal ONE_THIRD = new BigDecimal("3");
@@ -33,7 +39,6 @@ public class CalculadoraFerias {
     }
 
     try {
-
       BigDecimal diasFerias = BigDecimal.valueOf(request.getDiasFerias());
 
       BigDecimal saldoFerias = request.getSalarioBruto()
@@ -47,6 +52,8 @@ public class CalculadoraFerias {
       BigDecimal valorAbonoPecuniario = BigDecimal.ZERO;
       BigDecimal tercoAbonoPecuniario = BigDecimal.ZERO;
 
+      BigDecimal adiantamentoDecimoTerceiro = BigDecimal.ZERO;
+
       if (request.isAbonoPecuniario()) {
         BigDecimal diasVendidos = BigDecimal.valueOf(DAYS_OF_MONTH).subtract(diasFerias);
 
@@ -55,6 +62,19 @@ public class CalculadoraFerias {
           .multiply(diasVendidos).setScale(2, RoundingMode.HALF_UP);
 
         tercoAbonoPecuniario = valorAbonoPecuniario.divide(ONE_THIRD, 2, RoundingMode.HALF_UP);
+      }
+
+      if (request.isAdiantamentoDecimoTerceiro()) {
+        DecimoTerceiroRequest decimoTerceiroRequest = DecimoTerceiroRequest.builder()
+          .salarioBruto(request.getSalarioBruto())
+          .dependentes(request.getDependentes())
+          .mesesTrabalhados(12)
+          .tipoPagamento(TipoPagamento.PRIMEIRA_PARCELA)
+          .build();
+
+        DecimoTerceiroResponse decimoTerceiroResponse = calculadoraDecimoTerceiro.calcularDecimoTerceiro(decimoTerceiroRequest);
+
+        adiantamentoDecimoTerceiro = decimoTerceiroResponse.getValorAReceber();
       }
 
       InssRequest inssRequest = InssRequest.builder()
@@ -74,6 +94,7 @@ public class CalculadoraFerias {
         .add(tercoFerias)
         .add(valorAbonoPecuniario)
         .add(tercoAbonoPecuniario)
+        .add(adiantamentoDecimoTerceiro)
         .subtract(inss)
         .subtract(irrf);
 
@@ -82,6 +103,7 @@ public class CalculadoraFerias {
         .tercoFerias(tercoFerias)
         .abonoPecuniario(valorAbonoPecuniario)
         .tercoAbonoPecuniario(tercoAbonoPecuniario)
+        .adiantamentoDecimoTerceiro(adiantamentoDecimoTerceiro)
         .descontoInss(inss)
         .descontoIrrf(irrf)
         .totalFerias(totalFerias)

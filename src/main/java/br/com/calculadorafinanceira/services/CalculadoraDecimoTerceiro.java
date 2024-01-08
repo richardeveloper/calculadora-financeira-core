@@ -27,7 +27,6 @@ public class CalculadoraDecimoTerceiro {
   public DecimoTerceiroResponse calcularDecimoTerceiro(DecimoTerceiroRequest request) {
 
     try {
-
       BigDecimal decimoTerceiroSalario = request.getSalarioBruto()
         .divide(BigDecimal.valueOf(MONTHS_OF_YEAR), SCALE_PRECISION, RoundingMode.HALF_UP)
         .multiply(BigDecimal.valueOf(request.getMesesTrabalhados()))
