@@ -1,5 +1,6 @@
 package br.com.calculadorafinanceira.requests;
 
+import br.com.calculadorafinanceira.enums.TipoPagamento;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -32,5 +33,6 @@ public class DecimoTerceiroRequest {
   @NotNull(message = "O campo mesesTrabalhados é obrigatório.")
   private Integer mesesTrabalhados;
 
-
+  @NotNull(message = "O campo tipoPagamento é obrigatório.")
+  private TipoPagamento tipoPagamento;
 }

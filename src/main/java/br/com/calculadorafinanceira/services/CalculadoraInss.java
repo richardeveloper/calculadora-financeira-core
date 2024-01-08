@@ -27,7 +27,7 @@ public class CalculadoraInss {
       BigDecimal salarioBruto = request.getSalarioBruto();
 
       if (salarioBruto.compareTo(BigDecimal.ZERO) == 0) {
-        return new InssResponse(BigDecimal.ZERO, 0.0);
+        return new InssResponse();
       }
 
       BigDecimal inss = BigDecimal.ZERO;

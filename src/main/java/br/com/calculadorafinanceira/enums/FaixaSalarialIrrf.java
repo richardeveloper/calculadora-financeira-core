@@ -11,7 +11,7 @@ public enum FaixaSalarialIrrf {
   TERCEIRA_FAIXA_SALARIAL("TERCEIRA_FAIXA_SALARIAL"),
   QUARTA_FAIXA_SALARIAL("QUARTA_FAIXA_SALARIAL");
 
-  private String descricao;
+  private final String descricao;
 
   FaixaSalarialIrrf(String descricao) {
     this.descricao = descricao;

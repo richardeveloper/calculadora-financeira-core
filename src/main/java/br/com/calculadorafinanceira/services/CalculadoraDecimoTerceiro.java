@@ -28,39 +28,80 @@ public class CalculadoraDecimoTerceiro {
 
     try {
 
-      BigDecimal decimoTerceiro = request.getSalarioBruto()
+      BigDecimal decimoTerceiroSalario = request.getSalarioBruto()
         .divide(BigDecimal.valueOf(MONTHS_OF_YEAR), SCALE_PRECISION, RoundingMode.HALF_UP)
         .multiply(BigDecimal.valueOf(request.getMesesTrabalhados()))
         .setScale(2, RoundingMode.HALF_UP);
 
-      BigDecimal primeiraParcela = decimoTerceiro.divide(BigDecimal.valueOf(2), 2, RoundingMode.HALF_UP);
+      switch (request.getTipoPagamento()) {
+        case PARCELA_UNICA -> {
+          InssRequest inssRequest = InssRequest.builder()
+            .salarioBruto(decimoTerceiroSalario)
+            .build();
 
-      InssRequest inssRequest = InssRequest.builder()
-        .salarioBruto(decimoTerceiro)
-        .build();
+          BigDecimal descontoInss = calculadoraINSS.calcularINSS(inssRequest).getInss();
 
-      BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
+          IrrfRequest irrfRequest = IrrfRequest.builder()
+            .salarioBruto(decimoTerceiroSalario)
+            .dependentes(request.getDependentes())
+            .build();
 
-      IrrfRequest irrfRequest = IrrfRequest.builder()
-        .salarioBruto(decimoTerceiro)
-        .dependentes(request.getDependentes())
-        .build();
+          BigDecimal descontoIrrf = calculadoraIRRF.calcularIRRF(irrfRequest).getIrrf();
 
-      BigDecimal irrf = calculadoraIRRF.calcularIRRF(irrfRequest).getIrrf();
+          BigDecimal parcelaUnica = decimoTerceiroSalario
+            .subtract(descontoInss)
+            .subtract(descontoIrrf);
 
-      BigDecimal segundaParcela = decimoTerceiro.subtract(primeiraParcela)
-        .subtract(inss)
-        .subtract(irrf);
+          return DecimoTerceiroResponse.builder()
+            .decimoTerceiro(decimoTerceiroSalario)
+            .descontoInss(descontoInss)
+            .descontoIrrf(descontoIrrf)
+            .valorAReceber(parcelaUnica)
+            .build();
+        }
+        case PRIMEIRA_PARCELA -> {
+          BigDecimal primeiraParcela = decimoTerceiroSalario.divide(BigDecimal.valueOf(2), 2, RoundingMode.HALF_UP);
+          BigDecimal descontoInss = BigDecimal.ZERO;
+          BigDecimal descontoIrrf = BigDecimal.ZERO;
 
-      BigDecimal parcelaUnica = primeiraParcela.add(segundaParcela);
+          return DecimoTerceiroResponse.builder()
+            .decimoTerceiro(primeiraParcela)
+            .descontoInss(descontoInss)
+            .descontoIrrf(descontoIrrf)
+            .valorAReceber(primeiraParcela)
+            .build();
+        }
+        case SEGUNDA_PARCELA -> {
+          InssRequest inssRequest = InssRequest.builder()
+            .salarioBruto(decimoTerceiroSalario)
+            .build();
 
-      return DecimoTerceiroResponse.builder()
-        .parcelaUnica(parcelaUnica)
-        .primeiraParcela(primeiraParcela)
-        .segundaParcela(segundaParcela)
-        .descontoInss(inss)
-        .descontoIrrf(irrf)
-        .build();
+          BigDecimal descontoInss = calculadoraINSS.calcularINSS(inssRequest).getInss();
+
+          IrrfRequest irrfRequest = IrrfRequest.builder()
+            .salarioBruto(decimoTerceiroSalario)
+            .dependentes(request.getDependentes())
+            .build();
+
+          BigDecimal descontoIrrf = calculadoraIRRF.calcularIRRF(irrfRequest).getIrrf();
+
+          decimoTerceiroSalario = decimoTerceiroSalario.divide(BigDecimal.valueOf(2), 2, RoundingMode.HALF_UP);
+
+          BigDecimal segundaParcela = decimoTerceiroSalario
+            .subtract(descontoInss)
+            .subtract(descontoIrrf);
+
+          return DecimoTerceiroResponse.builder()
+            .decimoTerceiro(decimoTerceiroSalario)
+            .descontoInss(descontoInss)
+            .descontoIrrf(descontoIrrf)
+            .valorAReceber(segundaParcela)
+            .build();
+        }
+        default -> {
+          return DecimoTerceiroResponse.builder().build();
+        }
+      }
 
     } catch (Exception e) {
       log.error(e.getMessage(), e);

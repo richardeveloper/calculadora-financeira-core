@@ -48,7 +48,6 @@ public class CalculadoraSalarioLiquido {
         .subtract(request.getDescontos());
 
       return SalarioLiquidoResponse.builder()
-        .salarioBruto(request.getSalarioBruto())
         .descontoInss(inss)
         .descontoIrrf(irrf)
         .salarioLiquido(salarioLiquido)

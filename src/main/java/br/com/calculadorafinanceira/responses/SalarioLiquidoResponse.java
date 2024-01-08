@@ -16,15 +16,12 @@ import java.math.BigDecimal;
 public class SalarioLiquidoResponse {
 
   @Builder.Default
-  private BigDecimal salarioBruto = BigDecimal.ZERO;
+  private BigDecimal salarioLiquido = BigDecimal.ZERO;
 
   @Builder.Default
   private BigDecimal descontoInss = BigDecimal.ZERO;
 
   @Builder.Default
   private BigDecimal descontoIrrf = BigDecimal.ZERO;
-
-  @Builder.Default
-  private BigDecimal salarioLiquido = BigDecimal.ZERO;
 
 }

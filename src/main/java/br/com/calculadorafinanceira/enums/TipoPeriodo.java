@@ -8,7 +8,7 @@ public enum TipoPeriodo {
   ANUAL("ANUAL"),
   MENSAL("MENSAL");
 
-  private String descricao;
+  private final String descricao;
 
   TipoPeriodo(String descricao) {
     this.descricao = descricao;
