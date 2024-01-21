@@ -17,12 +17,12 @@ public enum FaixaSalarialIrrf {
     this.descricao = descricao;
   }
 
-  public static FaixaSalarialIrrf parse(String string) {
-    if (string == null) {
+  public static FaixaSalarialIrrf parse(String descricao) {
+    if (descricao == null) {
       return null;
     }
     for (FaixaSalarialIrrf faixaSalarial : FaixaSalarialIrrf.values()) {
-      if (string.equalsIgnoreCase(faixaSalarial.getDescricao())) {
+      if (faixaSalarial.getDescricao().equalsIgnoreCase(descricao)) {
         return faixaSalarial;
       }
     }

@@ -1,8 +1,14 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb/calculadora_financeira
-    username: admin
-    password: f1n4nc14l%c4lc
+###  H2 DATABASE
+#    url: jdbc:h2:mem:testdb/calculadora_financeira
+#    username: admin
+#    password: f1n4nc14l%c4lc
+
+###  POSTGRES DATABASE
+    url: jdbc:postgresql://localhost:5432/calculadora_financeira
+    username: postgres
+    password: richardeveloper
   h2:
     console:
       path: /h2-console

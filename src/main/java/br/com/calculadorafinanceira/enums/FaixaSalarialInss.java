@@ -16,12 +16,12 @@ public enum FaixaSalarialInss {
     this.descricao = descricao;
   }
 
-  public static FaixaSalarialInss parse(String string) {
-    if (string == null) {
+  public static FaixaSalarialInss parse(String descricao) {
+    if (descricao == null) {
       return null;
     }
     for (FaixaSalarialInss faixaSalarial : FaixaSalarialInss.values()) {
-      if (string.equalsIgnoreCase(faixaSalarial.getDescricao())) {
+      if (faixaSalarial.getDescricao().equalsIgnoreCase(descricao)) {
         return faixaSalarial;
       }
     }

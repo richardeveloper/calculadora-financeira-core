@@ -18,9 +18,9 @@ import java.math.RoundingMode;
 public class CalculadoraInss {
 
   @Autowired
-  private ParametroInssRepository parametroINSSRepository;
+  private ParametroInssRepository parametroInssRepository;
 
-  public InssResponse calcularINSS(InssRequest request) {
+  public InssResponse calcularInss(InssRequest request) {
 
     try {
       BigDecimal salarioBruto = request.getSalarioBruto();
@@ -31,7 +31,7 @@ public class CalculadoraInss {
 
       BigDecimal inss = BigDecimal.ZERO;
 
-      ParametroInss primeiraFaixa = parametroINSSRepository
+      ParametroInss primeiraFaixa = parametroInssRepository
         .findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL)
         .orElseThrow(() -> new ServiceException("Não foi possível recuperar informações da primeira faixa salarial."));
 
@@ -48,7 +48,7 @@ public class CalculadoraInss {
         calcularValorFaixaSalarial(primeiraFaixa.getValorMaximo(), primeiraFaixa.getAliquota())
       );
 
-      ParametroInss segundaFaixa = parametroINSSRepository
+      ParametroInss segundaFaixa = parametroInssRepository
         .findByFaixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL)
         .orElseThrow(() -> new ServiceException("Não foi possível recuperar informações da segunda faixa salarial."));
 
@@ -65,7 +65,7 @@ public class CalculadoraInss {
         calcularValorFaixaSalarial(segundaFaixa.getValorMaximo().subtract(primeiraFaixa.getValorMaximo()), segundaFaixa.getAliquota())
       );
 
-      ParametroInss terceiraFaixa = parametroINSSRepository
+      ParametroInss terceiraFaixa = parametroInssRepository
         .findByFaixaSalarial(FaixaSalarialInss.TERCEIRA_FAIXA_SALARIAL)
         .orElseThrow(() -> new ServiceException("Não foi possível recuperar informações da terceira faixa salarial."));
 
@@ -82,7 +82,7 @@ public class CalculadoraInss {
         calcularValorFaixaSalarial(terceiraFaixa.getValorMaximo().subtract(segundaFaixa.getValorMaximo()), terceiraFaixa.getAliquota())
       );
 
-      ParametroInss quartaFaixa = parametroINSSRepository
+      ParametroInss quartaFaixa = parametroInssRepository
         .findByFaixaSalarial(FaixaSalarialInss.QUARTA_FAIXA_SALARIAL)
         .orElseThrow(() -> new ServiceException("Não foi possível recuperar informações da quarta faixa salarial."));
 

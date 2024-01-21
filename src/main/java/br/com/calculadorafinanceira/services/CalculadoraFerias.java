@@ -20,10 +20,10 @@ import java.math.RoundingMode;
 public class CalculadoraFerias {
 
   @Autowired
-  private CalculadoraIrrf calculadoraIRRF;
+  private CalculadoraIrrf calculadoraIrrf;
 
   @Autowired
-  private CalculadoraInss calculadoraINSS;
+  private CalculadoraInss calculadoraInss;
 
   @Autowired
   private CalculadoraDecimoTerceiro calculadoraDecimoTerceiro;
@@ -81,14 +81,14 @@ public class CalculadoraFerias {
         .salarioBruto(baseParaCalculoImpostos)
         .build();
 
-      BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
+      BigDecimal inss = calculadoraInss.calcularInss(inssRequest).getInss();
 
       IrrfRequest irrfRequest = IrrfRequest.builder()
         .salarioBruto(baseParaCalculoImpostos)
         .dependentes(request.getDependentes())
         .build();
 
-      BigDecimal irrf = calculadoraIRRF.calcularIRRF(irrfRequest).getIrrf();
+      BigDecimal irrf = calculadoraIrrf.calcularIrrf(irrfRequest).getIrrf();
 
       BigDecimal totalFerias = saldoFerias
         .add(tercoFerias)

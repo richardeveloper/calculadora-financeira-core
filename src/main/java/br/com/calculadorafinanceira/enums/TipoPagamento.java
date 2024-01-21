@@ -15,12 +15,12 @@ public enum TipoPagamento {
     this.descricao = descricao;
   }
 
-  public static TipoPagamento parse(String string) {
-    if (string == null) {
+  public static TipoPagamento parse(String descricao) {
+    if (descricao == null) {
       return null;
     }
     for (TipoPagamento tipoPagamento : TipoPagamento.values()) {
-      if (string.equalsIgnoreCase(tipoPagamento.getDescricao())) {
+      if (tipoPagamento.getDescricao().equalsIgnoreCase(descricao)) {
         return tipoPagamento;
       }
     }

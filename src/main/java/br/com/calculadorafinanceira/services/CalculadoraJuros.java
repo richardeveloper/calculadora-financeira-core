@@ -1,9 +1,11 @@
 package br.com.calculadorafinanceira.services;
 
+import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.requests.JurosCompostosRequest;
 import br.com.calculadorafinanceira.requests.JurosSimplesRequest;
 import br.com.calculadorafinanceira.responses.JurosCompostosResponse;
 import br.com.calculadorafinanceira.responses.JurosSimplesResponse;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -44,16 +46,16 @@ public class CalculadoraJuros {
         .valorCorrigido(valorCorrigido)
         .build();
 
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       log.error(e.getMessage(), e);
-      throw e;
+      throw new ServiceException("Não foi possível calcular o valor dos juros simples.");
     }
   }
 
   public JurosCompostosResponse calcularJurosCompostos(JurosCompostosRequest request) {
 
     try {
-
       BigDecimal valorInvestido = request.getValorInicial();
       BigDecimal totalJuros = BigDecimal.ZERO;
 
@@ -78,9 +80,10 @@ public class CalculadoraJuros {
         .valorCorrigido(valorInvestido)
         .build();
 
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       log.error(e.getMessage(), e);
-      throw e;
+      throw new ServiceException("Não foi possível calcular o valor dos juros compostos.");
     }
   }
 }

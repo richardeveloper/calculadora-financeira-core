@@ -1,6 +1,7 @@
 package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.enums.TipoPeriodo;
+import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.requests.Juros;
 import br.com.calculadorafinanceira.requests.JurosCompostosRequest;
 import br.com.calculadorafinanceira.requests.JurosSimplesRequest;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.Assert.assertThrows;
 
 class CalculadoraJurosTest {
 
@@ -22,7 +24,7 @@ class CalculadoraJurosTest {
   private CalculadoraJuros calculadoraJuros;
 
   @BeforeEach
-  void setUp() {
+  public void setUp() {
     this.calculadoraJuros = new CalculadoraJuros();
   }
 
@@ -91,6 +93,23 @@ class CalculadoraJurosTest {
     assertThat(response.getValorInvestido()).isEqualTo(new BigDecimal("1000.00"));
     assertThatAmountWithVariation(response.getTotalJuros(), new BigDecimal("10.00"));
     assertThatAmountWithVariation(response.getValorCorrigido(), new BigDecimal("1010.00"));
+  }
+
+  @Test
+  void calcularJurosSimples_deveLancarExecaoQuandoNaoEncontrarTipoJurosSimples() {
+
+    JurosSimplesRequest request = JurosSimplesRequest.builder()
+      .valorInicial(new BigDecimal("1000.00"))
+      .juros(new Juros(null, null))
+      .periodo(new Periodo(TipoPeriodo.ANUAL, 5))
+      .build();
+
+    ServiceException exception = assertThrows(ServiceException.class,
+      () -> calculadoraJuros.calcularJurosSimples(request));
+
+    String expectedMessage = "Não foi possível calcular o valor dos juros simples.";
+
+    assertThat(expectedMessage).isEqualTo(exception.getMessage());
   }
 
   /**
@@ -162,6 +181,41 @@ class CalculadoraJurosTest {
     assertThat(response.getValorInvestido()).isEqualTo(new BigDecimal("10000.00"));
     assertThatAmountWithVariation(response.getTotalJuros(), new BigDecimal("3488.49"));
     assertThatAmountWithVariation(response.getValorCorrigido(), new BigDecimal("13488.49"));
+  }
+
+  @Test
+  void calcularJurosSimples_deveLancarExecaoQuandoNaoEncontrarTipoJurosCompostos() {
+
+    JurosCompostosRequest request = JurosCompostosRequest.builder()
+      .valorInicial(new BigDecimal("1000.00"))
+      .juros(new Juros(null, null))
+      .periodo(new Periodo(TipoPeriodo.ANUAL, 5))
+      .build();
+
+    ServiceException exception = assertThrows(ServiceException.class,
+      () -> calculadoraJuros.calcularJurosCompostos(request));
+
+    String expectedMessage = "Não foi possível calcular o valor dos juros compostos.";
+
+    assertThat(expectedMessage).isEqualTo(exception.getMessage());
+  }
+
+  @Test
+  void calcularJurosSimples_deveLancarExecaoQuandoNaoEncontrarTipoPeriodoJurosCompostos() {
+
+    JurosCompostosRequest request = JurosCompostosRequest.builder()
+      .valorInicial(new BigDecimal("1000.00"))
+//      .juros(new Juros(null, null))
+      .juros(null)
+      .periodo(new Periodo(TipoPeriodo.ANUAL, 5))
+      .build();
+
+    ServiceException exception = assertThrows(ServiceException.class,
+      () -> calculadoraJuros.calcularJurosCompostos(request));
+
+    String expectedMessage = "Não foi possível calcular o valor dos juros compostos.";
+
+    assertThat(expectedMessage).isEqualTo(exception.getMessage());
   }
 
   private AbstractBigDecimalAssert<?> assertThatAmountWithVariation(BigDecimal expected, BigDecimal actual) {

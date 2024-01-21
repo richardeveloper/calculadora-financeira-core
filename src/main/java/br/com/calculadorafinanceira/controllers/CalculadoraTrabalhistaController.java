@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class CalculadoraTrabalhistaController {
 
   @Autowired
-  private CalculadoraInss calculadoraINSS;
+  private CalculadoraInss calculadoraInss;
 
   @Autowired
-  private CalculadoraIrrf calculadoraIRRF;
+  private CalculadoraIrrf calculadoraIrrf;
 
   @Autowired
   private CalculadoraFerias calculadoraFerias;
@@ -35,17 +35,17 @@ public class CalculadoraTrabalhistaController {
   private CalculadoraFgts calculadoraFGTS;
 
   @PostMapping(value = "/inss")
-  public ResponseEntity<InssResponse> calcularINSS(@Valid @RequestBody InssRequest request)
+  public ResponseEntity<InssResponse> calcularInss(@Valid @RequestBody InssRequest request)
     throws ServiceException {
 
-    return ResponseEntity.ok(calculadoraINSS.calcularINSS(request));
+    return ResponseEntity.ok(calculadoraInss.calcularInss(request));
   }
 
   @PostMapping(value = "/irrf")
-  public ResponseEntity<IrrfResponse> calcularIRRF(@Valid @RequestBody IrrfRequest request)
+  public ResponseEntity<IrrfResponse> calcularIrrf(@Valid @RequestBody IrrfRequest request)
     throws ServiceException {
 
-    return ResponseEntity.ok(calculadoraIRRF.calcularIRRF(request));
+    return ResponseEntity.ok(calculadoraIrrf.calcularIrrf(request));
   }
 
   @PostMapping(value = "/ferias")

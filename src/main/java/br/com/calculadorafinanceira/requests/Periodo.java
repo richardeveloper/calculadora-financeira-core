@@ -16,7 +16,7 @@ public class Periodo {
   @NotNull(message = "O campo tipo é obrigatório.")
   private TipoPeriodo tipo;
 
-  @Min(value = 1, message = "O campo periodo deve ser maior que zero[0].")
+  @Min(value = 1, message = "O campo periodo deve ser maior que 0.")
   @NotNull(message = "O campo periodo é obrigatório.")
   private Integer valor;
 

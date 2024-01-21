@@ -20,15 +20,15 @@ import java.util.List;
 public class SetupConfig implements CommandLineRunner {
 
   @Autowired
-  private ParametroInssRepository parametroINSSRepository;
+  private ParametroInssRepository parametroInssRepository;
 
   @Autowired
-  private ParametroIrrfRepository parametroIRRFRepository;
+  private ParametroIrrfRepository parametroIrrfRepository;
 
   @Override
   public void run(String... args) throws Exception {
 
-    ParametroInss primeiraFaixaINSS = ParametroInss.builder()
+    ParametroInss primeiraFaixaInss = ParametroInss.builder()
       .faixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL)
       .valorMinimo(BigDecimal.ZERO)
       .valorMaximo(new BigDecimal("1320.00"))
@@ -37,7 +37,7 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroInss segundaFaixaINSS = ParametroInss.builder()
+    ParametroInss segundaFaixaInss = ParametroInss.builder()
       .faixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("1320.01"))
       .valorMaximo(new BigDecimal("2571.29"))
@@ -46,7 +46,7 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroInss terceiraFaixaINSS = ParametroInss.builder()
+    ParametroInss terceiraFaixaInss = ParametroInss.builder()
       .faixaSalarial(FaixaSalarialInss.TERCEIRA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("2571.30"))
       .valorMaximo(new BigDecimal("3856.94"))
@@ -55,7 +55,7 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroInss quartaFaixaINSS = ParametroInss.builder()
+    ParametroInss quartaFaixaInss = ParametroInss.builder()
       .faixaSalarial(FaixaSalarialInss.QUARTA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("3856.95"))
       .valorMaximo(new BigDecimal("7507.49"))
@@ -64,7 +64,7 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    parametroINSSRepository.saveAll(List.of(primeiraFaixaINSS, segundaFaixaINSS, terceiraFaixaINSS, quartaFaixaINSS));
+    parametroInssRepository.saveAll(List.of(primeiraFaixaInss, segundaFaixaInss, terceiraFaixaInss, quartaFaixaInss));
 
     ParametroIrrf faixaIsenta = ParametroIrrf.builder()
       .faixaSalarial(FaixaSalarialIrrf.FAIXA_ISENTA)
@@ -76,7 +76,7 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroIrrf primeiraFaixaIRRF = ParametroIrrf.builder()
+    ParametroIrrf primeiraFaixaIrrf = ParametroIrrf.builder()
       .faixaSalarial(FaixaSalarialIrrf.PRIMEIRA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("2112.01"))
       .valorMaximo(new BigDecimal("2826.65"))
@@ -86,7 +86,7 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroIrrf segundaFaixaIRRF = ParametroIrrf.builder()
+    ParametroIrrf segundaFaixaIrrf = ParametroIrrf.builder()
       .faixaSalarial(FaixaSalarialIrrf.SEGUNDA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("2826.66"))
       .valorMaximo(new BigDecimal("3751.05"))
@@ -96,7 +96,7 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroIrrf terceiraFaixaIRRF = ParametroIrrf.builder()
+    ParametroIrrf terceiraFaixaIrrf = ParametroIrrf.builder()
       .faixaSalarial(FaixaSalarialIrrf.TERCEIRA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("3751.06"))
       .valorMaximo(new BigDecimal("4664.68"))
@@ -106,7 +106,7 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    ParametroIrrf quartaFaixaIRRF = ParametroIrrf.builder()
+    ParametroIrrf quartaFaixaIrrf = ParametroIrrf.builder()
       .faixaSalarial(FaixaSalarialIrrf.QUARTA_FAIXA_SALARIAL)
       .valorMinimo(new BigDecimal("4664.69"))
       .valorMaximo(new BigDecimal("999999999999.99"))
@@ -116,6 +116,6 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    parametroIRRFRepository.saveAll(List.of(faixaIsenta, primeiraFaixaIRRF, segundaFaixaIRRF, terceiraFaixaIRRF, quartaFaixaIRRF));
+    parametroIrrfRepository.saveAll(List.of(faixaIsenta, primeiraFaixaIrrf, segundaFaixaIrrf, terceiraFaixaIrrf, quartaFaixaIrrf));
   }
 }

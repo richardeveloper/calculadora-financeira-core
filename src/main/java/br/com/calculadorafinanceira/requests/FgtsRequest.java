@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class FgtsRequest {
 
-  @Min(value = 0, message = "O campo salarioBruto deve ser maior ou igual a zero[0].")
+  @Min(value = 0, message = "O campo salarioBruto deve ser maior ou igual a 0.")
   @NotNull(message = "O campo salarioBruto é obrigatório.")
   private BigDecimal salarioBruto;
 

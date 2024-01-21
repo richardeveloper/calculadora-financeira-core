@@ -18,16 +18,16 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class SalarioLiquidoRequest {
 
-  @Min(value = 0, message = "O campo salarioBruto deve ser maior ou igual a zero[0].")
+  @Min(value = 0, message = "O campo salarioBruto deve ser maior ou igual a 0.")
   @NotNull(message = "O campo salarioBruto é obrigatório.")
   private BigDecimal salarioBruto;
 
-  @Min(value = 0, message = "O campo dependentes deve ser maior ou igual a zero[0].")
-  @Max(value = 10, message = "O campo dependentes deve ser inferior a dez[10].")
+  @Min(value = 0, message = "O campo dependentes deve ser maior ou igual a 0.")
+  @Max(value = 10, message = "O campo dependentes deve ser inferior a 10.")
   @NotNull(message = "O campo dependentes é obrigatório.")
   private Integer dependentes;
 
-  @Min(value = 0, message = "O campo descontos deve ser maior que zero[0].")
+  @Min(value = 0, message = "O campo descontos deve ser maior que 0.")
   @NotNull(message = "O campo descontos é obrigatório.")
   private BigDecimal descontos;
 

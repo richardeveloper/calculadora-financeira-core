@@ -16,10 +16,10 @@ import java.math.BigDecimal;
 public class CalculadoraSalarioLiquido {
 
   @Autowired
-  private CalculadoraInss calculadoraINSS;
+  private CalculadoraInss calculadoraInss;
 
   @Autowired
-  private CalculadoraIrrf calculadoraIRRF;
+  private CalculadoraIrrf calculadoraIrrf;
 
   public SalarioLiquidoResponse calcularSalarioLiquido(SalarioLiquidoRequest request) {
 
@@ -32,14 +32,14 @@ public class CalculadoraSalarioLiquido {
         .salarioBruto(request.getSalarioBruto())
         .build();
 
-      BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
+      BigDecimal inss = calculadoraInss.calcularInss(inssRequest).getInss();
 
       IrrfRequest irrfRequest = IrrfRequest.builder()
         .salarioBruto(request.getSalarioBruto())
         .dependentes(request.getDependentes())
         .build();
 
-      BigDecimal irrf = calculadoraIRRF.calcularIRRF(irrfRequest).getIrrf();
+      BigDecimal irrf = calculadoraIrrf.calcularIrrf(irrfRequest).getIrrf();
 
       BigDecimal salarioLiquido = request.getSalarioBruto()
         .subtract(inss)

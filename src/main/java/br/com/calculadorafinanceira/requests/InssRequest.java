@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class InssRequest {
 
-  @Min(value = 0, message = "O campo salarioBruto deve ser maior ou igual a zero.")
+  @Min(value = 0, message = "O campo salarioBruto deve ser maior ou igual a 0.")
   @NotNull(message = "O campo salarioBruto é obrigatório.")
   private BigDecimal salarioBruto;
 

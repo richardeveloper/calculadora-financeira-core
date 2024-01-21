@@ -14,12 +14,12 @@ public enum TipoPeriodo {
     this.descricao = descricao;
   }
 
-  public static TipoPeriodo parse(String string) {
-    if (string == null) {
+  public static TipoPeriodo parse(String descricao) {
+    if (descricao == null) {
       return null;
     }
     for (TipoPeriodo tipoPeriodo : TipoPeriodo.values()) {
-      if (string.equalsIgnoreCase(tipoPeriodo.getDescricao())) {
+      if (tipoPeriodo.getDescricao().equalsIgnoreCase(descricao)) {
         return tipoPeriodo;
       }
     }

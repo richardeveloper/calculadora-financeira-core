@@ -2,7 +2,7 @@ spring:
   application:
     name: calculadora-financeira-core
   profiles:
-    active: @profileActive@
+    active: "@profileActive@"
 
 springdoc:
   api-docs:

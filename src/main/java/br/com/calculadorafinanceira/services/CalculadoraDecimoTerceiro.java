@@ -19,10 +19,10 @@ public class CalculadoraDecimoTerceiro {
   private static final Integer SCALE_PRECISION = 10;
 
   @Autowired
-  private CalculadoraIrrf calculadoraIRRF;
+  private CalculadoraIrrf calculadoraIrrf;
 
   @Autowired
-  private CalculadoraInss calculadoraINSS;
+  private CalculadoraInss calculadoraInss;
 
   public DecimoTerceiroResponse calcularDecimoTerceiro(DecimoTerceiroRequest request) {
 
@@ -38,14 +38,14 @@ public class CalculadoraDecimoTerceiro {
             .salarioBruto(decimoTerceiroSalario)
             .build();
 
-          BigDecimal descontoInss = calculadoraINSS.calcularINSS(inssRequest).getInss();
+          BigDecimal descontoInss = calculadoraInss.calcularInss(inssRequest).getInss();
 
           IrrfRequest irrfRequest = IrrfRequest.builder()
             .salarioBruto(decimoTerceiroSalario)
             .dependentes(request.getDependentes())
             .build();
 
-          BigDecimal descontoIrrf = calculadoraIRRF.calcularIRRF(irrfRequest).getIrrf();
+          BigDecimal descontoIrrf = calculadoraIrrf.calcularIrrf(irrfRequest).getIrrf();
 
           BigDecimal parcelaUnica = decimoTerceiroSalario
             .subtract(descontoInss)
@@ -75,14 +75,14 @@ public class CalculadoraDecimoTerceiro {
             .salarioBruto(decimoTerceiroSalario)
             .build();
 
-          BigDecimal descontoInss = calculadoraINSS.calcularINSS(inssRequest).getInss();
+          BigDecimal descontoInss = calculadoraInss.calcularInss(inssRequest).getInss();
 
           IrrfRequest irrfRequest = IrrfRequest.builder()
             .salarioBruto(decimoTerceiroSalario)
             .dependentes(request.getDependentes())
             .build();
 
-          BigDecimal descontoIrrf = calculadoraIRRF.calcularIRRF(irrfRequest).getIrrf();
+          BigDecimal descontoIrrf = calculadoraIrrf.calcularIrrf(irrfRequest).getIrrf();
 
           decimoTerceiroSalario = decimoTerceiroSalario.divide(BigDecimal.valueOf(2), 2, RoundingMode.HALF_UP);
 

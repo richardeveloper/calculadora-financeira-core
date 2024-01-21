@@ -20,15 +20,15 @@ public class CalculadoraIrrf {
   private static final BigDecimal VALOR_DEDUCAO_DEPENDENTE = new BigDecimal("189.59");
 
   @Autowired
-  private CalculadoraInss calculadoraINSS;
+  private CalculadoraInss calculadoraInss;
 
   @Autowired
-  private ParametroIrrfRepository parametroIRRFRepository;
+  private ParametroIrrfRepository parametroIrrfRepository;
 
-  public IrrfResponse calcularIRRF(IrrfRequest request) throws ServiceException {
+  public IrrfResponse calcularIrrf(IrrfRequest request) throws ServiceException {
 
     try {
-      ParametroIrrf parametroIRRF = parametroIRRFRepository
+      ParametroIrrf parametroIrrf = parametroIrrfRepository
         .findBySalarioBruto(request.getSalarioBruto())
         .orElseThrow(() -> new ServiceException("Não foi possível identificar a faixa salarial para o valor informado."));
 
@@ -44,20 +44,20 @@ public class CalculadoraIrrf {
         .salarioBruto(request.getSalarioBruto())
         .build();
 
-      BigDecimal inss = calculadoraINSS.calcularINSS(inssRequest).getInss();
+      BigDecimal inss = calculadoraInss.calcularInss(inssRequest).getInss();
 
       BigDecimal baseParaCalculo = request.getSalarioBruto()
         .subtract(descontoDependentes)
         .subtract(inss);
 
       BigDecimal irrf = baseParaCalculo
-        .multiply(BigDecimal.valueOf(parametroIRRF.getAliquota() / PERCENTAGE_DIVISOR))
-        .subtract(parametroIRRF.getParcelaDedutivel())
+        .multiply(BigDecimal.valueOf(parametroIrrf.getAliquota() / PERCENTAGE_DIVISOR))
+        .subtract(parametroIrrf.getParcelaDedutivel())
         .setScale(2, RoundingMode.HALF_UP);
 
       return IrrfResponse.builder()
         .irrf(irrf.compareTo(BigDecimal.ZERO) > 0 ? irrf.setScale(2, RoundingMode.HALF_UP) : BigDecimal.ZERO)
-        .aliquota(parametroIRRF.getAliquota())
+        .aliquota(parametroIrrf.getAliquota())
         .build();
 
     } catch (Exception e) {
