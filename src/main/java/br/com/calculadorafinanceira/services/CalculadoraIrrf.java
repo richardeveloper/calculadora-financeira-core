@@ -60,9 +60,12 @@ public class CalculadoraIrrf {
         .aliquota(parametroIrrf.getAliquota())
         .build();
 
-    } catch (Exception e) {
-      log.error(e.getMessage(), e);
+    } catch (ServiceException e) {
       throw e;
+    }
+    catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new ServiceException("Desculpe, não foi possível completar a solicitação.");
     }
   }
 }

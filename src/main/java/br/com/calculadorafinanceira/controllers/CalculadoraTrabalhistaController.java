@@ -32,7 +32,7 @@ public class CalculadoraTrabalhistaController {
   private CalculadoraSalarioLiquido calculadoraSalarioLiquido;
 
   @Autowired
-  private CalculadoraFgts calculadoraFGTS;
+  private CalculadoraFgts calculadoraFgts;
 
   @PostMapping(value = "/inss")
   public ResponseEntity<InssResponse> calcularInss(@Valid @RequestBody InssRequest request)
@@ -70,10 +70,10 @@ public class CalculadoraTrabalhistaController {
   }
 
   @PostMapping(value = "/fgts")
-  public ResponseEntity<FgtsResponse> calcularFGTS(@Valid @RequestBody FgtsRequest request)
+  public ResponseEntity<FgtsResponse> calcularFgts(@Valid @RequestBody FgtsRequest request)
     throws ServiceException {
 
-    return ResponseEntity.ok(calculadoraFGTS.calcularFGTS(request));
+    return ResponseEntity.ok(calculadoraFgts.calcularFgts(request));
   }
 
 }

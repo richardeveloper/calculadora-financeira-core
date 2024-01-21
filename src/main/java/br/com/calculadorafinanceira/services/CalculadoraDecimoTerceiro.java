@@ -1,5 +1,6 @@
 package br.com.calculadorafinanceira.services;
 
+import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.requests.DecimoTerceiroRequest;
 import br.com.calculadorafinanceira.requests.InssRequest;
 import br.com.calculadorafinanceira.requests.IrrfRequest;
@@ -24,7 +25,7 @@ public class CalculadoraDecimoTerceiro {
   @Autowired
   private CalculadoraInss calculadoraInss;
 
-  public DecimoTerceiroResponse calcularDecimoTerceiro(DecimoTerceiroRequest request) {
+  public DecimoTerceiroResponse calcularDecimoTerceiro(DecimoTerceiroRequest request) throws ServiceException {
 
     try {
       BigDecimal decimoTerceiroSalario = request.getSalarioBruto()
@@ -102,9 +103,12 @@ public class CalculadoraDecimoTerceiro {
         }
       }
 
-    } catch (Exception e) {
-      log.error(e.getMessage(), e);
+    } catch (ServiceException e) {
       throw e;
+    }
+    catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new ServiceException("Desculpe, não foi possível completar a solicitação.");
     }
   }
 }

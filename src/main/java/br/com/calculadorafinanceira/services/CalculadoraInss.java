@@ -20,7 +20,7 @@ public class CalculadoraInss {
   @Autowired
   private ParametroInssRepository parametroInssRepository;
 
-  public InssResponse calcularInss(InssRequest request) {
+  public InssResponse calcularInss(InssRequest request) throws ServiceException {
 
     try {
       BigDecimal salarioBruto = request.getSalarioBruto();
@@ -44,9 +44,8 @@ public class CalculadoraInss {
           .build();
       }
 
-      inss = inss.add(
-        calcularValorFaixaSalarial(primeiraFaixa.getValorMaximo(), primeiraFaixa.getAliquota())
-      );
+      BigDecimal valorPrimeiraFaixa = calcularValorFaixaSalarial(primeiraFaixa.getValorMaximo(), primeiraFaixa.getAliquota());
+      inss = inss.add(valorPrimeiraFaixa);
 
       ParametroInss segundaFaixa = parametroInssRepository
         .findByFaixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL)
@@ -61,9 +60,9 @@ public class CalculadoraInss {
           .build();
       }
 
-      inss = inss.add(
-        calcularValorFaixaSalarial(segundaFaixa.getValorMaximo().subtract(primeiraFaixa.getValorMaximo()), segundaFaixa.getAliquota())
-      );
+      BigDecimal valorSegundaFaixa = calcularValorFaixaSalarial(segundaFaixa.getValorMaximo().subtract(segundaFaixa.getValorMinimo()),
+        segundaFaixa.getAliquota());
+      inss = inss.add(valorSegundaFaixa);
 
       ParametroInss terceiraFaixa = parametroInssRepository
         .findByFaixaSalarial(FaixaSalarialInss.TERCEIRA_FAIXA_SALARIAL)
@@ -78,9 +77,9 @@ public class CalculadoraInss {
           .build();
       }
 
-      inss = inss.add(
-        calcularValorFaixaSalarial(terceiraFaixa.getValorMaximo().subtract(segundaFaixa.getValorMaximo()), terceiraFaixa.getAliquota())
-      );
+      BigDecimal valorTerceiraFaixa = calcularValorFaixaSalarial(terceiraFaixa.getValorMaximo().subtract(terceiraFaixa.getValorMinimo()),
+        terceiraFaixa.getAliquota());
+      inss = inss.add(valorTerceiraFaixa);
 
       ParametroInss quartaFaixa = parametroInssRepository
         .findByFaixaSalarial(FaixaSalarialInss.QUARTA_FAIXA_SALARIAL)
@@ -94,22 +93,27 @@ public class CalculadoraInss {
         baseParaCalculo = quartaFaixa.getValorMaximo().subtract(quartaFaixa.getValorMinimo());
       }
 
-      inss = inss.add(calcularValorFaixaSalarial(baseParaCalculo, quartaFaixa.getAliquota()));
+      BigDecimal valorQuartaFaixa = calcularValorFaixaSalarial(baseParaCalculo, quartaFaixa.getAliquota());
+      inss = inss.add(valorQuartaFaixa);
 
       return InssResponse.builder()
         .inss(inss.setScale(2, RoundingMode.HALF_UP))
         .aliquota(quartaFaixa.getAliquota())
         .build();
 
-    } catch (Exception e) {
+    }
+    catch (ServiceException e) {
+     throw e;
+    }
+    catch (Exception e) {
       log.error(e.getMessage(), e);
-      throw e;
+      throw new ServiceException("Desculpe, não foi possível completar a solicitação.");
     }
   }
 
   private BigDecimal calcularValorFaixaSalarial(BigDecimal salarioBruto, Double aliquota) {
     return salarioBruto
-      .multiply(BigDecimal.valueOf(aliquota / 100.00))
+      .multiply(BigDecimal.valueOf(aliquota / 100))
       .setScale(2, RoundingMode.HALF_UP);
   }
 

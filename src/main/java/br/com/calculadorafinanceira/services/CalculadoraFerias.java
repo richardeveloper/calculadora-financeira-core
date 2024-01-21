@@ -1,7 +1,7 @@
 package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.enums.TipoPagamento;
-import br.com.calculadorafinanceira.exceptions.models.ValidationException;
+import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.requests.DecimoTerceiroRequest;
 import br.com.calculadorafinanceira.requests.FeriasRequest;
 import br.com.calculadorafinanceira.requests.InssRequest;
@@ -32,13 +32,13 @@ public class CalculadoraFerias {
   private static final Integer PRECISION_SCALE = 10;
   private static final BigDecimal ONE_THIRD = new BigDecimal("3");
 
-  public FeriasResponse calcularFerias(FeriasRequest request) {
-
-    if (request.isAbonoPecuniario() && request.getDiasFerias() > 20) {
-      throw new ValidationException("Ao solicitar o abono pecuniário, a quantidade máxima permitida para solicitar é de 20 dias de férias.");
-    }
+  public FeriasResponse calcularFerias(FeriasRequest request) throws ServiceException {
 
     try {
+      if (request.isAbonoPecuniario() && request.getDiasFerias() > 20) {
+        throw new ServiceException("Ao solicitar o abono pecuniário, a quantidade máxima permitida para solicitar é de 20 dias de férias.");
+      }
+
       BigDecimal diasFerias = BigDecimal.valueOf(request.getDiasFerias());
 
       BigDecimal saldoFerias = request.getSalarioBruto()
@@ -109,9 +109,13 @@ public class CalculadoraFerias {
         .totalFerias(totalFerias)
         .build();
 
-    } catch (Exception e) {
-      log.error(e.getMessage(), e);
+    }
+    catch (ServiceException e) {
       throw e;
+    }
+    catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new ServiceException("Desculpe, não foi possível completar a solicitação.");
     }
   }
 

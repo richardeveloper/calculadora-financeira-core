@@ -8,8 +8,10 @@ import br.com.calculadorafinanceira.requests.InssRequest;
 import br.com.calculadorafinanceira.requests.IrrfRequest;
 import br.com.calculadorafinanceira.responses.InssResponse;
 import br.com.calculadorafinanceira.responses.IrrfResponse;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -39,7 +41,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularIrrfZeroQuandoSalarioIgualZero() {
+  public void calcularIrrf_deveRetornarZeroQuandoSalarioBrutoIgualZero() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(BigDecimal.ZERO);
@@ -65,19 +67,19 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularIrrfSemDependentesComSucesso() {
+  public void calcularIrrf_deveCalcularIrrfIsento() {
 
     IrrfRequest request = new IrrfRequest();
-    request.setSalarioBruto(new BigDecimal("2690"));
+    request.setSalarioBruto(new BigDecimal("2000.00"));
     request.setDependentes(0);
 
     InssResponse inssResponse = new InssResponse();
-    inssResponse.setInss(new BigDecimal("10"));
-    inssResponse.setAliquota(1.0);
+    inssResponse.setInss(BigDecimal.ZERO);
+    inssResponse.setAliquota(0.0);
 
     ParametroIrrf faixaIsenta = ParametroIrrfMock.getFaixaIsenta();
 
-    when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("2690")))
+    when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("2000.00")))
       .thenReturn(Optional.of(faixaIsenta));
 
     when(calculadoraInss.calcularInss(any(InssRequest.class)))
@@ -86,8 +88,112 @@ public class CalculadoraIrrfTest {
     IrrfResponse response = calculadoraIrrf.calcularIrrf(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getIrrf()).isNotNull();
-    assertThat(response.getAliquota()).isNotNull();
+    assertThat(response.getIrrf()).isEqualTo(BigDecimal.ZERO);
+    assertThat(response.getAliquota()).isEqualTo(0.0);
+  }
+
+  @Test
+  public void calcularIrrf_deveCalcularIrrfPrimeiraFaixaSalarial() {
+
+    IrrfRequest request = new IrrfRequest();
+    request.setSalarioBruto(new BigDecimal("2530.00"));
+    request.setDependentes(0);
+
+    InssResponse inssResponse = new InssResponse();
+    inssResponse.setInss(new BigDecimal("211.48"));
+    inssResponse.setAliquota(7.5);
+
+    ParametroIrrf faixaIsenta = ParametroIrrfMock.getPrimeiraFaixaSalarial();
+
+    when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("2530.00")))
+      .thenReturn(Optional.of(faixaIsenta));
+
+    when(calculadoraInss.calcularInss(any(InssRequest.class)))
+      .thenReturn(inssResponse);
+
+    IrrfResponse response = calculadoraIrrf.calcularIrrf(request);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getIrrf()).isEqualTo(new BigDecimal("15.49"));
+    assertThat(response.getAliquota()).isEqualTo(7.5);
+  }
+
+  @Test
+  public void calcularIrrf_deveCalcularIrrfSegundaFaixaSalarial() {
+
+    IrrfRequest request = new IrrfRequest();
+    request.setSalarioBruto(new BigDecimal("3390.15"));
+    request.setDependentes(0);
+
+    InssResponse inssResponse = new InssResponse();
+    inssResponse.setInss(new BigDecimal("305.64"));
+    inssResponse.setAliquota(7.5);
+
+    ParametroIrrf faixaIsenta = ParametroIrrfMock.getSegundaFaixaSalarial();
+
+    when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("3390.15")))
+      .thenReturn(Optional.of(faixaIsenta));
+
+    when(calculadoraInss.calcularInss(any(InssRequest.class)))
+      .thenReturn(inssResponse);
+
+    IrrfResponse response = calculadoraIrrf.calcularIrrf(request);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getIrrf()).isEqualTo(new BigDecimal("92.28"));
+    assertThat(response.getAliquota()).isEqualTo(15.0);
+  }
+
+  @Test
+  public void calcularIrrf_deveCalcularIrrfTerceiraFaixaSalarial() {
+
+    IrrfRequest request = new IrrfRequest();
+    request.setSalarioBruto(new BigDecimal("4242.00"));
+    request.setDependentes(0);
+
+    InssResponse inssResponse = new InssResponse();
+    inssResponse.setInss(new BigDecimal("412.70"));
+    inssResponse.setAliquota(22.5);
+
+    ParametroIrrf faixaIsenta = ParametroIrrfMock.getTerceiraFaixaSalarial();
+
+    when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("4242.00")))
+      .thenReturn(Optional.of(faixaIsenta));
+
+    when(calculadoraInss.calcularInss(any(InssRequest.class)))
+      .thenReturn(inssResponse);
+
+    IrrfResponse response = calculadoraIrrf.calcularIrrf(request);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getIrrf()).isEqualTo(new BigDecimal("209.86"));
+    assertThat(response.getAliquota()).isEqualTo(22.5);
+  }
+
+  @Test
+  public void calcularIrrf_deveCalcularIrrfQuartaFaixaSalarial() {
+
+    IrrfRequest request = new IrrfRequest();
+    request.setSalarioBruto(new BigDecimal("5410.80"));
+    request.setDependentes(0);
+
+    InssResponse inssResponse = new InssResponse();
+    inssResponse.setInss(new BigDecimal("576.33"));
+    inssResponse.setAliquota(22.5);
+
+    ParametroIrrf faixaIsenta = ParametroIrrfMock.getQuartaFaixaSalarial();
+
+    when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("5410.80")))
+      .thenReturn(Optional.of(faixaIsenta));
+
+    when(calculadoraInss.calcularInss(any(InssRequest.class)))
+      .thenReturn(inssResponse);
+
+    IrrfResponse response = calculadoraIrrf.calcularIrrf(request);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getIrrf()).isEqualTo(new BigDecimal("444.52"));
+    assertThat(response.getAliquota()).isEqualTo(27.5);
   }
 
   @Test
@@ -117,7 +223,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveLancarExecaoQuandoNaoEncontrarParametroFaixaSalarial() {
+  public void calcularIrrf_deveLancarExcecaoQuandoNaoEncontrarParametroFaixaSalarial() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("4380"));
@@ -126,9 +232,28 @@ public class CalculadoraIrrfTest {
     when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("4380")))
       .thenReturn(Optional.empty());
 
-    ServiceException exception = assertThrows(ServiceException.class, () -> calculadoraIrrf.calcularIrrf(request));
+    ServiceException exception = assertThrows(ServiceException.class,
+      () -> calculadoraIrrf.calcularIrrf(request));
 
     String expectedMessage = "Não foi possível identificar a faixa salarial para o valor informado.";
+
+    assertThat(expectedMessage).isEqualTo(exception.getMessage());
+  }
+
+  @Test
+  public void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
+
+    IrrfRequest request = new IrrfRequest();
+    request.setSalarioBruto(new BigDecimal("4380"));
+    request.setDependentes(0);
+
+    when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("4380")))
+      .thenThrow(new RuntimeException("Erro inesperado."));
+
+    ServiceException exception = assertThrows(ServiceException.class,
+      () -> calculadoraIrrf.calcularIrrf(request));
+
+    String expectedMessage = "Desculpe, não foi possível completar a solicitação.";
 
     assertThat(expectedMessage).isEqualTo(exception.getMessage());
   }

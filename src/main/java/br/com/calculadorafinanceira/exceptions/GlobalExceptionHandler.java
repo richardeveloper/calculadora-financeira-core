@@ -1,7 +1,6 @@
 package br.com.calculadorafinanceira.exceptions;
 
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
-import br.com.calculadorafinanceira.exceptions.models.ValidationException;
 import br.com.calculadorafinanceira.exceptions.responses.ApiError;
 import br.com.calculadorafinanceira.exceptions.responses.ApiValidationError;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +20,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ApiError> handlerMethodArgumentNotValidException(HttpServletRequest request,
     MethodArgumentNotValidException exception) {
 
-    String error = "Foram encontrados dados incorretos na solicitação.";
+    String error = "Dados incorretos.";
 
     List<ApiValidationError> errors = exception
       .getBindingResult()
@@ -43,23 +42,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ApiError> handlerServiceException(HttpServletRequest request,
     ServiceException exception) {
 
-    String error = "Ocorreu um erro interno durante execução do serviço.";
-
-    String errorMessage = exception.getMessage();
-    HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-    String path = request.getRequestURI();
-    LocalDateTime timestamp = LocalDateTime.now();
-
-    ApiError apiError = new ApiError(error, errorMessage, status.value(), path, timestamp);
-
-    return new ResponseEntity<>(apiError, status);
-  }
-
-  @ExceptionHandler(ValidationException.class)
-  public ResponseEntity<ApiError> handlerValidationException(HttpServletRequest request,
-    ValidationException exception) {
-
-    String error = "Ação não permitida.";
+    String error = "Erro interno.";
 
     String errorMessage = exception.getMessage();
     HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -70,4 +53,5 @@ public class GlobalExceptionHandler {
 
     return new ResponseEntity<>(apiError, status);
   }
+
 }

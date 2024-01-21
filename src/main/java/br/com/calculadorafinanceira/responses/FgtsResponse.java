@@ -16,18 +16,9 @@ import java.math.BigDecimal;
 public class FgtsResponse {
 
   @Builder.Default
-  private Integer mesesTrabalhados = 0;
-
-  @Builder.Default
   private BigDecimal depositoMensal = BigDecimal.ZERO;
 
   @Builder.Default
-  private BigDecimal totalJuros = BigDecimal.ZERO;
-
-  @Builder.Default
   private BigDecimal totalDepositado = BigDecimal.ZERO;
-
-  @Builder.Default
-  private BigDecimal valorCorrigido = BigDecimal.ZERO;
-
+  
 }
