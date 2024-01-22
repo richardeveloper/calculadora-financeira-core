@@ -31,6 +31,7 @@ public class CalculadoraFerias {
   private static final Integer DAYS_OF_MONTH = 30;
   private static final Integer PRECISION_SCALE = 10;
   private static final BigDecimal ONE_THIRD = new BigDecimal("3");
+  private static final BigDecimal VACATION_DAYS_SELL = BigDecimal.TEN;
 
   public FeriasResponse calcularFerias(FeriasRequest request) throws ServiceException {
 
@@ -55,11 +56,9 @@ public class CalculadoraFerias {
       BigDecimal adiantamentoDecimoTerceiro = BigDecimal.ZERO;
 
       if (request.isAbonoPecuniario()) {
-        BigDecimal diasVendidos = BigDecimal.valueOf(DAYS_OF_MONTH).subtract(diasFerias);
-
         valorAbonoPecuniario = request.getSalarioBruto()
           .divide(BigDecimal.valueOf(DAYS_OF_MONTH), PRECISION_SCALE, RoundingMode.HALF_UP)
-          .multiply(diasVendidos).setScale(2, RoundingMode.HALF_UP);
+          .multiply(VACATION_DAYS_SELL).setScale(2, RoundingMode.HALF_UP);
 
         tercoAbonoPecuniario = valorAbonoPecuniario.divide(ONE_THIRD, 2, RoundingMode.HALF_UP);
       }

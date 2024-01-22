@@ -67,7 +67,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularIrrfIsento() {
+  public void calcularIrrf_deveCalcularValorIrrfIsento() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("2000.00"));
@@ -93,7 +93,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularIrrfPrimeiraFaixaSalarial() {
+  public void calcularIrrf_deveCalcularValorIrrfPrimeiraFaixaSalarial() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("2530.00"));
@@ -119,7 +119,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularIrrfSegundaFaixaSalarial() {
+  public void calcularIrrf_deveCalcularValorIrrfSegundaFaixaSalarial() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("3390.15"));
@@ -145,7 +145,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularIrrfTerceiraFaixaSalarial() {
+  public void calcularIrrf_deveCalcularValorIrrfTerceiraFaixaSalarial() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("4242.00"));
@@ -171,7 +171,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularIrrfQuartaFaixaSalarial() {
+  public void calcularIrrf_deveCalcularValorIrrfQuartaFaixaSalarial() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("5410.80"));
@@ -197,7 +197,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularIrrfComDependentesComSucesso() {
+  public void calcularIrrf_deveCalcularValorIrrfComDependentesComSucesso() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("3140"));

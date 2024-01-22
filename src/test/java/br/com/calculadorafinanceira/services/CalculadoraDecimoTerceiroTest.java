@@ -11,7 +11,6 @@ import br.com.calculadorafinanceira.responses.IrrfResponse;
 
 import org.assertj.core.api.Assertions;
 
-import org.assertj.core.api.ZonedDateTimeAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +45,7 @@ class CalculadoraDecimoTerceiroTest {
   public void calcularDecimoTerceiro_deveCalcularPrimeiraParcelaDecimoTerceiroSalario() {
 
     DecimoTerceiroRequest request = new DecimoTerceiroRequest();
-    request.setSalarioBruto(new BigDecimal("3500.00"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDependentes(0);
     request.setMesesTrabalhados(12);
     request.setTipoPagamento(TipoPagamento.PRIMEIRA_PARCELA);
@@ -54,26 +53,26 @@ class CalculadoraDecimoTerceiroTest {
     DecimoTerceiroResponse response = calculadoraDecimoTerceiro.calcularDecimoTerceiro(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getDecimoTerceiro()).isEqualTo(new BigDecimal("1750.00"));
+    assertThat(response.getDecimoTerceiro()).isEqualTo(new BigDecimal("25.00"));
     assertThat(response.getDescontoInss()).isEqualTo(BigDecimal.ZERO);
     assertThat(response.getDescontoIrrf()).isEqualTo(BigDecimal.ZERO);
-    assertThat(response.getValorAReceber()).isEqualTo(new BigDecimal("1750.00"));
+    assertThat(response.getValorAReceber()).isEqualTo(new BigDecimal("25.00"));
   }
 
   @Test
   public void calcularDecimoTerceiro_deveCalcularSegundaParcelaDecimoTerceiroSalario() {
 
     DecimoTerceiroRequest request = new DecimoTerceiroRequest();
-    request.setSalarioBruto(new BigDecimal("3500.00"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDependentes(0);
     request.setMesesTrabalhados(12);
     request.setTipoPagamento(TipoPagamento.SEGUNDA_PARCELA);
 
     InssResponse inssResponse = new InssResponse();
-    inssResponse.setInss(new BigDecimal("318.82"));
+    inssResponse.setInss(new BigDecimal("5.00"));
 
     IrrfResponse irrfResponse = new IrrfResponse();
-    irrfResponse.setIrrf(new BigDecimal("106.78"));
+    irrfResponse.setIrrf(new BigDecimal("5.00"));
 
     when(calculadoraInss.calcularInss(any(InssRequest.class))).thenReturn(inssResponse);
 
@@ -82,26 +81,26 @@ class CalculadoraDecimoTerceiroTest {
     DecimoTerceiroResponse response = calculadoraDecimoTerceiro.calcularDecimoTerceiro(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getDecimoTerceiro()).isEqualTo(new BigDecimal("1750.00"));
-    assertThat(response.getDescontoInss()).isEqualTo(new BigDecimal("318.82"));
-    assertThat(response.getDescontoIrrf()).isEqualTo(new BigDecimal("106.78"));
-    assertThat(response.getValorAReceber()).isEqualTo(new BigDecimal("1324.40"));
+    assertThat(response.getDecimoTerceiro()).isEqualTo(new BigDecimal("25.00"));
+    assertThat(response.getDescontoInss()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getDescontoIrrf()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getValorAReceber()).isEqualTo(new BigDecimal("15.00"));
   }
 
   @Test
   public void calcularDecimoTerceiro_deveCalcularParcelaUnicaDecimoTerceiroSalario() {
 
     DecimoTerceiroRequest request = new DecimoTerceiroRequest();
-    request.setSalarioBruto(new BigDecimal("3500.00"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDependentes(0);
     request.setMesesTrabalhados(12);
     request.setTipoPagamento(TipoPagamento.PARCELA_UNICA);
 
     InssResponse inssResponse = new InssResponse();
-    inssResponse.setInss(new BigDecimal("318.82"));
+    inssResponse.setInss(new BigDecimal("5.00"));
 
     IrrfResponse irrfResponse = new IrrfResponse();
-    irrfResponse.setIrrf(new BigDecimal("106.78"));
+    irrfResponse.setIrrf(new BigDecimal("5.00"));
 
     when(calculadoraInss.calcularInss(any(InssRequest.class))).thenReturn(inssResponse);
 
@@ -110,17 +109,17 @@ class CalculadoraDecimoTerceiroTest {
     DecimoTerceiroResponse response = calculadoraDecimoTerceiro.calcularDecimoTerceiro(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getDecimoTerceiro()).isEqualTo(new BigDecimal("3500.00"));
-    assertThat(response.getDescontoInss()).isEqualTo(new BigDecimal("318.82"));
-    assertThat(response.getDescontoIrrf()).isEqualTo(new BigDecimal("106.78"));
-    assertThat(response.getValorAReceber()).isEqualTo(new BigDecimal("3074.40"));
+    assertThat(response.getDecimoTerceiro()).isEqualTo(new BigDecimal("50.00"));
+    assertThat(response.getDescontoInss()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getDescontoIrrf()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getValorAReceber()).isEqualTo(new BigDecimal("40.00"));
   }
 
   @Test
   public void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroEsperado() {
 
     DecimoTerceiroRequest request = new DecimoTerceiroRequest();
-    request.setSalarioBruto(new BigDecimal(1));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDependentes(0);
     request.setMesesTrabalhados(12);
     request.setTipoPagamento(TipoPagamento.PARCELA_UNICA);
@@ -140,7 +139,7 @@ class CalculadoraDecimoTerceiroTest {
   public void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
 
     DecimoTerceiroRequest request = new DecimoTerceiroRequest();
-    request.setSalarioBruto(new BigDecimal(1));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDependentes(0);
     request.setMesesTrabalhados(12);
     request.setTipoPagamento(TipoPagamento.PARCELA_UNICA);

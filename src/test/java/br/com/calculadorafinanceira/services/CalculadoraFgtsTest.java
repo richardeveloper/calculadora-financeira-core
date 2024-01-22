@@ -27,11 +27,11 @@ class CalculadoraFgtsTest {
   }
 
   @Test
-  public void calcularFgts_deveLancarExcecaoQuandoDataSaidaMaiorQueDataEntrada() {
+  public void calcularFgts_deveLancarExcecaoQuandoDataSaidaSuperiorDataEntrada() {
 
     FgtsRequest request = new FgtsRequest();
-    request.setSalarioBruto(new BigDecimal("1"));
-    request.setDataEntrada(LocalDate.now().plusDays(1));
+    request.setSalarioBruto(new BigDecimal("50.00"));
+    request.setDataEntrada(LocalDate.now().plusDays(5));
     request.setDataSaida(LocalDate.now());
 
     ServiceException exception = assertThrows(ServiceException.class, () -> calculadoraFgts.calcularFgts(request));
@@ -42,18 +42,18 @@ class CalculadoraFgtsTest {
   }
 
   @Test
-  public void calcularFgts_deveCalcularFgtsComSucesso() {
+  public void calcularFgts_deveCalcularValorFgtsComSucesso() {
 
     FgtsRequest request = new FgtsRequest();
-    request.setSalarioBruto(new BigDecimal("2200.00"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDataEntrada(LocalDate.now().minusMonths(5));
     request.setDataSaida(LocalDate.now());
 
     FgtsResponse response = calculadoraFgts.calcularFgts(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getDepositoMensal()).isEqualTo(new BigDecimal("176.00"));
-    assertThat(response.getTotalDepositado()).isEqualTo(new BigDecimal("880.00"));
+    assertThat(response.getDepositoMensal()).isEqualTo(new BigDecimal("4.00"));
+    assertThat(response.getTotalDepositado()).isEqualTo(new BigDecimal("20.00"));
   }
 
 }

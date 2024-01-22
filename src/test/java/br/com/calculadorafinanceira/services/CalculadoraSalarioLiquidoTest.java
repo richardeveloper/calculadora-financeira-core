@@ -42,12 +42,12 @@ class CalculadoraSalarioLiquidoTest {
   }
 
   @Test
-  public void calcularSalarioLiquido_deveLancarExcecaoQuandoDescontosMaiorQueSalarioBruto() {
+  public void calcularSalarioLiquido_deveLancarExcecaoQuandoValorDescontosSuperiorSalarioBruto() {
 
     SalarioLiquidoRequest request = new SalarioLiquidoRequest();
-    request.setSalarioBruto(new BigDecimal("1300.00"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDependentes(0);
-    request.setDescontos(new BigDecimal("1500.00"));
+    request.setDescontos(new BigDecimal("150.00"));
 
     ServiceException exception = assertThrows(ServiceException.class,
       () -> calculadoraSalarioLiquido.calcularSalarioLiquido(request));
@@ -58,18 +58,18 @@ class CalculadoraSalarioLiquidoTest {
   }
 
   @Test
-  public void calcularSalarioLiquido_deveCalcularSalarioLiquidoComSucesso() {
+  public void calcularSalarioLiquido_deveCalcularValorSalarioLiquidoComSucesso() {
 
     SalarioLiquidoRequest request = new SalarioLiquidoRequest();
-    request.setSalarioBruto(new BigDecimal("2500.00"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDependentes(0);
     request.setDescontos(BigDecimal.ZERO);
 
     InssResponse inssResponse = new InssResponse();
-    inssResponse.setInss(new BigDecimal("280.00"));
+    inssResponse.setInss(new BigDecimal("5.00"));
 
     IrrfResponse irrfResponse = new IrrfResponse();
-    irrfResponse.setIrrf(new BigDecimal("120.00"));
+    irrfResponse.setIrrf(new BigDecimal("5.00"));
 
     when(calculadoraInss.calcularInss(any(InssRequest.class))).thenReturn(inssResponse);
 
@@ -78,16 +78,16 @@ class CalculadoraSalarioLiquidoTest {
     SalarioLiquidoResponse response = calculadoraSalarioLiquido.calcularSalarioLiquido(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getSalarioLiquido()).isEqualTo(new BigDecimal("2100.00"));
-    assertThat(response.getDescontoInss()).isNotNull();
-    assertThat(response.getDescontoIrrf()).isNotNull();
+    assertThat(response.getSalarioLiquido()).isEqualTo(new BigDecimal("40.00"));
+    assertThat(response.getDescontoInss()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getDescontoIrrf()).isEqualTo(new BigDecimal("5.00"));
   }
 
   @Test
   public void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
 
     SalarioLiquidoRequest request = new SalarioLiquidoRequest();
-    request.setSalarioBruto(new BigDecimal("10"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDependentes(0);
     request.setDescontos(BigDecimal.ZERO);
 

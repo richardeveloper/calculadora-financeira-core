@@ -46,10 +46,10 @@ class CalculadoraFeriasTest {
   }
 
   @Test
-  public void calcularFerias_deveLancarExcecaoQuandoAbonoMaiorQuePermitido() {
+  public void calcularFerias_deveLancarExcecaoQuandoDiasFeriasSuperiorVinteComAbonoPecuniario() {
 
     FeriasRequest request = new FeriasRequest();
-    request.setSalarioBruto(new BigDecimal("1000"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDiasFerias(21);
     request.setDependentes(0);
     request.setAbonoPecuniario(true);
@@ -64,22 +64,20 @@ class CalculadoraFeriasTest {
   }
 
   @Test
-  public void calcularFerias_deveCalcularFeriasComSucesso() {
+  public void calcularFerias_deveCalcularValorFeriasIntegralComSucesso() {
 
     FeriasRequest request = new FeriasRequest();
-    request.setSalarioBruto(new BigDecimal("1000"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDiasFerias(30);
     request.setDependentes(0);
     request.setAbonoPecuniario(false);
     request.setAdiantamentoDecimoTerceiro(false);
 
     InssResponse inssResponse = new InssResponse();
-    inssResponse.setInss(new BigDecimal("1"));
-    inssResponse.setAliquota(1.0);
+    inssResponse.setInss(new BigDecimal("5.00"));
 
     IrrfResponse irrfResponse = new IrrfResponse();
-    irrfResponse.setIrrf(new BigDecimal("1"));
-    irrfResponse.setAliquota(1.0);
+    irrfResponse.setIrrf(new BigDecimal("5.00"));
 
     when(calculadoraInss.calcularInss(any(InssRequest.class))).thenReturn(inssResponse);
 
@@ -88,33 +86,31 @@ class CalculadoraFeriasTest {
     FeriasResponse response = calculadoraFerias.calcularFerias(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getSaldoFerias()).isNotNull();
-    assertThat(response.getTercoFerias()).isNotNull();
+    assertThat(response.getSaldoFerias()).isEqualTo(new BigDecimal("50.00"));
+    assertThat(response.getTercoFerias()).isEqualTo(new BigDecimal("16.67"));
     assertThat(response.getAbonoPecuniario()).isEqualTo(BigDecimal.ZERO);
     assertThat(response.getTercoAbonoPecuniario()).isEqualTo(BigDecimal.ZERO);
     assertThat(response.getAdiantamentoDecimoTerceiro()).isEqualTo(BigDecimal.ZERO);
-    assertThat(response.getDescontoInss()).isNotNull();
-    assertThat(response.getDescontoIrrf()).isNotNull();
-    assertThat(response.getTotalFerias()).isNotNull();
+    assertThat(response.getDescontoInss()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getDescontoIrrf()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getTotalFerias()).isEqualTo(new BigDecimal("56.67"));
   }
 
   @Test
-  public void calcularFerias_deveCalcularFeriasComAbonoPecuniario() {
+  public void calcularFerias_deveCalcularValorFeriasParcialComAbonoPecuniario() {
 
     FeriasRequest request = new FeriasRequest();
-    request.setSalarioBruto(new BigDecimal("1"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDiasFerias(10);
     request.setDependentes(0);
     request.setAbonoPecuniario(true);
     request.setAdiantamentoDecimoTerceiro(false);
 
     InssResponse inssResponse = new InssResponse();
-    inssResponse.setInss(new BigDecimal("1"));
-    inssResponse.setAliquota(1.0);
+    inssResponse.setInss(new BigDecimal("5.00"));
 
     IrrfResponse irrfResponse = new IrrfResponse();
-    irrfResponse.setIrrf(new BigDecimal("1"));
-    irrfResponse.setAliquota(1.0);
+    irrfResponse.setIrrf(new BigDecimal("5.00"));
 
     when(calculadoraInss.calcularInss(any(InssRequest.class))).thenReturn(inssResponse);
 
@@ -123,39 +119,37 @@ class CalculadoraFeriasTest {
     FeriasResponse response = calculadoraFerias.calcularFerias(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getSaldoFerias()).isNotNull();
-    assertThat(response.getTercoFerias()).isNotNull();
-    assertThat(response.getAbonoPecuniario()).isNotNull();
-    assertThat(response.getTercoAbonoPecuniario()).isNotNull();
+    assertThat(response.getSaldoFerias()).isEqualTo(new BigDecimal("16.67"));
+    assertThat(response.getTercoFerias()).isEqualTo(new BigDecimal("5.56"));
+    assertThat(response.getAbonoPecuniario()).isEqualTo(new BigDecimal("16.67"));
+    assertThat(response.getTercoAbonoPecuniario()).isEqualTo(new BigDecimal("5.56"));
     assertThat(response.getAdiantamentoDecimoTerceiro()).isEqualTo(BigDecimal.ZERO);
-    assertThat(response.getDescontoInss()).isNotNull();
-    assertThat(response.getDescontoIrrf()).isNotNull();
-    assertThat(response.getTotalFerias()).isNotNull();
+    assertThat(response.getDescontoInss()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getDescontoIrrf()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getTotalFerias()).isEqualTo(new BigDecimal("34.46"));
   }
 
   @Test
-  public void calcularFerias_deveCalcularFeriasAdiantamentoDecimoTerceiroSalario() {
+  public void calcularFerias_deveCalcularValorFeriasParcialComAdiantamentoDecimoTerceiroSalario() {
 
     FeriasRequest request = new FeriasRequest();
-    request.setSalarioBruto(new BigDecimal("1"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDiasFerias(30);
     request.setDependentes(0);
     request.setAbonoPecuniario(false);
     request.setAdiantamentoDecimoTerceiro(true);
 
     InssResponse inssResponse = new InssResponse();
-    inssResponse.setInss(new BigDecimal("1"));
-    inssResponse.setAliquota(1.0);
+    inssResponse.setInss(new BigDecimal("5.00"));
 
     IrrfResponse irrfResponse = new IrrfResponse();
-    irrfResponse.setIrrf(new BigDecimal("1"));
-    irrfResponse.setAliquota(1.0);
+    irrfResponse.setIrrf(new BigDecimal("5.00"));
 
     DecimoTerceiroResponse decimoTerceiroResponse = new DecimoTerceiroResponse();
-    decimoTerceiroResponse.setDecimoTerceiro(new BigDecimal("5"));
-    decimoTerceiroResponse.setDescontoInss(new BigDecimal("1"));
-    decimoTerceiroResponse.setDescontoIrrf(new BigDecimal("1"));
-    decimoTerceiroResponse.setValorAReceber(new BigDecimal("3"));
+    decimoTerceiroResponse.setDecimoTerceiro(new BigDecimal("10.00"));
+    decimoTerceiroResponse.setDescontoInss(new BigDecimal("2.00"));
+    decimoTerceiroResponse.setDescontoIrrf(new BigDecimal("3.00"));
+    decimoTerceiroResponse.setValorAReceber(new BigDecimal("5.00"));
 
     when(calculadoraInss.calcularInss(any(InssRequest.class))).thenReturn(inssResponse);
 
@@ -167,21 +161,21 @@ class CalculadoraFeriasTest {
     FeriasResponse response = calculadoraFerias.calcularFerias(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getSaldoFerias()).isNotNull();
-    assertThat(response.getTercoFerias()).isNotNull();
+    assertThat(response.getSaldoFerias()).isEqualTo(new BigDecimal("50.00"));
+    assertThat(response.getTercoFerias()).isEqualTo(new BigDecimal("16.67"));
     assertThat(response.getAbonoPecuniario()).isEqualTo(BigDecimal.ZERO);
     assertThat(response.getTercoAbonoPecuniario()).isEqualTo(BigDecimal.ZERO);
-    assertThat(response.getAdiantamentoDecimoTerceiro()).isNotNull();
-    assertThat(response.getDescontoInss()).isNotNull();
-    assertThat(response.getDescontoIrrf()).isNotNull();
-    assertThat(response.getTotalFerias()).isNotNull();
+    assertThat(response.getAdiantamentoDecimoTerceiro()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getDescontoInss()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getDescontoIrrf()).isEqualTo(new BigDecimal("5.00"));
+    assertThat(response.getTotalFerias()).isEqualTo(new BigDecimal("61.67"));
   }
 
   @Test
   public void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
 
     FeriasRequest request = new FeriasRequest();
-    request.setSalarioBruto(new BigDecimal("1"));
+    request.setSalarioBruto(new BigDecimal("50.00"));
     request.setDiasFerias(30);
     request.setDependentes(0);
     request.setAbonoPecuniario(false);
