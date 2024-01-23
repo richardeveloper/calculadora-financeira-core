@@ -42,7 +42,7 @@ class CalculadoraSalarioLiquidoTest {
   }
 
   @Test
-  public void calcularSalarioLiquido_deveLancarExcecaoQuandoValorDescontosSuperiorSalarioBruto() {
+  void calcularSalarioLiquido_deveLancarExcecaoQuandoValorDescontosSuperiorSalarioBruto() {
 
     SalarioLiquidoRequest request = new SalarioLiquidoRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -58,7 +58,7 @@ class CalculadoraSalarioLiquidoTest {
   }
 
   @Test
-  public void calcularSalarioLiquido_deveCalcularValorSalarioLiquidoComSucesso() {
+  void calcularSalarioLiquido_deveCalcularValorSalarioLiquidoComSucesso() {
 
     SalarioLiquidoRequest request = new SalarioLiquidoRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -84,7 +84,7 @@ class CalculadoraSalarioLiquidoTest {
   }
 
   @Test
-  public void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
+  void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
 
     SalarioLiquidoRequest request = new SalarioLiquidoRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));

@@ -42,7 +42,7 @@ class CalculadoraDecimoTerceiroTest {
   }
 
   @Test
-  public void calcularDecimoTerceiro_deveCalcularPrimeiraParcelaDecimoTerceiroSalario() {
+  void calcularDecimoTerceiro_deveCalcularPrimeiraParcelaDecimoTerceiroSalario() {
 
     DecimoTerceiroRequest request = new DecimoTerceiroRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -60,7 +60,7 @@ class CalculadoraDecimoTerceiroTest {
   }
 
   @Test
-  public void calcularDecimoTerceiro_deveCalcularSegundaParcelaDecimoTerceiroSalario() {
+  void calcularDecimoTerceiro_deveCalcularSegundaParcelaDecimoTerceiroSalario() {
 
     DecimoTerceiroRequest request = new DecimoTerceiroRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -88,7 +88,7 @@ class CalculadoraDecimoTerceiroTest {
   }
 
   @Test
-  public void calcularDecimoTerceiro_deveCalcularParcelaUnicaDecimoTerceiroSalario() {
+  void calcularDecimoTerceiro_deveCalcularParcelaUnicaDecimoTerceiroSalario() {
 
     DecimoTerceiroRequest request = new DecimoTerceiroRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -116,7 +116,7 @@ class CalculadoraDecimoTerceiroTest {
   }
 
   @Test
-  public void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroEsperado() {
+  void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroEsperado() {
 
     DecimoTerceiroRequest request = new DecimoTerceiroRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -136,7 +136,7 @@ class CalculadoraDecimoTerceiroTest {
   }
 
   @Test
-  public void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
+  void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
 
     DecimoTerceiroRequest request = new DecimoTerceiroRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));

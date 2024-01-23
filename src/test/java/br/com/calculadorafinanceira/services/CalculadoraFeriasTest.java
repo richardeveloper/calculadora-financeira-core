@@ -46,7 +46,7 @@ class CalculadoraFeriasTest {
   }
 
   @Test
-  public void calcularFerias_deveLancarExcecaoQuandoDiasFeriasSuperiorVinteComAbonoPecuniario() {
+  void calcularFerias_deveLancarExcecaoQuandoDiasFeriasSuperiorVinteComAbonoPecuniario() {
 
     FeriasRequest request = new FeriasRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -64,7 +64,7 @@ class CalculadoraFeriasTest {
   }
 
   @Test
-  public void calcularFerias_deveCalcularValorFeriasIntegralComSucesso() {
+  void calcularFerias_deveCalcularValorFeriasIntegralComSucesso() {
 
     FeriasRequest request = new FeriasRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -97,7 +97,7 @@ class CalculadoraFeriasTest {
   }
 
   @Test
-  public void calcularFerias_deveCalcularValorFeriasParcialComAbonoPecuniario() {
+  void calcularFerias_deveCalcularValorFeriasParcialComAbonoPecuniario() {
 
     FeriasRequest request = new FeriasRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -130,7 +130,7 @@ class CalculadoraFeriasTest {
   }
 
   @Test
-  public void calcularFerias_deveCalcularValorFeriasParcialComAdiantamentoDecimoTerceiroSalario() {
+  void calcularFerias_deveCalcularValorFeriasParcialComAdiantamentoDecimoTerceiroSalario() {
 
     FeriasRequest request = new FeriasRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -172,7 +172,7 @@ class CalculadoraFeriasTest {
   }
 
   @Test
-  public void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
+  void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
 
     FeriasRequest request = new FeriasRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));

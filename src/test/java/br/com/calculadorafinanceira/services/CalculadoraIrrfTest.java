@@ -24,7 +24,7 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class CalculadoraIrrfTest {
+class CalculadoraIrrfTest {
 
   @Mock
   ParametroIrrfRepository parametroIrrfRepository;
@@ -36,12 +36,12 @@ public class CalculadoraIrrfTest {
   CalculadoraIrrf calculadoraIrrf;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
   }
 
   @Test
-  public void calcularIrrf_deveRetornarZeroQuandoSalarioBrutoIgualZero() {
+  void calcularIrrf_deveRetornarZeroQuandoSalarioBrutoIgualZero() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(BigDecimal.ZERO);
@@ -67,7 +67,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularValorIrrfIsento() {
+  void calcularIrrf_deveCalcularValorIrrfIsento() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("2000.00"));
@@ -93,7 +93,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularValorIrrfPrimeiraFaixaSalarial() {
+  void calcularIrrf_deveCalcularValorIrrfPrimeiraFaixaSalarial() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("2530.00"));
@@ -119,7 +119,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularValorIrrfSegundaFaixaSalarial() {
+  void calcularIrrf_deveCalcularValorIrrfSegundaFaixaSalarial() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("3390.15"));
@@ -145,7 +145,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularValorIrrfTerceiraFaixaSalarial() {
+  void calcularIrrf_deveCalcularValorIrrfTerceiraFaixaSalarial() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("4242.00"));
@@ -171,7 +171,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularValorIrrfQuartaFaixaSalarial() {
+  void calcularIrrf_deveCalcularValorIrrfQuartaFaixaSalarial() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("5410.80"));
@@ -197,7 +197,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveCalcularValorIrrfComDependentesComSucesso() {
+  void calcularIrrf_deveCalcularValorIrrfComDependentesComSucesso() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("3140"));
@@ -223,7 +223,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveLancarExcecaoQuandoNaoEncontrarParametroFaixaSalarial() {
+  void calcularIrrf_deveLancarExcecaoQuandoNaoEncontrarParametroFaixaSalarial() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("4380"));
@@ -241,7 +241,7 @@ public class CalculadoraIrrfTest {
   }
 
   @Test
-  public void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
+  void calcularIrrf_deveLancarExcecaoQuandoOcorrerErroInesperado() {
 
     IrrfRequest request = new IrrfRequest();
     request.setSalarioBruto(new BigDecimal("4380"));

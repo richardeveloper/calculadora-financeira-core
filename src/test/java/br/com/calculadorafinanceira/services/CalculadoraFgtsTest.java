@@ -27,7 +27,7 @@ class CalculadoraFgtsTest {
   }
 
   @Test
-  public void calcularFgts_deveLancarExcecaoQuandoDataSaidaSuperiorDataEntrada() {
+  void calcularFgts_deveLancarExcecaoQuandoDataSaidaSuperiorDataEntrada() {
 
     FgtsRequest request = new FgtsRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));
@@ -42,7 +42,7 @@ class CalculadoraFgtsTest {
   }
 
   @Test
-  public void calcularFgts_deveCalcularValorFgtsComSucesso() {
+  void calcularFgts_deveCalcularValorFgtsComSucesso() {
 
     FgtsRequest request = new FgtsRequest();
     request.setSalarioBruto(new BigDecimal("50.00"));

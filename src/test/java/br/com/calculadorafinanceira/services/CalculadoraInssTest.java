@@ -32,12 +32,12 @@ class CalculadoraInssTest {
   CalculadoraInss calculadoraInss;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
   }
 
   @Test
-  public void calularInss_deveRetornarInssZeroQuandoSalarioIgualZero() {
+  void calularInss_deveRetornarInssZeroQuandoSalarioIgualZero() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(BigDecimal.ZERO);
@@ -49,7 +49,7 @@ class CalculadoraInssTest {
   }
 
   @Test
-  public void calularInss_deveCalcularInssPrimeiraFaixaSalarial() {
+  void calularInss_deveCalcularInssPrimeiraFaixaSalarial() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("1280.00"));
@@ -67,7 +67,7 @@ class CalculadoraInssTest {
   }
 
   @Test
-  public void calularInss_deveLancarExcecaoQuandoNaoEncontrarPrimeiraFaixaInss() {
+  void calularInss_deveLancarExcecaoQuandoNaoEncontrarPrimeiraFaixaInss() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("1280.00"));
@@ -84,7 +84,7 @@ class CalculadoraInssTest {
   }
 
   @Test
-  public void calularInss_deveCalcularInssSegundaFaixaSalarial() {
+  void calularInss_deveCalcularInssSegundaFaixaSalarial() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("2360.00"));
@@ -107,7 +107,7 @@ class CalculadoraInssTest {
   }
 
   @Test
-  public void calularInss_deveLancarExcecaoQuandoNaoEncontrarParametroSegundaFaixaSalarial() {
+  void calularInss_deveLancarExcecaoQuandoNaoEncontrarParametroSegundaFaixaSalarial() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("2360.00"));
@@ -129,7 +129,7 @@ class CalculadoraInssTest {
   }
 
   @Test
-  public void calularInss_deveCalcularInssTerceiraFaixaSalarial() {
+  void calularInss_deveCalcularInssTerceiraFaixaSalarial() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("3000.00"));
@@ -157,7 +157,7 @@ class CalculadoraInssTest {
   }
 
   @Test
-  public void calularInss_deveLancarExcecaoQuandoNaoEncontrarParametroTerceiraFaixaSalarial() {
+  void calularInss_deveLancarExcecaoQuandoNaoEncontrarParametroTerceiraFaixaSalarial() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("3000.00"));
@@ -184,7 +184,7 @@ class CalculadoraInssTest {
   }
 
   @Test
-  public void calularInss_deveCalcularInssQuartaFaixaSalarial() {
+  void calularInss_deveCalcularInssQuartaFaixaSalarial() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("5164.09"));
@@ -217,7 +217,7 @@ class CalculadoraInssTest {
   }
 
   @Test
-  public void calularInss_deveLancarExcecaoQuandoNaoEncontrarParametroQuartaFaixaSalarial() {
+  void calularInss_deveLancarExcecaoQuandoNaoEncontrarParametroQuartaFaixaSalarial() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("5164.09"));
@@ -250,7 +250,7 @@ class CalculadoraInssTest {
   }
 
   @Test
-  public void calularInss_deveCalcularTetoInss() {
+  void calularInss_deveCalcularTetoInss() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("7796.02"));
@@ -283,7 +283,7 @@ class CalculadoraInssTest {
   }
 
   @Test
-  public void calcularInss_deveLancarExcecaoQuandoOcorrerErroInesperado() {
+  void calcularInss_deveLancarExcecaoQuandoOcorrerErroInesperado() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("4380.00"));

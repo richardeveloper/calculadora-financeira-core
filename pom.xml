@@ -112,8 +112,13 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>br/com/calculadorafinanceira/requests/**</exclude>
+						<exclude>br/com/calculadorafinanceira/responses/**</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 
