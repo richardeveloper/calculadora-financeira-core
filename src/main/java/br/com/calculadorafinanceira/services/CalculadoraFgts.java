@@ -34,6 +34,7 @@ public class CalculadoraFgts {
 
       return FgtsResponse.builder()
         .depositoMensal(depositoMensal)
+        .mesesTrabalhados((int) mesesTrabalhados)
         .totalDepositado(totalDepositado)
         .build();
 
