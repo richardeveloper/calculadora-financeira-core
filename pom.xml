@@ -17,11 +17,11 @@
 
 	<properties>
 		<java.version>17</java.version>
-<!--		<sonar.exclusions>**/requests/**</sonar.exclusions>-->
-<!--		<sonar.exclusions>**/responses/**</sonar.exclusions>-->
 	</properties>
 
 	<dependencies>
+
+		<!-- STARTERS -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -41,10 +41,17 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- DATABASE -->
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -52,10 +59,7 @@
 			<version>42.6.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
+		<!-- UTILS -->
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -73,11 +77,6 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.1.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
 	</dependencies>
@@ -123,10 +122,12 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 
 	<profiles>
+
 		<profile>
 			<id>dev</id>
 			<properties>
@@ -134,16 +135,15 @@
 				<profileActive>dev</profileActive>
 			</properties>
 		</profile>
+
 		<profile>
-			<id>test</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
+			<id>local</id>
 			<properties>
-				<build.profile.id>test</build.profile.id>
-				<profileActive>test</profileActive>
+				<build.profile.id>local</build.profile.id>
+				<profileActive>local</profileActive>
 			</properties>
 		</profile>
+
 		<profile>
 			<id>prod</id>
 			<properties>
@@ -151,6 +151,7 @@
 				<profileActive>prod</profileActive>
 			</properties>
 		</profile>
+
 	</profiles>
 
 </project>

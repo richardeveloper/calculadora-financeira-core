@@ -4,6 +4,9 @@ spring:
   profiles:
     active: "@profileActive@"
 
+server:
+  port: 8080
+
 springdoc:
   api-docs:
     path: /api-docs
