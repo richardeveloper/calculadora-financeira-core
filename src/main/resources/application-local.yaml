@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: ${POSTGRES_LOCAL_URL}
-    username: ${POSTGRES_LOCAL_USERNAME}
-    password: ${POSTGRES_LOCAL_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:mem:calculadora_financeira
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.H2Dialect
