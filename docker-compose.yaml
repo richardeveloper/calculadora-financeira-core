@@ -1,0 +1,25 @@
+services:
+  database:
+    image: postgres:15
+    container_name: database
+    restart: always
+    environment:
+      - POSTGRES_DB=calculadora_financeira
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432
+
+  app:
+    container_name: calculadora-financeira-core
+    depends_on:
+      - database
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_URL=jdbc:postgresql://database:5432/calculadora_financeira
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 8080:8080

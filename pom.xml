@@ -51,18 +51,12 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- DATABASES -->
+		<!-- DATABASE -->
 
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.6.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 
 		<!-- OTHERS -->
@@ -137,6 +131,9 @@
 
 		<profile>
 			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<properties>
 				<build.profile.id>dev</build.profile.id>
 				<profileActive>dev</profileActive>
@@ -145,9 +142,6 @@
 
 		<profile>
 			<id>local</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<build.profile.id>local</build.profile.id>
 				<profileActive>local</profileActive>
