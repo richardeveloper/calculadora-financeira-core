@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Configuration
-@Profile(value = "!prod")
+@Profile(value = "local")
 public class SetupConfig implements CommandLineRunner {
 
   @Autowired
