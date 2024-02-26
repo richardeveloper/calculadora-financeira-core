@@ -52,7 +52,7 @@ class CalculadoraSalarioLiquidoTest {
     ServiceException exception = assertThrows(ServiceException.class,
       () -> calculadoraSalarioLiquido.calcularSalarioLiquido(request));
 
-    String expectedMessage = "O valor dos descontos não pode ser superior ao valor do salário bruto.";
+    String expectedMessage = "O valor dos descontos deve ser inferior ao valor do salário bruto.";
 
     assertThat(expectedMessage).isEqualTo(exception.getMessage());
   }

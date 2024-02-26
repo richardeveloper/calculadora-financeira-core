@@ -10,10 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.TemporalField;
 
 @Slf4j
 @Service
 public class CalculadoraSalarioLiquido {
+
+  private static final Integer SCALE_PRECISION = 10;
 
   @Autowired
   private CalculadoraInss calculadoraInss;
@@ -25,26 +32,34 @@ public class CalculadoraSalarioLiquido {
 
     try {
       if (request.getDescontos().compareTo(request.getSalarioBruto()) >= 0) {
-        throw new ServiceException("O valor dos descontos não pode ser superior ao valor do salário bruto.");
+        throw new ServiceException("O valor dos descontos deve ser inferior ao valor do salário bruto.");
       }
 
+      int totalDiasMes = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();
+
+      BigDecimal salarioProporcional = request.getSalarioBruto()
+        .divide(BigDecimal.valueOf(totalDiasMes), SCALE_PRECISION, RoundingMode.HALF_UP)
+        .multiply(BigDecimal.valueOf(request.getDiasTrabalhados()))
+        .setScale(2, RoundingMode.HALF_UP);
+
       InssRequest inssRequest = InssRequest.builder()
-        .salarioBruto(request.getSalarioBruto())
+        .salarioBruto(salarioProporcional)
         .build();
 
       BigDecimal inss = calculadoraInss.calcularInss(inssRequest).getInss();
 
       IrrfRequest irrfRequest = IrrfRequest.builder()
-        .salarioBruto(request.getSalarioBruto())
+        .salarioBruto(salarioProporcional)
         .dependentes(request.getDependentes())
         .build();
 
       BigDecimal irrf = calculadoraIrrf.calcularIrrf(irrfRequest).getIrrf();
 
-      BigDecimal salarioLiquido = request.getSalarioBruto()
+      BigDecimal salarioLiquido = salarioProporcional
         .subtract(inss)
         .subtract(irrf)
-        .subtract(request.getDescontos());
+        .subtract(request.getDescontos())
+        .setScale(2, RoundingMode.HALF_UP);
 
       return SalarioLiquidoResponse.builder()
         .descontoInss(inss)

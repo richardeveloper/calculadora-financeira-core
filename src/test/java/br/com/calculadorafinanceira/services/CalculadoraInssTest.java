@@ -52,25 +52,25 @@ class CalculadoraInssTest {
   void calularInss_deveCalcularInssPrimeiraFaixaSalarial() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("1280.00"));
+    request.setSalarioBruto(new BigDecimal("5.00"));
 
-    ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    ParametroInss primeiraFaixaSalarial = ParametroInssMock.getPrimeiraFaixaSalarial();
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(primeiraFaixa));
+      .thenReturn(Optional.of(primeiraFaixaSalarial));
 
     InssResponse response = calculadoraInss.calcularInss(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getInss()).isEqualTo(new BigDecimal("96.00"));
-    assertThat(response.getAliquota()).isEqualTo(7.5);
+    assertThat(response.getInss()).isEqualTo(new BigDecimal("0.05"));
+    assertThat(response.getAliquota()).isEqualTo(1.0);
   }
 
   @Test
   void calularInss_deveLancarExcecaoQuandoNaoEncontrarPrimeiraFaixaInss() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("1280.00"));
+    request.setSalarioBruto(new BigDecimal("5.00"));
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
       .thenReturn(Optional.empty());
@@ -87,7 +87,7 @@ class CalculadoraInssTest {
   void calularInss_deveCalcularInssSegundaFaixaSalarial() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("2360.00"));
+    request.setSalarioBruto(new BigDecimal("15.00"));
 
     ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
@@ -102,15 +102,15 @@ class CalculadoraInssTest {
     InssResponse response = calculadoraInss.calcularInss(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getInss()).isEqualTo(new BigDecimal("191.22"));
-    assertThat(response.getAliquota()).isEqualTo(9.0);
+    assertThat(response.getInss()).isEqualTo(new BigDecimal("0.20"));
+    assertThat(response.getAliquota()).isEqualTo(2.0);
   }
 
   @Test
   void calularInss_deveLancarExcecaoQuandoNaoEncontrarParametroSegundaFaixaSalarial() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("2360.00"));
+    request.setSalarioBruto(new BigDecimal("15.00"));
 
     ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
@@ -132,7 +132,7 @@ class CalculadoraInssTest {
   void calularInss_deveCalcularInssTerceiraFaixaSalarial() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("3000.00"));
+    request.setSalarioBruto(new BigDecimal("25.00"));
 
     ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
@@ -152,15 +152,15 @@ class CalculadoraInssTest {
     InssResponse response = calculadoraInss.calcularInss(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getInss()).isEqualTo(new BigDecimal("258.82"));
-    assertThat(response.getAliquota()).isEqualTo(12.0);
+    assertThat(response.getInss()).isEqualTo(new BigDecimal("0.45"));
+    assertThat(response.getAliquota()).isEqualTo(3.0);
   }
 
   @Test
   void calularInss_deveLancarExcecaoQuandoNaoEncontrarParametroTerceiraFaixaSalarial() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("3000.00"));
+    request.setSalarioBruto(new BigDecimal("25.00"));
 
     ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
@@ -187,7 +187,7 @@ class CalculadoraInssTest {
   void calularInss_deveCalcularInssQuartaFaixaSalarial() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("5164.09"));
+    request.setSalarioBruto(new BigDecimal("35.00"));
 
     ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
@@ -212,15 +212,15 @@ class CalculadoraInssTest {
     InssResponse response = calculadoraInss.calcularInss(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getInss()).isEqualTo(new BigDecimal("541.79"));
-    assertThat(response.getAliquota()).isEqualTo(14.0);
+    assertThat(response.getInss()).isEqualTo(new BigDecimal("0.80"));
+    assertThat(response.getAliquota()).isEqualTo(4.0);
   }
 
   @Test
   void calularInss_deveLancarExcecaoQuandoNaoEncontrarParametroQuartaFaixaSalarial() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("5164.09"));
+    request.setSalarioBruto(new BigDecimal("35.00"));
 
     ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
@@ -253,7 +253,7 @@ class CalculadoraInssTest {
   void calularInss_deveCalcularTetoInss() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("7796.02"));
+    request.setSalarioBruto(new BigDecimal("40.00"));
 
     ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
@@ -278,15 +278,15 @@ class CalculadoraInssTest {
     InssResponse response = calculadoraInss.calcularInss(request);
 
     assertThat(response).isNotNull();
-    assertThat(response.getInss()).isEqualTo(new BigDecimal("908.86"));
-    assertThat(response.getAliquota()).isEqualTo(14.0);
+    assertThat(response.getInss()).isEqualTo(new BigDecimal("1.00"));
+    assertThat(response.getAliquota()).isEqualTo(4.0);
   }
 
   @Test
   void calcularInss_deveLancarExcecaoQuandoOcorrerErroInesperado() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("4380.00"));
+    request.setSalarioBruto(new BigDecimal("40.00"));
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
       .thenThrow(new RuntimeException("Erro inesperado."));

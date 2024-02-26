@@ -17,10 +17,9 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ApiError> handlerMethodArgumentNotValidException(HttpServletRequest request,
-    MethodArgumentNotValidException exception) {
+  public ResponseEntity<ApiError> handlerMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException exception) {
 
-    String error = "Dados incorretos.";
+    String error = "Dados informados incorretos.";
 
     List<ApiValidationError> errors = exception
       .getBindingResult()
@@ -39,10 +38,9 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(ServiceException.class)
-  public ResponseEntity<ApiError> handlerServiceException(HttpServletRequest request,
-    ServiceException exception) {
+  public ResponseEntity<ApiError> handlerServiceException(HttpServletRequest request, ServiceException exception) {
 
-    String error = "Erro interno.";
+    String error = "Houve um erro ao processar a operação.";
 
     String errorMessage = exception.getMessage();
     HttpStatus status = HttpStatus.BAD_REQUEST;
