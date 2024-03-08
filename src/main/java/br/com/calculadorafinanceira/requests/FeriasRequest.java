@@ -3,6 +3,7 @@ package br.com.calculadorafinanceira.requests;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,5 +38,9 @@ public class FeriasRequest {
 
   @NotNull(message = "O campo adiantamentoDecimoTerceiro é obrigatório.")
   private boolean adiantamentoDecimoTerceiro;
+
+  public boolean isAbonoPecuniarioInvalido() {
+    return abonoPecuniario && diasFerias > 20;
+  }
 
 }

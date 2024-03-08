@@ -80,6 +80,14 @@
 			<version>2.1.0</version>
 		</dependency>
 
+		<!-- FEIGN CLIENT -->
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<version>3.1.9</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

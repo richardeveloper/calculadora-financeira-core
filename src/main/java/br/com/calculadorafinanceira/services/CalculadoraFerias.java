@@ -36,19 +36,19 @@ public class CalculadoraFerias {
   public FeriasResponse calcularFerias(FeriasRequest request) throws ServiceException {
 
     try {
-      if (request.isAbonoPecuniario() && request.getDiasFerias() > 20) {
+      if (request.isAbonoPecuniarioInvalido()) {
         throw new ServiceException("Ao solicitar o abono pecuniário, a quantidade máxima permitida para solicitar é de 20 dias de férias.");
       }
 
-      BigDecimal diasFerias = BigDecimal.valueOf(request.getDiasFerias());
+      BigDecimal totalDiasFerias = BigDecimal.valueOf(request.getDiasFerias());
 
-      BigDecimal saldoFerias = request.getSalarioBruto()
+      BigDecimal saldoTotalFerias = request.getSalarioBruto()
         .divide(BigDecimal.valueOf(DAYS_OF_MONTH), PRECISION_SCALE, RoundingMode.HALF_UP)
-        .multiply(diasFerias).setScale(2, RoundingMode.HALF_UP);
+        .multiply(totalDiasFerias).setScale(2, RoundingMode.HALF_UP);
 
-      BigDecimal tercoFerias = saldoFerias.divide(ONE_THIRD, 2, RoundingMode.HALF_UP);
+      BigDecimal saldoTercoFerias = saldoTotalFerias.divide(ONE_THIRD, 2, RoundingMode.HALF_UP);
 
-      BigDecimal baseParaCalculoImpostos = saldoFerias.add(tercoFerias);
+      BigDecimal baseParaCalculoImpostos = saldoTotalFerias.add(saldoTercoFerias);
 
       BigDecimal valorAbonoPecuniario = BigDecimal.ZERO;
       BigDecimal tercoAbonoPecuniario = BigDecimal.ZERO;
@@ -89,8 +89,8 @@ public class CalculadoraFerias {
 
       BigDecimal irrf = calculadoraIrrf.calcularIrrf(irrfRequest).getIrrf();
 
-      BigDecimal totalFerias = saldoFerias
-        .add(tercoFerias)
+      BigDecimal totalFerias = saldoTotalFerias
+        .add(saldoTercoFerias)
         .add(valorAbonoPecuniario)
         .add(tercoAbonoPecuniario)
         .add(adiantamentoDecimoTerceiro)
@@ -98,8 +98,8 @@ public class CalculadoraFerias {
         .subtract(irrf);
 
       return FeriasResponse.builder()
-        .saldoFerias(saldoFerias)
-        .tercoFerias(tercoFerias)
+        .saldoFerias(saldoTotalFerias)
+        .tercoFerias(saldoTercoFerias)
         .abonoPecuniario(valorAbonoPecuniario)
         .tercoAbonoPecuniario(tercoAbonoPecuniario)
         .adiantamentoDecimoTerceiro(adiantamentoDecimoTerceiro)

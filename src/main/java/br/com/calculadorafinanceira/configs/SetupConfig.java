@@ -6,6 +6,7 @@ import br.com.calculadorafinanceira.enums.FaixaSalarialInss;
 import br.com.calculadorafinanceira.enums.FaixaSalarialIrrf;
 import br.com.calculadorafinanceira.repositories.ParametroInssRepository;
 import br.com.calculadorafinanceira.repositories.ParametroIrrfRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Configuration
-@Profile(value = "local")
+@Profile(value = "!prod")
 public class SetupConfig implements CommandLineRunner {
 
   @Autowired

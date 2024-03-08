@@ -17,6 +17,8 @@ import java.math.RoundingMode;
 @Service
 public class CalculadoraInss {
 
+  private static final Double PERCENTAGE_DIVISOR = 100.00;
+
   @Autowired
   private ParametroInssRepository parametroInssRepository;
 
@@ -113,11 +115,12 @@ public class CalculadoraInss {
 
   private BigDecimal calcularValorFaixaSalarial(BigDecimal salarioBruto, Double aliquota) {
     return salarioBruto
-      .multiply(BigDecimal.valueOf(aliquota / 100))
+      .multiply(BigDecimal.valueOf(aliquota / PERCENTAGE_DIVISOR))
       .setScale(2, RoundingMode.HALF_UP);
   }
 
   private boolean isFaixaSalarialCorrespondente(BigDecimal salarioBruto, BigDecimal valorMaximoFaixaSalarial) {
     return salarioBruto.compareTo(valorMaximoFaixaSalarial) <= 0;
   }
+
 }

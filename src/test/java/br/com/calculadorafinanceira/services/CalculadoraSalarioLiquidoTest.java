@@ -1,7 +1,6 @@
 package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
-import br.com.calculadorafinanceira.requests.FeriasRequest;
 import br.com.calculadorafinanceira.requests.InssRequest;
 import br.com.calculadorafinanceira.requests.IrrfRequest;
 import br.com.calculadorafinanceira.requests.SalarioLiquidoRequest;
@@ -14,14 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.rmi.server.ServerCloneException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 

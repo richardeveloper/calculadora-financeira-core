@@ -2,7 +2,7 @@ spring:
   application:
     name: calculadora-financeira-core
   profiles:
-    active: "@profileActive@"
+    active: dev
 
 server:
   port: 8080
@@ -12,3 +12,5 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger
+
+banco-central-url: https://www3.bcb.gov.br
