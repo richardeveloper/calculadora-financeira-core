@@ -27,4 +27,5 @@ public class CalculadoraFinanceiraController {
 
     return ResponseEntity.ok(calculadoraRendimento.calcularRendimentoCdi(request));
   }
+
 }

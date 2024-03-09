@@ -2,7 +2,6 @@ package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.enums.TipoPeriodo;
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
-import br.com.calculadorafinanceira.requests.IrrfRequest;
 import br.com.calculadorafinanceira.requests.RendimentoCdiRequest;
 import br.com.calculadorafinanceira.requests.integration.TaxaCdiRequest;
 import br.com.calculadorafinanceira.requests.JurosCompostosRequest;
@@ -60,11 +59,11 @@ public class CalculadoraRendimento {
         .orElseThrow(() -> new ServiceException("Não foi possível recuperar taxa do CDI."));
 
       Double taxaCdi = registroTaxa.getTaxaAnual();
-      Double rendimentoCdi = request.getPorcentagemCdi() / 100;
+      Double rendimentoCdi = request.getTaxaRendimento() / 100;
 
       Double taxaJuros = rendimentoCdi * taxaCdi;
 
-      Long tempoInvestimento = ChronoUnit.MONTHS.between(request.getDataInicio(), request.getDataFim());
+      Long tempoInvestimento = ChronoUnit.MONTHS.between(request.getDataInicial(), request.getDataFinal());
 
       JurosCompostosRequest jurosCompostosRequest = JurosCompostosRequest.builder()
         .valorAplicado(request.getValorAplicado())
@@ -82,7 +81,7 @@ public class CalculadoraRendimento {
       return RendimentoCdiResponse.builder()
         .valorAplicado(request.getValorAplicado())
         .juros(jurosCompostosResponse.getTotalJuros())
-        .irrf(irrfResponse.getIrrf())
+        .descontoIrrf(irrfResponse.getIrrf())
         .valorCorrigido(jurosCompostosResponse.getValorCorrigido().subtract(irrfResponse.getIrrf()))
         .build();
     }

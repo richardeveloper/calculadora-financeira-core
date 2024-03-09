@@ -19,7 +19,7 @@ public class RendimentoCdiResponse {
 
   private BigDecimal juros;
 
-  private BigDecimal irrf;
+  private BigDecimal descontoIrrf;
 
   private BigDecimal valorCorrigido;
 

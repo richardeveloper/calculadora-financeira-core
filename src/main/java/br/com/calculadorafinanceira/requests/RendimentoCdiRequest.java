@@ -23,15 +23,15 @@ public class RendimentoCdiRequest {
   @NotNull(message = "O campo valorAplicado é obrigatório.")
   private BigDecimal valorAplicado;
 
-  @NotNull(message = "O campo porcentagemCdi é obrigatório.")
-  private Double porcentagemCdi;
+  @NotNull(message = "O campo taxaRendimento é obrigatório.")
+  private Double taxaRendimento;
 
-  @NotNull(message = "O campo dataInicio é obrigatório.")
+  @NotNull(message = "O campo dataInicial é obrigatório.")
   @JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
-  private LocalDate dataInicio;
+  private LocalDate dataInicial;
 
-  @NotNull(message = "O campo dataFim é obrigatório.")
+  @NotNull(message = "O campo dataFinal é obrigatório.")
   @JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
-  private LocalDate dataFim;
+  private LocalDate dataFinal;
 
 }
