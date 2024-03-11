@@ -1,9 +1,15 @@
 package br.com.calculadorafinanceira.services;
 
+import br.com.calculadorafinanceira.enums.TipoPeriodo;
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.requests.FgtsRequest;
+import br.com.calculadorafinanceira.requests.JurosCompostosRequest;
+import br.com.calculadorafinanceira.requests.dto.Juros;
+import br.com.calculadorafinanceira.requests.dto.Periodo;
 import br.com.calculadorafinanceira.responses.FgtsResponse;
+import br.com.calculadorafinanceira.responses.JurosCompostosResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,7 +21,10 @@ import java.time.temporal.ChronoUnit;
 public class CalculadoraFgts {
 
   private static final BigDecimal BASE_PARCELA_FGTS = new BigDecimal("8");
-  private static final BigDecimal JUROS_CORRECAO_FGTS = new BigDecimal("3");
+  private static final double JUROS_CORRECAO_FGTS = 3.0;
+
+  @Autowired
+  private CalculadoraJuros calculadoraJuros;
 
   public FgtsResponse calcularFgts(FgtsRequest request) throws ServiceException {
 
@@ -24,7 +33,7 @@ public class CalculadoraFgts {
         throw new ServiceException("A data de saída do colaborador na empresa deve ser superior a data de entrada.");
       }
 
-      long mesesTrabalhados = ChronoUnit.MONTHS.between(request.getDataEntrada(), request.getDataSaida());
+      Long mesesTrabalhados = ChronoUnit.MONTHS.between(request.getDataEntrada(), request.getDataSaida());
 
       BigDecimal depositoMensal = request.getSalarioBruto()
         .multiply(BASE_PARCELA_FGTS)
@@ -32,10 +41,21 @@ public class CalculadoraFgts {
 
       BigDecimal totalDepositado = depositoMensal.multiply(BigDecimal.valueOf(mesesTrabalhados));
 
+      JurosCompostosRequest jurosCompostosRequest = JurosCompostosRequest.builder()
+        .valorAplicado(BigDecimal.ZERO)
+        .depositoMensal(depositoMensal)
+        .juros(new Juros(TipoPeriodo.ANUAL, JUROS_CORRECAO_FGTS))
+        .periodo(new Periodo(TipoPeriodo.MENSAL, mesesTrabalhados.intValue()))
+        .build();
+
+      JurosCompostosResponse jurosCompostosResponse = calculadoraJuros.calcularJurosCompostos(jurosCompostosRequest);
+
       return FgtsResponse.builder()
         .depositoMensal(depositoMensal)
-        .mesesTrabalhados((int) mesesTrabalhados)
+        .mesesTrabalhados(mesesTrabalhados.intValue())
         .totalDepositado(totalDepositado)
+        .jurosCorrecao(jurosCompostosResponse.getTotalJuros())
+        .totalCorrigido(totalDepositado.add(jurosCompostosResponse.getTotalJuros()))
         .build();
 
     } catch (ServiceException e) {

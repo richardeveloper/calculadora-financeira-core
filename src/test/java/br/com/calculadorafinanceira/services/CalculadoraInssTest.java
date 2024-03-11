@@ -1,6 +1,6 @@
 package br.com.calculadorafinanceira.services;
 
-import br.com.calculadorafinanceira.entities.ParametroInss;
+import br.com.calculadorafinanceira.entities.ParametroInssEntity;
 import br.com.calculadorafinanceira.enums.FaixaSalarialInss;
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.mocks.ParametroInssMock;
@@ -54,7 +54,7 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("5.00"));
 
-    ParametroInss primeiraFaixaSalarial = ParametroInssMock.getPrimeiraFaixaSalarial();
+    ParametroInssEntity primeiraFaixaSalarial = ParametroInssMock.getPrimeiraFaixaSalarial();
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
       .thenReturn(Optional.of(primeiraFaixaSalarial));
@@ -89,9 +89,9 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("15.00"));
 
-    ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
-    ParametroInss segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
+    ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
       .thenReturn(Optional.of(primeiraFaixa));
@@ -112,7 +112,7 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("15.00"));
 
-    ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
       .thenReturn(Optional.of(primeiraFaixa));
@@ -134,11 +134,11 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("25.00"));
 
-    ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
-    ParametroInss segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
+    ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
 
-    ParametroInss terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
+    ParametroInssEntity terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
       .thenReturn(Optional.of(primeiraFaixa));
@@ -162,9 +162,9 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("25.00"));
 
-    ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
-    ParametroInss segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
+    ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
       .thenReturn(Optional.of(primeiraFaixa));
@@ -189,13 +189,13 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("35.00"));
 
-    ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
-    ParametroInss segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
+    ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
 
-    ParametroInss terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
+    ParametroInssEntity terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
 
-    ParametroInss quartaFaixa = ParametroInssMock.getQuartaFaixaSalarial();
+    ParametroInssEntity quartaFaixa = ParametroInssMock.getQuartaFaixaSalarial();
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
       .thenReturn(Optional.of(primeiraFaixa));
@@ -222,11 +222,11 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("35.00"));
 
-    ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
-    ParametroInss segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
+    ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
 
-    ParametroInss terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
+    ParametroInssEntity terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
 
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
@@ -255,13 +255,13 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("40.00"));
 
-    ParametroInss primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
-    ParametroInss segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
+    ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
 
-    ParametroInss terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
+    ParametroInssEntity terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
 
-    ParametroInss quartaFaixa = ParametroInssMock.getQuartaFaixaSalarial();
+    ParametroInssEntity quartaFaixa = ParametroInssMock.getQuartaFaixaSalarial();
 
     when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
       .thenReturn(Optional.of(primeiraFaixa));

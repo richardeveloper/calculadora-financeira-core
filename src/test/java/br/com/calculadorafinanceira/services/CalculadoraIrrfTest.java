@@ -1,6 +1,6 @@
 package br.com.calculadorafinanceira.services;
 
-import br.com.calculadorafinanceira.entities.ParametroIrrf;
+import br.com.calculadorafinanceira.entities.ParametroIrrfEntity;
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.mocks.ParametroIrrfMock;
 import br.com.calculadorafinanceira.repositories.ParametroIrrfRepository;
@@ -51,7 +51,7 @@ class CalculadoraIrrfTest {
     inssResponse.setInss(BigDecimal.ZERO);
     inssResponse.setAliquota(0.0);
 
-    ParametroIrrf faixaIsenta = ParametroIrrfMock.getFaixaIsenta();
+    ParametroIrrfEntity faixaIsenta = ParametroIrrfMock.getFaixaIsenta();
 
     when(parametroIrrfRepository.findBySalarioBruto(BigDecimal.ZERO))
       .thenReturn(Optional.of(faixaIsenta));
@@ -77,7 +77,7 @@ class CalculadoraIrrfTest {
     inssResponse.setInss(BigDecimal.ZERO);
     inssResponse.setAliquota(0.0);
 
-    ParametroIrrf faixaIsenta = ParametroIrrfMock.getFaixaIsenta();
+    ParametroIrrfEntity faixaIsenta = ParametroIrrfMock.getFaixaIsenta();
 
     when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("10.00")))
       .thenReturn(Optional.of(faixaIsenta));
@@ -103,7 +103,7 @@ class CalculadoraIrrfTest {
     inssResponse.setInss(new BigDecimal("1.00"));
     inssResponse.setAliquota(1.0);
 
-    ParametroIrrf faixaIsenta = ParametroIrrfMock.getPrimeiraFaixaSalarial();
+    ParametroIrrfEntity faixaIsenta = ParametroIrrfMock.getPrimeiraFaixaSalarial();
 
     when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("15.00")))
       .thenReturn(Optional.of(faixaIsenta));
@@ -129,7 +129,7 @@ class CalculadoraIrrfTest {
     inssResponse.setInss(new BigDecimal("2.00"));
     inssResponse.setAliquota(2.0);
 
-    ParametroIrrf faixaIsenta = ParametroIrrfMock.getSegundaFaixaSalarial();
+    ParametroIrrfEntity faixaIsenta = ParametroIrrfMock.getSegundaFaixaSalarial();
 
     when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("25.00")))
       .thenReturn(Optional.of(faixaIsenta));
@@ -155,7 +155,7 @@ class CalculadoraIrrfTest {
     inssResponse.setInss(new BigDecimal("3.00"));
     inssResponse.setAliquota(3.0);
 
-    ParametroIrrf faixaIsenta = ParametroIrrfMock.getTerceiraFaixaSalarial();
+    ParametroIrrfEntity faixaIsenta = ParametroIrrfMock.getTerceiraFaixaSalarial();
 
     when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("35.00")))
       .thenReturn(Optional.of(faixaIsenta));
@@ -181,7 +181,7 @@ class CalculadoraIrrfTest {
     inssResponse.setInss(new BigDecimal("4.00"));
     inssResponse.setAliquota(4.0);
 
-    ParametroIrrf faixaIsenta = ParametroIrrfMock.getQuartaFaixaSalarial();
+    ParametroIrrfEntity faixaIsenta = ParametroIrrfMock.getQuartaFaixaSalarial();
 
     when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("45.00")))
       .thenReturn(Optional.of(faixaIsenta));
@@ -207,7 +207,7 @@ class CalculadoraIrrfTest {
     inssResponse.setInss(new BigDecimal("1.00"));
     inssResponse.setAliquota(1.0);
 
-    ParametroIrrf primeiraFaixa = ParametroIrrfMock.getPrimeiraFaixaSalarial();
+    ParametroIrrfEntity primeiraFaixa = ParametroIrrfMock.getPrimeiraFaixaSalarial();
 
     when(parametroIrrfRepository.findBySalarioBruto(new BigDecimal("15.00")))
       .thenReturn(Optional.of(primeiraFaixa));

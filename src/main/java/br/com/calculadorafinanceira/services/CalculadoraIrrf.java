@@ -1,6 +1,6 @@
 package br.com.calculadorafinanceira.services;
 
-import br.com.calculadorafinanceira.entities.ParametroIrrf;
+import br.com.calculadorafinanceira.entities.ParametroIrrfEntity;
 import br.com.calculadorafinanceira.enums.TipoPeriodo;
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.repositories.ParametroIrrfRepository;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -34,7 +32,7 @@ public class CalculadoraIrrf {
   public IrrfResponse calcularIrrf(IrrfRequest request) throws ServiceException {
 
     try {
-      ParametroIrrf parametroIrrf = parametroIrrfRepository
+      ParametroIrrfEntity parametroIrrfEntity = parametroIrrfRepository
         .findBySalarioBruto(request.getSalarioBruto())
         .orElseThrow(() -> new ServiceException("Não foi possível identificar a faixa salarial para o valor informado."));
 
@@ -57,13 +55,13 @@ public class CalculadoraIrrf {
         .subtract(inss);
 
       BigDecimal irrf = baseParaCalculo
-        .multiply(BigDecimal.valueOf(parametroIrrf.getAliquota() / PERCENTAGE_DIVISOR))
-        .subtract(parametroIrrf.getParcelaDedutivel())
+        .multiply(BigDecimal.valueOf(parametroIrrfEntity.getAliquota() / PERCENTAGE_DIVISOR))
+        .subtract(parametroIrrfEntity.getParcelaDedutivel())
         .setScale(2, RoundingMode.HALF_UP);
 
       return IrrfResponse.builder()
         .irrf(irrf.compareTo(BigDecimal.ZERO) > 0 ? irrf.setScale(2, RoundingMode.HALF_UP) : BigDecimal.ZERO)
-        .aliquota(parametroIrrf.getAliquota())
+        .aliquota(parametroIrrfEntity.getAliquota())
         .build();
 
     } catch (ServiceException e) {

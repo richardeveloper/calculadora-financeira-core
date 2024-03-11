@@ -1,6 +1,7 @@
 package br.com.calculadorafinanceira.entities;
 
-import br.com.calculadorafinanceira.enums.FaixaSalarialInss;
+import br.com.calculadorafinanceira.enums.FaixaSalarialIrrf;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,8 +26,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "PARAMETRO_INSS")
-public class ParametroInss {
+@Table(name = "PARAMETRO_IRRF")
+public class ParametroIrrfEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,13 +35,16 @@ public class ParametroInss {
 
   @Column(name = "FAIXA_SALARIAL")
   @Enumerated(value = EnumType.STRING)
-  private FaixaSalarialInss faixaSalarial;
+  private FaixaSalarialIrrf faixaSalarial;
 
   @Column(name = "VALOR_MINIMO")
   private BigDecimal valorMinimo;
 
   @Column(name = "VALOR_MAXIMO")
   private BigDecimal valorMaximo;
+
+  @Column(name = "PARCELA_DEDUTIVEL")
+  private BigDecimal parcelaDedutivel;
 
   @Column(name = "ALIQUOTA")
   private Double aliquota;

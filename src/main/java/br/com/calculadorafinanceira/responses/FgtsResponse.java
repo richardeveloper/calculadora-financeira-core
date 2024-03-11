@@ -24,4 +24,10 @@ public class FgtsResponse {
   @Builder.Default
   private BigDecimal totalDepositado = BigDecimal.ZERO;
 
+  @Builder.Default
+  private BigDecimal jurosCorrecao = BigDecimal.ZERO;
+
+  @Builder.Default
+  private BigDecimal totalCorrigido = BigDecimal.ZERO;
+
 }

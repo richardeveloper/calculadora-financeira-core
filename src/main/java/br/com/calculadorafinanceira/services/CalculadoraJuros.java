@@ -58,11 +58,12 @@ public class CalculadoraJuros {
 
   public JurosCompostosResponse calcularJurosCompostos(JurosCompostosRequest request) {
 
+    int tempoInvestimento = request.getPeriodo().getValor();
+
+    double taxaJuros = request.getJuros().getValor();
+
     BigDecimal valorCorrigido = request.getValorAplicado();
     BigDecimal totalJuros = BigDecimal.ZERO;
-
-    int tempoInvestimento = request.getPeriodo().getValor();
-    double taxaJuros = request.getJuros().getValor();
 
     TipoPeriodo tipoPeriodo = request.getPeriodo().getTipo();
 
@@ -81,7 +82,10 @@ public class CalculadoraJuros {
     }
 
     for (int i = 0; i < tempoInvestimento ; i++) {
+      valorCorrigido = valorCorrigido.add(request.getDepositoMensal());
+
       BigDecimal juros = valorCorrigido.multiply(BigDecimal.valueOf(taxaJuros / PERCENTAGE_DIVISOR));
+
       valorCorrigido = valorCorrigido.add(juros);
       totalJuros = totalJuros.add(juros);
     }

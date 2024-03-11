@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EntityScan(value = "br.com.calculadorafinanceira.entities")
 @ComponentScans({
@@ -21,6 +22,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 	@ComponentScan(value = "br.com.calculadorafinanceira.exceptions"),
 	@ComponentScan(value = "br.com.calculadorafinanceira.repositories")
 })
+@EnableScheduling
 @EnableFeignClients
 @ImportAutoConfiguration(value = FeignAutoConfiguration.class)
 @EnableJpaRepositories
