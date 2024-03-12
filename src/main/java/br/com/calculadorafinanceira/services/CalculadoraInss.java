@@ -6,7 +6,9 @@ import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.repositories.ParametroInssRepository;
 import br.com.calculadorafinanceira.requests.InssRequest;
 import br.com.calculadorafinanceira.responses.InssResponse;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,7 @@ import java.math.RoundingMode;
 @Service
 public class CalculadoraInss {
 
-  private static final Double PERCENTAGE_DIVISOR = 100.00;
+  private static final double PERCENTAGE_DIVISOR = 100.0;
 
   @Autowired
   private ParametroInssRepository parametroInssRepository;

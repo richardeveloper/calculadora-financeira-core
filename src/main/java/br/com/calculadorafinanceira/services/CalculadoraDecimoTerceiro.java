@@ -5,7 +5,9 @@ import br.com.calculadorafinanceira.requests.DecimoTerceiroRequest;
 import br.com.calculadorafinanceira.requests.InssRequest;
 import br.com.calculadorafinanceira.requests.IrrfRequest;
 import br.com.calculadorafinanceira.responses.DecimoTerceiroResponse;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,8 @@ import java.math.RoundingMode;
 @Service
 public class CalculadoraDecimoTerceiro {
 
-  private static final Integer MONTHS_OF_YEAR = 12;
-  private static final Integer SCALE_PRECISION = 10;
+  private static final int MONTHS_OF_YEAR = 12;
+  private static final int PRECISION_SCALE = 10;
 
   @Autowired
   private CalculadoraIrrf calculadoraIrrf;
@@ -29,7 +31,7 @@ public class CalculadoraDecimoTerceiro {
 
     try {
       BigDecimal decimoTerceiroSalario = request.getSalarioBruto()
-        .divide(BigDecimal.valueOf(MONTHS_OF_YEAR), SCALE_PRECISION, RoundingMode.HALF_UP)
+        .divide(BigDecimal.valueOf(MONTHS_OF_YEAR), PRECISION_SCALE, RoundingMode.HALF_UP)
         .multiply(BigDecimal.valueOf(request.getMesesTrabalhados()))
         .setScale(2, RoundingMode.HALF_UP);
 

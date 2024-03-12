@@ -24,6 +24,8 @@ import java.time.temporal.ChronoUnit;
 @Service
 public class CalculadoraRendimento {
 
+  private static final double PERCENTAGE_DIVISOR = 100.0;
+
   @Autowired
   private TaxaCdiRepository taxaCdiRepository;
 
@@ -40,7 +42,7 @@ public class CalculadoraRendimento {
         .orElseThrow(() -> new ServiceException("Não foi encontrado registro de taxa de cdi."));
 
       Double taxaCdi = taxaCdiEntity.getValor();
-      Double rendimentoCdi = request.getTaxaRendimento() / 100;
+      Double rendimentoCdi = request.getTaxaRendimento() / PERCENTAGE_DIVISOR;
 
       Double taxaJuros = rendimentoCdi * taxaCdi;
 

@@ -1,13 +1,14 @@
 package br.com.calculadorafinanceira.services;
 
 import br.com.calculadorafinanceira.entities.ParametroIrrfEntity;
-import br.com.calculadorafinanceira.enums.TipoPeriodo;
 import br.com.calculadorafinanceira.exceptions.models.ServiceException;
 import br.com.calculadorafinanceira.repositories.ParametroIrrfRepository;
 import br.com.calculadorafinanceira.requests.InssRequest;
 import br.com.calculadorafinanceira.requests.IrrfRequest;
 import br.com.calculadorafinanceira.responses.IrrfResponse;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ import java.time.temporal.ChronoUnit;
 @Slf4j
 @Service
 public class CalculadoraIrrf {
-  private static final Double PERCENTAGE_DIVISOR = 100.00;
+  private static final double PERCENTAGE_DIVISOR = 100.0;
   private static final BigDecimal VALOR_DEDUCAO_DEPENDENTE = new BigDecimal("189.59");
   private static final int CENTO_E_OITENTA_DIAS = 180;
   private static final int TREZENTOS_E_SESSENTA_DIAS = 360;

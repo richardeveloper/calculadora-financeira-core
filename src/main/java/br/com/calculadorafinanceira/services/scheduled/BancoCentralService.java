@@ -44,7 +44,7 @@ public class BancoCentralService {
   private ObjectMapper objectMapper;
 
   /**
-   *  EXECUTAR SERVIÇO CASO NÃO TENHA REGISTRO NO BANCO DE DADOS
+   *  EXECUTAR SERVIÇO CASO BANCO DE DADOS NÃO TENHA REGISTRO
    */
   @PostConstruct
   public void init() {
@@ -58,18 +58,16 @@ public class BancoCentralService {
   public void consultarTaxaCdi() throws ServiceException {
 
     try {
-      log.info("Iniciando integração com sistema do Banco Central");
+      log.info("Iniciando integração com sistema do Banco Central.");
 
       /**
-       *  API DO BANCO CENTRAL REQUER DATA INFERIOR A ATUAL
+       *  API DO BANCO CENTRAL NÃO PERMITE DATA ATUAL
        */
       LocalDate dataConsulta = LocalDate.now().minusDays(1);
 
-      if (dataConsulta.getDayOfWeek().equals(DayOfWeek.SATURDAY) || dataConsulta.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
-        switch (dataConsulta.getDayOfWeek()) {
-          case SATURDAY -> dataConsulta = dataConsulta.minusDays(1);
-          case SUNDAY -> dataConsulta = dataConsulta.minusDays(2);
-        }
+      switch (dataConsulta.getDayOfWeek()) {
+        case SATURDAY -> dataConsulta = dataConsulta.minusDays(1);
+        case SUNDAY -> dataConsulta = dataConsulta.minusDays(2);
       }
 
       String data = dataConsulta.format(DATE_FORMAT);
@@ -106,7 +104,7 @@ public class BancoCentralService {
         }
       }
 
-      log.info("Finalizando integração com sistema do Banco Central");
+      log.info("Finalizando integração com sistema do Banco Central.");
     }
     catch (FeignException e) {
       log.error(e.getMessage(), e);

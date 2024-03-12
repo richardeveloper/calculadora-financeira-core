@@ -6,7 +6,9 @@ import br.com.calculadorafinanceira.requests.JurosCompostosRequest;
 import br.com.calculadorafinanceira.requests.JurosSimplesRequest;
 import br.com.calculadorafinanceira.responses.JurosCompostosResponse;
 import br.com.calculadorafinanceira.responses.JurosSimplesResponse;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,7 +18,7 @@ import java.math.RoundingMode;
 @Service
 public class CalculadoraJuros {
 
-  private static final int PERCENTAGE_DIVISOR = 100;
+  private static final double PERCENTAGE_DIVISOR = 100.0;
 
   public JurosSimplesResponse calcularJurosSimples(JurosSimplesRequest request) {
 

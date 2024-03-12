@@ -8,7 +8,9 @@ import br.com.calculadorafinanceira.requests.InssRequest;
 import br.com.calculadorafinanceira.requests.IrrfRequest;
 import br.com.calculadorafinanceira.responses.DecimoTerceiroResponse;
 import br.com.calculadorafinanceira.responses.FeriasResponse;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +30,8 @@ public class CalculadoraFerias {
   @Autowired
   private CalculadoraDecimoTerceiro calculadoraDecimoTerceiro;
 
-  private static final Integer DAYS_OF_MONTH = 30;
-  private static final Integer PRECISION_SCALE = 10;
+  private static final int DAYS_OF_MONTH = 30;
+  private static final int PRECISION_SCALE = 10;
   private static final BigDecimal ONE_THIRD = new BigDecimal("3");
   private static final BigDecimal VACATION_DAYS_SELL = BigDecimal.TEN;
 
@@ -44,7 +46,8 @@ public class CalculadoraFerias {
 
       BigDecimal saldoTotalFerias = request.getSalarioBruto()
         .divide(BigDecimal.valueOf(DAYS_OF_MONTH), PRECISION_SCALE, RoundingMode.HALF_UP)
-        .multiply(totalDiasFerias).setScale(2, RoundingMode.HALF_UP);
+        .multiply(totalDiasFerias)
+        .setScale(2, RoundingMode.HALF_UP);
 
       BigDecimal saldoTercoFerias = saldoTotalFerias.divide(ONE_THIRD, 2, RoundingMode.HALF_UP);
 

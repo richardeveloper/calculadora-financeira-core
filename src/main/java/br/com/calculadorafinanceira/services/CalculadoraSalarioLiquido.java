@@ -5,22 +5,22 @@ import br.com.calculadorafinanceira.requests.InssRequest;
 import br.com.calculadorafinanceira.requests.IrrfRequest;
 import br.com.calculadorafinanceira.requests.SalarioLiquidoRequest;
 import br.com.calculadorafinanceira.responses.SalarioLiquidoResponse;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.TemporalField;
 
 @Slf4j
 @Service
 public class CalculadoraSalarioLiquido {
 
-  private static final Integer SCALE_PRECISION = 10;
+  private static final Integer PRECISION_SCALE = 10;
 
   @Autowired
   private CalculadoraInss calculadoraInss;
@@ -38,7 +38,7 @@ public class CalculadoraSalarioLiquido {
       int totalDiasMes = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();
 
       BigDecimal salarioProporcional = request.getSalarioBruto()
-        .divide(BigDecimal.valueOf(totalDiasMes), SCALE_PRECISION, RoundingMode.HALF_UP)
+        .divide(BigDecimal.valueOf(totalDiasMes), PRECISION_SCALE, RoundingMode.HALF_UP)
         .multiply(BigDecimal.valueOf(request.getDiasTrabalhados()))
         .setScale(2, RoundingMode.HALF_UP);
 
