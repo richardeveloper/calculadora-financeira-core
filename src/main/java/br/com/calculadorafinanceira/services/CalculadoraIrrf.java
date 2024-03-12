@@ -13,15 +13,17 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Slf4j
 @Service
 public class CalculadoraIrrf {
   private static final Double PERCENTAGE_DIVISOR = 100.00;
   private static final BigDecimal VALOR_DEDUCAO_DEPENDENTE = new BigDecimal("189.59");
-  private static final int SEIS_MESES = 6;
-  private static final int DOZE_MESES = 12;
-  private static final int VINTE_E_QUATRO_MESES = 24;
+  private static final int CENTO_E_OITENTA_DIAS = 180;
+  private static final int TREZENTOS_E_SESSENTA_DIAS = 360;
+  private static final int SETECENTOS_E_VINTE_DIAS = 720;
 
   @Autowired
   private CalculadoraInss calculadoraInss;
@@ -73,22 +75,20 @@ public class CalculadoraIrrf {
     }
   }
 
-  public IrrfResponse calcularIrrfSobreRendimento(BigDecimal valorRendimento, int tempoInvestimento,
-    TipoPeriodo tipoPeriodo) {
+  public IrrfResponse calcularIrrfSobreRendimento(BigDecimal valorRendimento, LocalDate dataInicial,
+    LocalDate dataFinal) {
 
-    if (tipoPeriodo.equals(TipoPeriodo.ANUAL)) {
-      tempoInvestimento = tempoInvestimento * 12;
-    }
+    long diasInvestidos = ChronoUnit.DAYS.between(dataInicial, dataFinal);
 
     double aliquota;
 
-    if (tempoInvestimento < SEIS_MESES) {
+    if (diasInvestidos <= CENTO_E_OITENTA_DIAS) {
       aliquota = 22.5;
     }
-    else if (tempoInvestimento < DOZE_MESES) {
+    else if (diasInvestidos <= TREZENTOS_E_SESSENTA_DIAS) {
       aliquota = 20.0;
     }
-    else if (tempoInvestimento < VINTE_E_QUATRO_MESES) {
+    else if (diasInvestidos < SETECENTOS_E_VINTE_DIAS) {
       aliquota = 17.5;
     }
     else {

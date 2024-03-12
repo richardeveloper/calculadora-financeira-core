@@ -57,7 +57,7 @@ public class CalculadoraRendimento {
         jurosCompostosRequest);
 
       IrrfResponse irrfResponse = calculadoraIrrf.calcularIrrfSobreRendimento(
-        jurosCompostosResponse.getTotalJuros(), tempoInvestimento.intValue(), TipoPeriodo.MENSAL);
+        jurosCompostosResponse.getTotalJuros(), request.getDataInicial(), request.getDataFinal());
 
       return RendimentoCdiResponse.builder()
         .valorAplicado(request.getValorAplicado())
