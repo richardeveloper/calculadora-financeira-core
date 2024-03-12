@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
 
 @Slf4j
@@ -36,7 +37,8 @@ public class CalculadoraFgts {
       Long mesesTrabalhados = ChronoUnit.MONTHS.between(request.getDataEntrada(), request.getDataSaida());
 
       BigDecimal depositoMensal = request.getSalarioBruto()
-        .multiply(BigDecimal.valueOf(BASE_PARCELA_FGTS / PERCENTAGE_DIVISOR));
+        .multiply(BigDecimal.valueOf(BASE_PARCELA_FGTS / PERCENTAGE_DIVISOR))
+        .setScale(2, RoundingMode.FLOOR);
 
       BigDecimal totalDepositado = depositoMensal.multiply(BigDecimal.valueOf(mesesTrabalhados));
 
