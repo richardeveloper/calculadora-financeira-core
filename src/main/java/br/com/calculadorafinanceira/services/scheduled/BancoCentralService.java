@@ -44,14 +44,6 @@ public class BancoCentralService {
   private ObjectMapper objectMapper;
 
   /**
-   *  EXECUTAR SERVIÇO CASO BANCO DE DADOS NÃO TENHA REGISTRO
-   */
-  @PostConstruct
-  public void init() {
-    consultarTaxaCdi();
-  }
-
-  /**
    *  SERVIÇO EXECUTADO DE SEGUNDA A SEXTA A 1 HORA DA MANHÃ
    */
   @Scheduled(cron = "0 0 1 * * 1-5")
@@ -100,7 +92,7 @@ public class BancoCentralService {
 
           taxaCdiRepository.save(taxaCdi);
 
-          log.info("Valor de Taxa CDI cadastrada com sucesso.");
+          log.info("Taxa CDI cadastrada com sucesso.");
         }
       }
 

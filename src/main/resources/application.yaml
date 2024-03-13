@@ -2,7 +2,7 @@ spring:
   application:
     name: calculadora-financeira-core
   profiles:
-    active: dev
+    active: @ActiveProfile@
 
 server:
   port: 8080

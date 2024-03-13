@@ -7,6 +7,7 @@ import br.com.calculadorafinanceira.enums.FaixaSalarialIrrf;
 import br.com.calculadorafinanceira.repositories.ParametroInssRepository;
 import br.com.calculadorafinanceira.repositories.ParametroIrrfRepository;
 
+import br.com.calculadorafinanceira.services.scheduled.BancoCentralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Configuration
-@Profile(value = "!prod")
+@Profile(value = "local")
 public class SetupConfig implements CommandLineRunner {
 
   @Autowired
@@ -25,6 +26,9 @@ public class SetupConfig implements CommandLineRunner {
 
   @Autowired
   private ParametroIrrfRepository parametroIrrfRepository;
+
+  @Autowired
+  private BancoCentralService bancoCentralService;
 
   @Override
   public void run(String... args) throws Exception {
@@ -65,7 +69,8 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    parametroInssRepository.saveAll(List.of(primeiraFaixaInss, segundaFaixaInss, terceiraFaixaInss, quartaFaixaInss));
+    parametroInssRepository.saveAll(List.of(primeiraFaixaInss, segundaFaixaInss,
+      terceiraFaixaInss, quartaFaixaInss));
 
     ParametroIrrfEntity faixaIsenta = ParametroIrrfEntity.builder()
       .faixaSalarial(FaixaSalarialIrrf.FAIXA_ISENTA)
@@ -117,6 +122,9 @@ public class SetupConfig implements CommandLineRunner {
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
 
-    parametroIrrfRepository.saveAll(List.of(faixaIsenta, primeiraFaixaIrrf, segundaFaixaIrrf, terceiraFaixaIrrf, quartaFaixaIrrf));
+    parametroIrrfRepository.saveAll(List.of(faixaIsenta, primeiraFaixaIrrf, segundaFaixaIrrf,
+      terceiraFaixaIrrf, quartaFaixaIrrf));
+
+    bancoCentralService.consultarTaxaCdi();
   }
 }
