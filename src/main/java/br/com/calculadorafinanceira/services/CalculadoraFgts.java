@@ -8,6 +8,7 @@ import br.com.calculadorafinanceira.requests.dto.Juros;
 import br.com.calculadorafinanceira.requests.dto.Periodo;
 import br.com.calculadorafinanceira.responses.FgtsResponse;
 import br.com.calculadorafinanceira.responses.JurosCompostosResponse;
+import br.com.calculadorafinanceira.utils.PeriodoUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class CalculadoraFgts {
   public FgtsResponse calcularFgts(FgtsRequest request) throws ServiceException {
 
     try {
+
       if (request.getDataSaida().isBefore(request.getDataEntrada())) {
         throw new ServiceException("A data de saída do colaborador na empresa deve ser superior a data de entrada.");
       }
@@ -53,7 +55,7 @@ public class CalculadoraFgts {
 
       return FgtsResponse.builder()
         .depositoMensal(depositoMensal)
-        .mesesTrabalhados(mesesTrabalhados.intValue())
+        .periodo(PeriodoUtils.gerarInformativoPeriodo(mesesTrabalhados))
         .totalDepositado(totalDepositado)
         .jurosCorrecao(jurosCompostosResponse.getTotalJuros())
         .totalCorrigido(totalDepositado.add(jurosCompostosResponse.getTotalJuros()))

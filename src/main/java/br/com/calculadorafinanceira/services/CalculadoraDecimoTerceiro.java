@@ -30,6 +30,7 @@ public class CalculadoraDecimoTerceiro {
   public DecimoTerceiroResponse calcularDecimoTerceiro(DecimoTerceiroRequest request) throws ServiceException {
 
     try {
+
       BigDecimal decimoTerceiroSalario = request.getSalarioBruto()
         .divide(BigDecimal.valueOf(MONTHS_OF_YEAR), PRECISION_SCALE, RoundingMode.HALF_UP)
         .multiply(BigDecimal.valueOf(request.getMesesTrabalhados()))

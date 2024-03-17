@@ -12,6 +12,7 @@ import br.com.calculadorafinanceira.responses.RendimentoCdiResponse;
 import br.com.calculadorafinanceira.requests.dto.Juros;
 import br.com.calculadorafinanceira.requests.dto.Periodo;
 
+import br.com.calculadorafinanceira.utils.PeriodoUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,11 @@ public class CalculadoraRendimento {
   public RendimentoCdiResponse calcularRendimentoCdi(RendimentoCdiRequest request) throws ServiceException {
 
     try {
+
+      if (request.getDataFinal().isBefore(request.getDataInicial())) {
+        throw new ServiceException("A data final deve ser maior que a data inicial");
+      }
+
       TaxaCdiEntity taxaCdiEntity = taxaCdiRepository.findLastRegistered()
         .orElseThrow(() -> new ServiceException("Não foi encontrado registro de taxa de cdi."));
 
@@ -63,6 +69,7 @@ public class CalculadoraRendimento {
 
       return RendimentoCdiResponse.builder()
         .valorAplicado(request.getValorAplicado())
+        .periodo(PeriodoUtils.gerarInformativoPeriodo(tempoInvestimento))
         .juros(jurosCompostosResponse.getTotalJuros())
         .descontoIrrf(irrfResponse.getIrrf())
         .valorCorrigido(jurosCompostosResponse.getValorCorrigido().subtract(irrfResponse.getIrrf()))

@@ -5,6 +5,7 @@ import br.com.calculadorafinanceira.requests.FgtsRequest;
 import br.com.calculadorafinanceira.requests.JurosCompostosRequest;
 import br.com.calculadorafinanceira.responses.FgtsResponse;
 
+import br.com.calculadorafinanceira.utils.PeriodoUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,6 +42,8 @@ class CalculadoraFgtsTest {
     request.setDataEntrada(LocalDate.now().minusMonths(5));
     request.setDataSaida(LocalDate.now());
 
+    String infoPeriodo = PeriodoUtils.gerarInformativoPeriodo(request.getDataEntrada(), request.getDataSaida());
+
     FgtsResponse response = calculadoraFgts.calcularFgts(request);
 
     assertThat(response).isNotNull();
@@ -49,6 +52,7 @@ class CalculadoraFgtsTest {
     assertThat(response.getJurosCorrecao()).isEqualTo(new BigDecimal("0.14"));
     assertThat(response.getTotalDepositado()).isEqualTo(new BigDecimal("20.00"));
     assertThat(response.getTotalCorrigido()).isEqualTo(new BigDecimal("20.14"));
+    assertThat(response.getPeriodo()).isEqualTo(infoPeriodo);
   }
 
   @Test

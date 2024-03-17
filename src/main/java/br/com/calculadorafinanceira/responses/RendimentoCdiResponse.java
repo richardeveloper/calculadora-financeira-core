@@ -17,6 +17,8 @@ public class RendimentoCdiResponse {
 
   private BigDecimal valorAplicado;
 
+  private String periodo;
+
   private BigDecimal juros;
 
   private BigDecimal descontoIrrf;

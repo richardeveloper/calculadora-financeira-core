@@ -31,6 +31,7 @@ public class CalculadoraSalarioLiquido {
   public SalarioLiquidoResponse calcularSalarioLiquido(SalarioLiquidoRequest request) throws ServiceException {
 
     try {
+
       if (request.getDescontos().compareTo(request.getSalarioBruto()) >= 0) {
         throw new ServiceException("O valor dos descontos deve ser inferior ao valor do salário bruto.");
       }

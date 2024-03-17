@@ -19,7 +19,7 @@ public class FgtsResponse {
   private BigDecimal depositoMensal = BigDecimal.ZERO;
 
   @Builder.Default
-  private Integer mesesTrabalhados = 0;
+  private String periodo = "";
 
   @Builder.Default
   private BigDecimal totalDepositado = BigDecimal.ZERO;

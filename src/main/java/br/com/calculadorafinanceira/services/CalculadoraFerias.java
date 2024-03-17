@@ -38,6 +38,7 @@ public class CalculadoraFerias {
   public FeriasResponse calcularFerias(FeriasRequest request) throws ServiceException {
 
     try {
+
       if (request.isAbonoPecuniarioInvalido()) {
         throw new ServiceException("Ao solicitar o abono pecuniário, a quantidade máxima permitida para solicitar é de 20 dias de férias.");
       }
