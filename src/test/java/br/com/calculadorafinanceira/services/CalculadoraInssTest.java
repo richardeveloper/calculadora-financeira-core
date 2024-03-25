@@ -17,7 +17,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,10 +55,9 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("5.00"));
 
-    ParametroInssEntity primeiraFaixaSalarial = ParametroInssMock.getPrimeiraFaixaSalarial();
+    List<ParametroInssEntity> parametroInssList = ParametroInssMock.getAllParametroInss();
 
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(primeiraFaixaSalarial));
+    when(parametroInssRepository.findAll()).thenReturn(parametroInssList);
 
     InssResponse response = calculadoraInss.calcularInss(request);
 
@@ -67,18 +67,38 @@ class CalculadoraInssTest {
   }
 
   @Test
+  void calularInss_deveLancarExcecaoQuandoNaoEncontrarParametros() {
+
+    InssRequest request = new InssRequest();
+    request.setSalarioBruto(new BigDecimal("5.00"));
+
+    when(parametroInssRepository.findAll()).thenReturn(List.of());
+
+    ServiceException exception = assertThrows(ServiceException.class,
+      () -> calculadoraInss.calcularInss(request));
+
+    String expectedMessage = "Não foi possível recuperar os dados para cálculo do INSS.";
+
+    assertThat(expectedMessage).isEqualTo(exception.getMessage());
+  }
+
+  @Test
   void calularInss_deveLancarExcecaoQuandoNaoEncontrarPrimeiraFaixaInss() {
 
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("5.00"));
 
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.empty());
+    List<ParametroInssEntity> parametroInssList = ParametroInssMock.getAllParametroInss()
+      .stream()
+      .filter(e -> !e.getFaixaSalarial().equals(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
+      .toList();
+
+    when(parametroInssRepository.findAll()).thenReturn(parametroInssList);
 
     ServiceException exception = assertThrows(ServiceException.class,
       () -> calculadoraInss.calcularInss(request));
 
-    String expectedMessage = "Não foi possível recuperar informações da primeira faixa salarial.";
+    String expectedMessage = "Não foi possível recuperar os dados da primeira faixa salarial.";
 
     assertThat(expectedMessage).isEqualTo(exception.getMessage());
   }
@@ -89,15 +109,9 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("15.00"));
 
-    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    List<ParametroInssEntity> parametroInssList = ParametroInssMock.getAllParametroInss();
 
-    ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(primeiraFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(segundaFaixa));
+    when(parametroInssRepository.findAll()).thenReturn(parametroInssList);
 
     InssResponse response = calculadoraInss.calcularInss(request);
 
@@ -114,16 +128,12 @@ class CalculadoraInssTest {
 
     ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
 
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(primeiraFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL))
-      .thenReturn(Optional.empty());
+    when(parametroInssRepository.findAll()).thenReturn(List.of(primeiraFaixa));
 
     ServiceException exception = assertThrows(ServiceException.class,
       () -> calculadoraInss.calcularInss(request));
 
-    String expectedMessage = "Não foi possível recuperar informações da segunda faixa salarial.";
+    String expectedMessage = "Não foi possível recuperar os dados da segunda faixa salarial.";
 
     assertThat(expectedMessage).isEqualTo(exception.getMessage());
   }
@@ -134,20 +144,9 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("25.00"));
 
-    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    List<ParametroInssEntity> parametroInssList = ParametroInssMock.getAllParametroInss();
 
-    ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
-
-    ParametroInssEntity terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(primeiraFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(segundaFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.TERCEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(terceiraFaixa));
+    when(parametroInssRepository.findAll()).thenReturn(parametroInssList);
 
     InssResponse response = calculadoraInss.calcularInss(request);
 
@@ -166,19 +165,12 @@ class CalculadoraInssTest {
 
     ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
 
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(primeiraFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(segundaFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.TERCEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.empty());
+    when(parametroInssRepository.findAll()).thenReturn(List.of(primeiraFaixa, segundaFaixa));
 
     ServiceException exception = assertThrows(ServiceException.class,
       () -> calculadoraInss.calcularInss(request));
 
-    String expectedMessage = "Não foi possível recuperar informações da terceira faixa salarial.";
+    String expectedMessage = "Não foi possível recuperar os dados da terceira faixa salarial.";
 
     assertThat(expectedMessage).isEqualTo(exception.getMessage());
   }
@@ -189,25 +181,9 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("35.00"));
 
-    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    List<ParametroInssEntity> parametroInssList = ParametroInssMock.getAllParametroInss();
 
-    ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
-
-    ParametroInssEntity terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
-
-    ParametroInssEntity quartaFaixa = ParametroInssMock.getQuartaFaixaSalarial();
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(primeiraFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(segundaFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.TERCEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(terceiraFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.QUARTA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(quartaFaixa));
+    when(parametroInssRepository.findAll()).thenReturn(parametroInssList);
 
     InssResponse response = calculadoraInss.calcularInss(request);
 
@@ -228,23 +204,12 @@ class CalculadoraInssTest {
 
     ParametroInssEntity terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
 
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(primeiraFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(segundaFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.TERCEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(terceiraFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.QUARTA_FAIXA_SALARIAL))
-      .thenReturn(Optional.empty());
+    when(parametroInssRepository.findAll()).thenReturn(List.of(primeiraFaixa, segundaFaixa, terceiraFaixa));
 
     ServiceException exception = assertThrows(ServiceException.class,
       () -> calculadoraInss.calcularInss(request));
 
-    String expectedMessage = "Não foi possível recuperar informações da quarta faixa salarial.";
+    String expectedMessage = "Não foi possível recuperar os dados da quarta faixa salarial.";
 
     assertThat(expectedMessage).isEqualTo(exception.getMessage());
   }
@@ -253,27 +218,11 @@ class CalculadoraInssTest {
   void calularInss_deveCalcularTetoInss() {
 
     InssRequest request = new InssRequest();
-    request.setSalarioBruto(new BigDecimal("40.00"));
+    request.setSalarioBruto(new BigDecimal("45.00"));
 
-    ParametroInssEntity primeiraFaixa = ParametroInssMock.getPrimeiraFaixaSalarial();
+    List<ParametroInssEntity> parametroInssList = ParametroInssMock.getAllParametroInss();
 
-    ParametroInssEntity segundaFaixa = ParametroInssMock.getSegundaFaixaSalarial();
-
-    ParametroInssEntity terceiraFaixa = ParametroInssMock.getTerceiraFaixaSalarial();
-
-    ParametroInssEntity quartaFaixa = ParametroInssMock.getQuartaFaixaSalarial();
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(primeiraFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.SEGUNDA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(segundaFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.TERCEIRA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(terceiraFaixa));
-
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.QUARTA_FAIXA_SALARIAL))
-      .thenReturn(Optional.of(quartaFaixa));
+    when(parametroInssRepository.findAll()).thenReturn(parametroInssList);
 
     InssResponse response = calculadoraInss.calcularInss(request);
 
@@ -288,8 +237,7 @@ class CalculadoraInssTest {
     InssRequest request = new InssRequest();
     request.setSalarioBruto(new BigDecimal("40.00"));
 
-    when(parametroInssRepository.findByFaixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL))
-      .thenThrow(new RuntimeException("Erro inesperado."));
+    when(parametroInssRepository.findAll()).thenThrow(new RuntimeException("Erro inesperado."));
 
     ServiceException exception = Assert.assertThrows(ServiceException.class,
       () -> calculadoraInss.calcularInss(request));

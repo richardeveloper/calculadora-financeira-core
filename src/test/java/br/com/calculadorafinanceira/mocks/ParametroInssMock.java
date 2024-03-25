@@ -5,6 +5,8 @@ import br.com.calculadorafinanceira.enums.FaixaSalarialInss;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 public class ParametroInssMock {
 
@@ -14,8 +16,8 @@ public class ParametroInssMock {
       .valorMinimo(BigDecimal.ZERO)
       .valorMaximo(new BigDecimal("10.00"))
       .aliquota(1.0)
-      .dataCadastro(LocalDateTime.now())
-      .ultimaAtualizacao(LocalDateTime.now())
+//      .dataCadastro(LocalDateTime.now())
+//      .ultimaAtualizacao(LocalDateTime.now())
       .build();
   }
 
@@ -39,7 +41,6 @@ public class ParametroInssMock {
       .dataCadastro(LocalDateTime.now())
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
-
   }
 
   public static ParametroInssEntity getQuartaFaixaSalarial() {
@@ -51,6 +52,15 @@ public class ParametroInssMock {
       .dataCadastro(LocalDateTime.now())
       .ultimaAtualizacao(LocalDateTime.now())
       .build();
+  }
+
+  public static List<ParametroInssEntity> getAllParametroInss() {
+    return Arrays.asList(
+      getPrimeiraFaixaSalarial(),
+      getSegundaFaixaSalarial(),
+      getTerceiraFaixaSalarial(),
+      getQuartaFaixaSalarial()
+    );
   }
 
 }

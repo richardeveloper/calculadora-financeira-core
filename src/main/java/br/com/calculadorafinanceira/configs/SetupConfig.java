@@ -33,6 +33,14 @@ public class SetupConfig implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
 
+    /**
+     *  DADOS ATUALIZADOS EM 03/2024
+     *
+     *  INSS: https://www.gov.br/inss/pt-br/direitos-e-deveres/inscricao-e-contribuicao/tabela-de-contribuicao-mensal
+     *  IRRF: https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/tabelas/2024
+     *
+     */
+
     ParametroInssEntity primeiraFaixaInss = ParametroInssEntity.builder()
       .faixaSalarial(FaixaSalarialInss.PRIMEIRA_FAIXA_SALARIAL)
       .valorMinimo(BigDecimal.ZERO)

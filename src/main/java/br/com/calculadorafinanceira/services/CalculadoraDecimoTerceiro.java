@@ -105,8 +105,8 @@ public class CalculadoraDecimoTerceiro {
           return DecimoTerceiroResponse.builder().build();
         }
       }
-
-    } catch (ServiceException e) {
+    }
+    catch (ServiceException e) {
       throw e;
     }
     catch (Exception e) {

@@ -53,7 +53,7 @@ public class BancoCentralService {
       log.info("Iniciando integração com sistema do Banco Central.");
 
       /**
-       *  API DO BANCO CENTRAL NÃO PERMITE DATA ATUAL
+       *  API DO BANCO CENTRAL NÃO PERMITE CONSULTA COM DATA ATUAL
        */
       LocalDate dataConsulta = LocalDate.now().minusDays(1);
 
