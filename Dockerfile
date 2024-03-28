@@ -1,6 +1,10 @@
-FROM maven:3.9.3
+FROM amazoncorretto:17
 
-WORKDIR /calculadora-financeira
-COPY . .
+ARG JAR_FILE=target/*.jar
 
-RUN mvn clean install -DskipTests
+COPY ${JAR_FILE} application.jar
+
+CMD apt-get update -y
+
+ENTRYPOINT ["java", "-jar", "/application.jar"]
+
