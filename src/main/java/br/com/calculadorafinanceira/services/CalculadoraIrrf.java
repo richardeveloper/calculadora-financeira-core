@@ -35,7 +35,6 @@ public class CalculadoraIrrf {
   public IrrfResponse calcularIrrf(IrrfRequest request) throws ServiceException {
 
     try {
-
       ParametroIrrfEntity parametroIrrfEntity = parametroIrrfRepository
         .findBySalarioBruto(request.getSalarioBruto())
         .orElseThrow(() -> new ServiceException("Não foi possível identificar a faixa salarial para o valor informado."));

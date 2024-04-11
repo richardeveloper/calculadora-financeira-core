@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -257,4 +258,61 @@ class CalculadoraIrrfTest {
 
     assertThat(expectedMessage).isEqualTo(exception.getMessage());
   }
+
+  @Test
+  void calcularIrrfSobreRendimento_deveCalcularIrrfComPrazoMenorQueCentoEOitentaDias() {
+
+    BigDecimal valorRendimento = new BigDecimal("100.00");
+    LocalDate dataInicio = LocalDate.now().minusDays(150);
+    LocalDate dataFim = LocalDate.now();
+
+    IrrfResponse irrfResponse = calculadoraIrrf.calcularIrrfSobreRendimento(valorRendimento, dataInicio, dataFim);
+
+    assertThat(irrfResponse).isNotNull();
+    assertThat(irrfResponse.getIrrf()).isEqualTo(new BigDecimal("22.50"));
+    assertThat(irrfResponse.getAliquota()).isEqualTo(22.5);
+  }
+
+  @Test
+  void calcularIrrfSobreRendimento_deveCalcularIrrfComPrazoEntreCentoEOitentaETrezentosESessentaDias() {
+
+    BigDecimal valorRendimento = new BigDecimal("100.00");
+    LocalDate dataInicio = LocalDate.now().minusDays(250);
+    LocalDate dataFim = LocalDate.now();
+
+    IrrfResponse irrfResponse = calculadoraIrrf.calcularIrrfSobreRendimento(valorRendimento, dataInicio, dataFim);
+
+    assertThat(irrfResponse).isNotNull();
+    assertThat(irrfResponse.getIrrf()).isEqualTo(new BigDecimal("20.00"));
+    assertThat(irrfResponse.getAliquota()).isEqualTo(20);
+  }
+
+  @Test
+  void calcularIrrfSobreRendimento_deveCalcularIrrfComPrazoTrezentosESessentaESetecentosEVinteDias() {
+
+    BigDecimal valorRendimento = new BigDecimal("100.00");
+    LocalDate dataInicio = LocalDate.now().minusDays(450);
+    LocalDate dataFim = LocalDate.now();
+
+    IrrfResponse irrfResponse = calculadoraIrrf.calcularIrrfSobreRendimento(valorRendimento, dataInicio, dataFim);
+
+    assertThat(irrfResponse).isNotNull();
+    assertThat(irrfResponse.getIrrf()).isEqualTo(new BigDecimal("17.50"));
+    assertThat(irrfResponse.getAliquota()).isEqualTo(17.5);
+  }
+
+  @Test
+  void calcularIrrfSobreRendimento_deveCalcularIrrfComPrazoMaiorQueSetecentosEVinteDias() {
+
+    BigDecimal valorRendimento = new BigDecimal("100.00");
+    LocalDate dataInicio = LocalDate.now().minusDays(900);
+    LocalDate dataFim = LocalDate.now();
+
+    IrrfResponse irrfResponse = calculadoraIrrf.calcularIrrfSobreRendimento(valorRendimento, dataInicio, dataFim);
+
+    assertThat(irrfResponse).isNotNull();
+    assertThat(irrfResponse.getIrrf()).isEqualTo(new BigDecimal("15.00"));
+    assertThat(irrfResponse.getAliquota()).isEqualTo(15.0);
+  }
+
 }

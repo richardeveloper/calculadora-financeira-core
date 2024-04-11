@@ -51,4 +51,5 @@ public class SalarioLiquidoRequest {
 
     return diasTrabalhados;
   }
+
 }

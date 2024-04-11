@@ -101,10 +101,9 @@ public class CalculadoraDecimoTerceiro {
             .valorAReceber(segundaParcela)
             .build();
         }
-        default -> {
-          return DecimoTerceiroResponse.builder().build();
-        }
       }
+
+      return DecimoTerceiroResponse.builder().build();
     }
     catch (ServiceException e) {
       throw e;

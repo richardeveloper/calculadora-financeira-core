@@ -39,7 +39,6 @@ public class CalculadoraRendimento {
   public RendimentoCdiResponse calcularRendimentoCdi(RendimentoCdiRequest request) throws ServiceException {
 
     try {
-
       if (request.getDataFinal().isBefore(request.getDataInicial())) {
         throw new ServiceException("A data final deve ser maior que a data inicial");
       }

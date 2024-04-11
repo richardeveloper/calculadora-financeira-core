@@ -31,12 +31,11 @@ public class CalculadoraFgts {
   public FgtsResponse calcularFgts(FgtsRequest request) throws ServiceException {
 
     try {
-
       if (request.getDataSaida().isBefore(request.getDataEntrada())) {
         throw new ServiceException("A data de saída do colaborador na empresa deve ser superior a data de entrada.");
       }
 
-      Long mesesTrabalhados = ChronoUnit.MONTHS.between(request.getDataEntrada(), request.getDataSaida());
+      long mesesTrabalhados = ChronoUnit.MONTHS.between(request.getDataEntrada(), request.getDataSaida());
 
       BigDecimal depositoMensal = request.getSalarioBruto()
         .multiply(BigDecimal.valueOf(BASE_PARCELA_FGTS / PERCENTAGE_DIVISOR))
@@ -48,7 +47,7 @@ public class CalculadoraFgts {
         .valorAplicado(BigDecimal.ZERO)
         .depositoMensal(depositoMensal)
         .juros(new Juros(TipoPeriodo.ANUAL, JUROS_CORRECAO_FGTS))
-        .periodo(new Periodo(TipoPeriodo.MENSAL, mesesTrabalhados.intValue()))
+        .periodo(new Periodo(TipoPeriodo.MENSAL, (int) mesesTrabalhados))
         .build();
 
       JurosCompostosResponse jurosCompostosResponse = calculadoraJuros.calcularJurosCompostos(jurosCompostosRequest);
