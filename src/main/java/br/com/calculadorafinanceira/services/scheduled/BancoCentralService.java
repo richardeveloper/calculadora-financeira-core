@@ -50,7 +50,7 @@ public class BancoCentralService {
   public void consultarTaxaCdi() throws ServiceException {
 
     try {
-      log.info("Iniciando integração com sistema do Banco Central.");
+      log.info("Iniciando integração com API do Banco Central.");
 
       /**
        *  API DO BANCO CENTRAL NÃO PERMITE CONSULTA COM DATA ATUAL
@@ -96,11 +96,11 @@ public class BancoCentralService {
         }
       }
 
-      log.info("Finalizando integração com sistema do Banco Central.");
+      log.info("Finalizando integração com API do Banco Central.");
     }
     catch (FeignException e) {
       log.error(e.getMessage(), e);
-      throw new ServiceException("Erro ao consultar taxa CDI: " + e.getMessage());
+      throw new ServiceException("Erro na comunicação com serviços terceiros: " + e.getMessage());
     }
     catch (StreamReadException e) {
       log.error(e.getMessage(), e);
@@ -116,7 +116,7 @@ public class BancoCentralService {
     }
     catch (Exception e) {
       log.error(e.getMessage(), e);
-      throw new ServiceException("Erro ao calcular rendimento do CDI: " + e.getMessage());
+      throw new ServiceException("Erro ao consultar taxa do CDI: " + e.getMessage());
     }
   }
 
