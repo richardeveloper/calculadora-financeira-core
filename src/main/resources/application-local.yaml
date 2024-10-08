@@ -1,9 +1,9 @@
 # Database Configuration
 spring:
   datasource:
-    url: ${POSTGRES_URL}
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/calculadora_financeira
+    username: postgres
+    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true

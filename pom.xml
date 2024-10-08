@@ -49,8 +49,9 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.6.0</version>
+			<version>42.7.4</version>
 		</dependency>
+
 
 		<!-- OTHERS -->
 
@@ -155,14 +156,6 @@
 			<properties>
 				<build.profile.id>local</build.profile.id>
 				<profileActive>local</profileActive>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>prod</id>
-			<properties>
-				<build.profile.id>prod</build.profile.id>
-				<profileActive>prod</profileActive>
 			</properties>
 		</profile>
 
