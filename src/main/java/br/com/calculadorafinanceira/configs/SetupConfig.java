@@ -6,8 +6,8 @@ import br.com.calculadorafinanceira.enums.FaixaSalarialInss;
 import br.com.calculadorafinanceira.enums.FaixaSalarialIrrf;
 import br.com.calculadorafinanceira.repositories.ParametroInssRepository;
 import br.com.calculadorafinanceira.repositories.ParametroIrrfRepository;
-
 import br.com.calculadorafinanceira.services.scheduled.BancoCentralService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
