@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(ServiceException.class)
   public ResponseEntity<ApiError> handlerServiceException(HttpServletRequest request, ServiceException exception) {
 
-    String error = "Houve um erro ao processar a operação.";
+    String error = "Houve um erro ao processar a solicitação.";
 
     String errorMessage = exception.getMessage();
     HttpStatus status = HttpStatus.BAD_REQUEST;

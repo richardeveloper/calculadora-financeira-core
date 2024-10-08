@@ -1,5 +1,4 @@
 # Spring Boot Configuration
-
 spring:
   application:
     name: calculadora-financeira-core

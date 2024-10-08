@@ -114,7 +114,8 @@ public class CalculadoraInss {
 
       if (isFaixaSalarialCorrespondente(salarioBruto, quartaFaixa.getValorMaximo())) {
         baseParaCalculo = salarioBruto.subtract(quartaFaixa.getValorMinimo());
-      } else {
+      }
+      else {
         baseParaCalculo = quartaFaixa.getValorMaximo().subtract(quartaFaixa.getValorMinimo());
       }
 

@@ -20,8 +20,11 @@ import java.time.temporal.ChronoUnit;
 @Slf4j
 @Service
 public class CalculadoraIrrf {
-  private static final double PERCENTAGE_DIVISOR = 100.0;
+
   private static final BigDecimal VALOR_DEDUCAO_DEPENDENTE = new BigDecimal("189.59");
+
+  private static final double PERCENTAGE_DIVISOR = 100.0;
+
   private static final int CENTO_E_OITENTA_DIAS = 180;
   private static final int TREZENTOS_E_SESSENTA_DIAS = 360;
   private static final int SETECENTOS_E_VINTE_DIAS = 720;
